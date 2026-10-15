@@ -650,6 +650,21 @@ button.fsdis{opacity:.45;filter:grayscale(1)}
 .guide .nchip{display:inline-block;background:#1d3a46;border:1px solid #7fa8b4;padding:1px 8px;margin-right:4px;font-size:13px}
 .guide .nchip.ok{border-color:#5fd28a;color:#a8f0c0}.guide .nchip.no{border-color:#e05050;color:#ffb0b0}.guide .nchip.req{border-color:#ffd75e;color:#ffe9a8;font-weight:900}
 
+
+/* 채팅 */
+#chat{position:fixed;right:8px;bottom:8px;z-index:95;display:flex;flex-direction:column;align-items:flex-end;font-size:15px}
+#chat .chtog{background:#1d3a46;border:2px solid #7fa8b4;color:#fff;padding:3px 12px;font-weight:700;box-shadow:3px 3px 0 #000}
+#chat .chbody{display:none;width:min(340px,calc(80*var(--vw)));background:rgba(8,21,27,.96);border:3px solid #7fa8b4;box-shadow:5px 5px 0 #000;margin-top:4px;order:-1;margin-bottom:4px}
+#chat.open .chbody{display:block}
+#chat .chlist{height:180px;overflow-y:auto;padding:6px 8px;display:flex;flex-direction:column;gap:2px}
+#chat .cl{line-height:1.35;word-break:break-all}#chat .cl b{color:#9fe3f5}#chat .cl b.me{color:#ffe08a}#chat .cl.sys{color:#8aa3ab;font-size:13px}
+#chat .chq{display:flex;flex-wrap:wrap;gap:4px;padding:4px 6px;border-top:1px solid #34454b}
+#chat .chq button{font-size:13px;padding:2px 8px;background:#13262e;border:1px solid #7fa8b4;color:#dfe}
+#chat .chin{display:flex;gap:4px;padding:6px;border-top:1px solid #34454b}
+#chat .chin input{flex:1;min-width:0;font:inherit;font-size:15px;padding:5px 8px;background:#0e1e26;color:#fff;border:2px solid #7fa8b4}
+#chat .chin button{padding:4px 10px}
+.feedbox .fd.chat{border-left-color:#c8a0ff;color:#ecdfff}
+.lbrd{font-size:13px;padding:0 6px;border:1px solid #7fa8b4;color:#9fb9c2}.lbrd.ok{border-color:#5fd28a;color:#a8f0c0}
 .setup .pickp .pp-bulbasaur,.setup .pchip .pp-bulbasaur{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABMCAYAAAD6BTBNAAACWUlEQVR42u2cIVPrQBSF0zf8AOpaGRnZuFf3bG0dSHDYSiQ47HMg+QlUggMXG7kSXHHIYtlTuHd2NhTafMftbNq0Z+755t5sYbBer4tdVl3X0RdommaQsp+rPwXCQAzcYR3sOvNmN7Os/VwmUoFEGANh4DaZp3oNbWExT/epQCKMgeiDBj89C3uMm56X0bp9fDHfr5qOzOt1//EimO/n9YlUIBHGQPrAHOYp41QewzwmevIY683OVCARxsB+MTD1eZpeXx7nMS9VqX3hxvWFzUQqkAhj4H4zMPWMQVWWacw7HI++lZGpTNTPsyoCFUiEMZBZ+Esmql6amDGr5SpmTCEMG8fL57BdQ1LvRwUSYQzsNwM95oVWzmWlLSyrymRkMe2WWVQgEcZAZDHQm309bTDP0ai2Z1m3b1QGTrs1KNzGN+BMhAhj4F5p47cxysD6rE5i1rbVXrRJDHx9luePIf4+IdjMowKJMAbuVx+ozLsaD6MLLqWvS2Wgzsa5DFXmDWdDe5YWaR+prw//AxVIhDGwR33gZDLJmn1VT7cP0frv8T+TYdp36TlydV6ZTM2edZ3ZfXX/xixMhDGwx7NwLhOXJ0tzv2kac//05jTpftoHap8HA4kwBqKPs/C2Z9m78bBT5nnnzoUgWJmo59KbDGyoQCKMgT3qA1Xeb6D1zKRreX2d18fpmYe+/qg8itaLxcLs+6hAIoyB/WKgJ4+RucplrDJUnz9+MpsPqEAijIEw8Kf0yd8jm7Py9cl1tJ7P5ybz+B+qRBgD0W9mYNd9ZtfMowIxEAP3Su9wqQ3j6kJK2gAAAABJRU5ErkJggg==)}
 .setup .pickp .pp-charmander,.setup .pchip .pp-charmander{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFQAAABMCAYAAADz7pA3AAACM0lEQVR42u2coVMCQRTGF8dAlIbxItGLRmlEaRqhwZ9AxHZRm0Rt2LRpNJ7ReNF4RBpGZx/OPnd2F3Du97Ud7m7uvnnvN98+DlqbzcagH+V5bhlSlmXL5/wjLIwrDMXQw9ZxagZp8mVU6vt9yDtBTKVCaXkMhaEhjHwfrZ3nVx+nUXNfavkylQql5TEUhrqYoTFSU3b2ZTPK/C+mUqEYiqEo5V4+lKmmbO917x7KfCqUlsfQZjM0du6Ue/ctZgbunZMzfSQOmFKhtDyGonQ5VDKzd/8qmWhcjN51Lt3SiAql5TEU/Z2hsXPnZ22v++Oxte56MtiYOuoDyxy79fzyfqb2/VyXtfN6VCgtj6Hk0BANLuwc2V3Unszcr3yZSYXS8hjabIZquUzOJ7V5ppT2nY3v+anno6GzBCqUlsfQZudQjamSKaGM3LVizy6oUFoeQxutVuhvPbV37pfF0FqvH9+c15vVJ9Z63lk5j9f22r65+nzR9tq7U6G0PIbC0KQ573niZuD0xV4bm5lyvqrNTyVTfXOy7/yTCqXlMZS9/CFJY6aWUyUzteNDmUmF0vIYSg6NmTtnmTv3DW6vvHKplLa312YDVVVFZSYVSstjKAyNydCiKKzPV3c3dk40NtOKSe68vjY/lZLvp86ruDmTCqXlMRTFZKjGVF9lWWbnUjEf7XUOi5lUKIZiKAw9JP3y/qf1+dOwb60vl+7fksJQWh5haJMYGppr9/1feVQohmJoo/QNc/L8LvtfO+IAAAAASUVORK5CYII=)}
 .setup .pickp .pp-eevee,.setup .pchip .pp-eevee{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAABICAYAAABP0VPJAAACXElEQVR42u1bK3DCQBQMnYrUgSOukdQlrjZ1VCKRkeCIK7IydeAaiUQWV1wrgysyddQVVxzVb5m5mzcJv2Gfe5O7S2bn7c6+u0ttu906mgjDUDUhz/Oac0Zx5TAICAFRxLVWM6bPLeP4znDJCiFlCMgFa4hNM8aTH5H3us29fmDVvgfXw/GsEFKGgFTrQ2xRLL6dMpy1acRbFhnXf4znKs3JPyfG8awQUoaAVKsh6DuKTV0+z5HzvorjaedGPG+170X+ki6Mvsf35ft6ofzeaPDKCiFlCMgRNQQ1I41dkbueJ/LNamX0EagJftA0Pi8bq2Umcq8Vs0JIGQJSXdSCIBC+IGo1DrrfgT4HA9+fZBuj77AF+hz0SawQUoaAlPMh6eRd+pBZd68f0L7bgC+5NWqG765LvQ81g3uqpAwBqdaHYNjOcnd6H9hjnX25Kl9j0wzUHFx/vvw1rm87t2GFEBACUs6HaDVjvZIcj54+pCaEodQQp2nsZUbDQOS2/RHUlPlSpxmsEAJCQMppiO2sNevJPdO6VzfmSfdB5VMcxzWOHyRmTUENYYWQMgTkuL0M3p9I4r7KB9gCe480G4kcz1EwtBqSTP/Yy5AyBOSAvQwGclwbqAnRIFbN7z8XIvddVggpQ0DOqZdBX6K9b6HVGPQZRSH3SIudFRqV9jasEAJCQHS9jO2/XdQUvBc6GvrG+agx2Bsh57W9h/VuO/dUSRkCclQNsXEW76qPc/PZLd4J02oGK4SAEJDT6mW0E+z/zMluA8+KiwUrhJQhIJfsQ7RRda/BCiEgBOSk4h829/Du0VZKSQAAAABJRU5ErkJggg==)}
@@ -1610,7 +1625,7 @@ function syncMusic(){ if (window.__noFx) return; SND.want(typeof S==='undefined'
    - 연결: PeerJS(인터넷) · 주소에 ?net=local 이면 같은 브라우저 탭끼리(BroadcastChannel, 시험용)
 */
 const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], picks:[], conns:{}, link:null,
-  ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:''};
+  ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
@@ -1723,7 +1738,8 @@ async function netCreate(){
     const code = netCode();
     try {
       NET.link = await netHostOpen(code, netOnJoin);
-      Object.assign(NET, {on:true, role:'host', pid:'H', code, players:[{pid:'H', nick, on:true}], picks:[], status:''});
+      Object.assign(NET, {on:true, role:'host', pid:'H', code, players:[{pid:'H', nick, on:true, ready:true}], picks:[], status:'', chat:[]});
+      netBeatStart(); NET.chatOpen = true; chatDraw();
       sfx('confirm'); render(); return;
     } catch(e){ if (e && e.message==='ID') continue; NET.status = ''; NET.err = e && e.message ? e.message : '방을 만들지 못했습니다.'; render(); return; }
   }
@@ -1731,8 +1747,12 @@ async function netCreate(){
 }
 function netOnJoin(c){
   let pid = null;
+  c.seen = Date.now();
   c.onData(m=>{
+    c.seen = Date.now();
     if (!m || typeof m!=='object') return;
+    if (m.t==='pong') return;
+    if (m.t==='bye'){ if (c._c) c._c(); return; }
     if (m.t==='hello'){
       const nick = String(m.nick||'').slice(0,10) || '손님';
       if (nick===NET.nick){ c.send({t:'deny', why:'방장과 같은 닉네임은 쓸 수 없습니다.'}); setTimeout(()=>c.close(), 300); return; }
@@ -1740,19 +1760,21 @@ function netOnJoin(c){
       if (old && NET.conns[old.pid] && NET.conns[old.pid]!==c){ const oc = NET.conns[old.pid]; delete NET.conns[old.pid]; oc._c = null; try { oc.close(); } catch(e){} }
       if (!old && NET.players.filter(p=>p.on).length >= NET_MAX){ c.send({t:'deny', why:'방이 가득 찼습니다 (최대 4명).'}); setTimeout(()=>c.close(), 300); return; }
       if (!old && S){ c.send({t:'deny', why:'이미 게임이 시작된 방입니다.'}); setTimeout(()=>c.close(), 300); return; }
-      pid = old ? old.pid : 'P' + netRid(); if (old) old.on = true; else NET.players.push({pid, nick, on:true});
-      NET.conns[pid] = c; c.send({t:'welcome', pid});
-      if (S){ S.net.players = NET.players; c.send({t:'start', resume:true}); netSendState(true); toast(`${nick} 님이 다시 들어왔습니다.`); }
-      else toast(`${nick} 님이 들어왔습니다.`);
+      pid = old ? old.pid : 'P' + netRid(); if (old){ old.on = true; old.ready = false; } else NET.players.push({pid, nick, on:true, ready:false});
+      NET.conns[pid] = c; c.send({t:'welcome', pid}); c.send({t:'chatlog', list:NET.chat.slice(-30)});
+      if (S){ S.net.players = NET.players; c.send({t:'start', resume:true}); netSendState(true); toast(`${nick} 님이 다시 들어왔습니다.`); netChatSys(`${nick} 님이 다시 들어왔습니다.`); }
+      else { toast(`${nick} 님이 들어왔습니다.`); netChatSys(`${nick} 님이 들어왔습니다.`); }
       lobbyBroadcast(); return;
     }
     if (!pid) return;
     if (m.t==='pick'){ netTogglePick(pid, m.id); return; }
+    if (m.t==='ready'){ netSetReady(pid, !!m.v); return; }
+    if (m.t==='chat'){ netChatPost(pid, m.m); return; }
     if (m.t==='call'){ netHostCall(pid, m.fn, m.args||[]); return; }
     if (m.t==='mres'){ const w = NET.wait[m.id]; if (w){ delete NET.wait[m.id]; w(m.v); } return; }
   });
-  c.onClose(()=>{ if (!pid) return; const p = NET.players.find(x=>x.pid===pid); delete NET.conns[pid];
-    if (p){ p.on = false; toast(`${p.nick} 님의 연결이 끊겼습니다.`); }
+  c.onClose(()=>{ c._c = null; if (!pid || NET.conns[pid]!==c) return; const p = NET.players.find(x=>x.pid===pid); delete NET.conns[pid];
+    if (p){ p.on = false; p.ready = false; toast(`${p.nick} 님의 연결이 끊겼습니다.`); netChatSys(`${p.nick} 님의 연결이 끊겼습니다.`); }
     if (!S){ NET.players = NET.players.filter(x=>x.pid!==pid); NET.picks = NET.picks.filter(x=>x.pid!==pid); }
     else { S.net.players = NET.players; netSendState(true); Object.keys(NET.wait).forEach(k=>{ const w = NET.wait[k]; if (w && w.pid===pid){ delete NET.wait[k]; w(w.dflt); } }); }
     lobbyBroadcast(); });
@@ -1765,7 +1787,8 @@ async function netJoin(){
   try {
     const c = await netJoinOpen(code);
     Object.assign(NET, {on:true, role:'client', code, link:c, status:''});
-    c.onData(netClientData); c.onClose(()=>{ if (NET.role!=='client') return; const inGame = !!S; netReset(); S = null; SETUP.screen = 'lobby'; NET.err = '방장과 연결이 끊겼습니다.'; render(); if (inGame) toast('방장과 연결이 끊겼습니다.'); });
+    NET.chat = []; NET.hostSeen = Date.now(); netBeatStart(); NET.chatOpen = true; chatDraw();
+    c.onData(m=>{ NET.hostSeen = Date.now(); netClientData(m); }); c.onClose(()=>{ if (NET.role!=='client') return; const inGame = !!S; netReset(); S = null; SETUP.screen = 'lobby'; NET.err = '방장과 연결이 끊겼습니다.'; render(); if (inGame) toast('방장과 연결이 끊겼습니다.'); });
     c.send({t:'hello', nick});
   } catch(e){ NET.status = ''; NET.err = e && e.message ? e.message : '연결하지 못했습니다.'; render(); }
 }
@@ -1777,16 +1800,20 @@ function netReadNick(){
 function netTogglePick(pid, id){
   if (S || !DATA.seekers.some(d=>d.id===id)) return;
   const k = NET.picks.findIndex(x=>x.id===id);
-  if (k>=0){ if (NET.picks[k].pid===pid) NET.picks.splice(k,1); }
-  else if (NET.picks.length < 4) NET.picks.push({id, pid});
+  if (k>=0){ if (NET.picks[k].pid===pid) NET.picks.splice(k,1); else return; }
+  else if (NET.picks.length < 4) NET.picks.push({id, pid}); else return;
+  const pl = NET.players.find(p=>p.pid===pid); if (pl && pid!=='H') pl.ready = false;   // 고른 것이 바뀌면 준비 해제
   lobbyBroadcast();
 }
 function netClientData(m){
   if (!m || typeof m!=='object') return;
   if (m.t==='welcome'){ NET.pid = m.pid; return; }
+  if (m.t==='ping'){ NET.link.send({t:'pong'}); return; }
+  if (m.t==='chat'){ chatAdd(m.c); return; }
+  if (m.t==='chatlog'){ NET.chat = m.list || []; chatDraw(); return; }
   if (m.t==='deny'){ const why = m.why; netLeave(true); NET.err = why; render(); return; }
   if (m.t==='lobby'){ NET.players = m.players; NET.picks = m.picks; if (!S) render(); return; }
-  if (m.t==='start'){ NET.snap = null; if (m.resume) return; NET.introWait = true; return; }   // 첫 화면 상태가 오면 시작 연출
+  if (m.t==='start'){ NET.snap = null; NET.chatOpen = false; chatDraw(); if (m.resume) return; NET.introWait = true; return; }   // 첫 화면 상태가 오면 시작 연출
   if (m.t==='S'){ netApply(m.d); return; }
   if (m.t==='reset'){ S = null; NET.snap = null; SETUP.screen = 'lobby'; render(); return; }
   if (m.t==='sfx'){ sfx(m.n); return; }
@@ -1796,19 +1823,23 @@ function netClientData(m){
     NET.mute = true; try { f.apply(null, a); } finally { NET.mute = false; } if (m.fn==='blockFx') render(); return; }
   if (m.t==='toast'){ toast(m.m); return; }
   if (m.t==='modal' || m.t==='pick'){ const f = m.t==='modal' ? MODAL0 : PICK0;
-    f(m.o).then(v=>{ if (m.id) NET.link.send({t:'mres', id:m.id, v}); }); return; }
+    f(m.o).then(v=>{ if (m.id) NET.link.send({t:'mres', id:m.id, v}); });
+    if (!m.id) netInfoAutoClose(); return; }
 }
 function netLeave(silent){
-  if (NET.role==='client' && NET.link) NET.link.close();
+  if (NET.role==='client' && NET.link){ NET.link.send({t:'bye'}); setTimeout(()=>{ try { NET.link && NET.link.close(); } catch(e){} }, 100); }
   if (NET.role==='host' && NET.link){ Object.values(NET.conns).forEach(c=>c.send({t:'deny', why:'방장이 방을 닫았습니다.'})); setTimeout(()=>NET.link && NET.link.close(), 200); }
   netReset(); if (!silent){ sfx('cancel'); render(); }
 }
-function netReset(){ const keep = NET.nick; Object.assign(NET, {on:false, role:null, pid:null, code:null, players:[], picks:[], conns:{}, link:null, wait:{}, snap:null, status:'', err:'', view:null}); NET.nick = keep; }
+function netReset(){ const keep = NET.nick; clearInterval(NET.beat); Object.assign(NET, {on:false, role:null, pid:null, code:null, players:[], picks:[], conns:{}, link:null, wait:{}, snap:null, status:'', err:'', view:null, beat:null, chat:[], chatOpen:false, unread:0}); NET.nick = keep; chatDraw(); }
 function netHostStart(){
   if (NET.role!=='host' || !NET.picks.length){ toast('탐험대원을 1마리 이상 고르세요.'); return; }
+  const notReady = NET.players.filter(p=>p.on && p.pid!=='H' && !p.ready);
+  if (notReady.length){ toast(`아직 준비하지 않은 사람이 있습니다: ${notReady.map(p=>p.nick).join(', ')}`); return; }
   SETUP.sel = NET.picks.map(x=>x.id);
   NET.owner = NET.picks.map(x=>x.pid);
   Object.values(NET.conns).forEach(c=>c.send({t:'start'}));
+  NET.chatOpen = false; chatDraw();
   startGame();
 }
 function netClientStart(){ startGame(()=>{ if (NET.snap) netApply(NET.snap, true); }); }
@@ -1883,7 +1914,7 @@ function netInstall(){
       const info = !(o.buttons && o.buttons.length > 1);
       const pid = netDecider();
       if (info){ Object.entries(NET.conns).forEach(([p,c])=>{ if (p!==pid) c.send({t:'modal', o}); }); }
-      if (pid!=='H'){ if (info) MODAL0(o); const r = netRemoteDialog('modal', o, (o.buttons||[]).find(b=>b.primary) ? (o.buttons.find(b=>b.primary)).value : undefined); if (r) return r; }
+      if (pid!=='H'){ if (info){ MODAL0(o); netInfoAutoClose(); } const r = netRemoteDialog('modal', o, (o.buttons||[]).find(b=>b.primary) ? (o.buttons.find(b=>b.primary)).value : undefined); if (r) return r; }
     }
     return MODAL0(o);
   };
@@ -1943,14 +1974,18 @@ function lobbyHTML(){
     return `<div class="pchip lbpc ${p?'on':''} ${mine?'mine':''}" data-act="lbPick" data-id="${d.id}" style="--sc:${d.color}">
       ${portraitHTML(d)}<b>${esc(d.name)}</b>${p?`<span class="lbown">${k}. ${esc(nickOf(p.pid))}</span>`:'<span class="lbown muted">비어 있음</span>'}</div>`; }).join('');
   const plist = NET.players.map(p=>{ const n = NET.picks.filter(x=>x.pid===p.pid).length;
-    return `<li class="${p.on?'':'off'}">${p.pid==='H'?'<span class="lbh">방장</span>':''}<b>${esc(p.nick)}</b>${p.pid===NET.pid?' <small>(나)</small>':''}<small> · ${n}마리</small>${p.on?'':' <small>(연결 끊김)</small>'}</li>`; }).join('');
+    const rd = p.pid==='H' ? '' : (p.ready ? ' <span class="lbrd ok">준비 완료</span>' : ' <span class="lbrd">준비 중</span>');
+    return `<li class="${p.on?'':'off'}">${p.pid==='H'?'<span class="lbh">방장</span>':''}<b>${esc(p.nick)}</b>${p.pid===NET.pid?' <small>(나)</small>':''}<small> · ${n}마리</small>${p.on?rd:' <small>(연결 끊김)</small>'}</li>`; }).join('');
   return `<div class="setup lobby"><div class="lbbox wide">
     <div class="lbtop"><div><div class="muted">방 코드</div><div class="lbcode">${esc(NET.code||'')}</div></div>
       <ul class="lbplayers">${plist}</ul></div>
     <p class="muted">탐험대원을 눌러 고르세요. 모두 합쳐 최대 4마리, 한 사람이 여러 마리를 맡을 수 있습니다. 고른 순서가 차례 순서입니다.</p>
     <div class="lbgrid">${cards}</div>
     <div class="lbacts">
-      ${isHost?`<button class="primary big" data-act="lbStart" ${NET.picks.length?'':'disabled'}>탐험 시작 (${NET.picks.length}마리)</button>`:`<p class="lbst">방장이 시작하기를 기다리는 중…</p>`}
+      ${isHost ? (()=>{ const others = NET.players.filter(p=>p.on && p.pid!=='H'), rdy = others.filter(p=>p.ready).length, ok = NET.picks.length && rdy===others.length;
+          return `<button class="primary big" data-act="lbStart" ${ok?'':'disabled'}>탐험 시작 (${NET.picks.length}마리)</button>${others.length?`<span class="lbst">준비 ${rdy}/${others.length}</span>`:''}`; })()
+        : (()=>{ const me = NET.players.find(p=>p.pid===NET.pid); const r = me && me.ready;
+          return `<button class="${r?'':'primary '}big" data-act="lbReady">${r?'준비 취소':'준비 완료'}</button><span class="lbst">${r?'방장이 시작하기를 기다리는 중…':'탐험대원을 고른 뒤 준비 완료를 누르세요.'}</span>`; })()}
       <button class="big" data-act="lbLeave">${isHost?'방 닫기':'방 나가기'}</button>
       <button class="big" data-act="menu">${pxi('gear')} 설정 <kbd>S</kbd></button>
     </div>
@@ -1965,6 +2000,7 @@ function netAct(a, el){
   if (a==='lbLeave'){ netLeave(); SETUP.screen = 'lobby'; render(); return true; }
   if (a==='lbPick'){ sfx('select'); if (NET.role==='host') netTogglePick('H', el.dataset.id); else if (NET.link) NET.link.send({t:'pick', id:el.dataset.id}); return true; }
   if (a==='lbStart'){ netHostStart(); return true; }
+  if (a==='lbReady'){ const me = NET.players.find(p=>p.pid===NET.pid); if (NET.link) NET.link.send({t:'ready', v:!(me && me.ready)}); sfx('confirm'); return true; }
   if (a==='netReq'){ netAskBoost(); return true; }
   if (a==='netNo'){ netNoBoost(); return true; }
   return false;
@@ -2044,6 +2080,68 @@ function netActPop(){
   el.innerHTML = pxui(`<div class="apcap">${esc(nickOf(ownerPid(S.cur)))} · ${esc(cur().def.name)} 행동</div>${skillHTML(A.action,{w:'170px', noZb:true})}<div class="apcap2">→ 「${esc(A.card.name)}」</div>`);
   document.body.appendChild(el); setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(), 350); }, 2200);
 }
+
+/* ---------- 연결 확인 (끊김 감지) · 준비 완료 · 채팅 ---------- */
+function netBeatStart(){
+  clearInterval(NET.beat);
+  NET.beat = setInterval(()=>{
+    const now = Date.now();
+    if (NET.role==='host'){
+      Object.values(NET.conns).forEach(c=>{ c.send({t:'ping'}); if (now - (c.seen||now) > 9000 && c._c) c._c(); });   // 9초 동안 응답이 없으면 끊긴 것으로 본다
+    } else if (NET.role==='client' && NET.link){
+      if (now - (NET.hostSeen||now) > 10000 && NET.link._c){ const f = NET.link._c; NET.link._c = null; f(); }
+    }
+  }, 2000);
+}
+window.addEventListener('pagehide', ()=>{ if (NET.role==='client' && NET.link) NET.link.send({t:'bye'}); if (NET.role==='host') Object.values(NET.conns).forEach(c=>c.send({t:'deny', why:'방장이 방을 나갔습니다.'})); });
+function netSetReady(pid, v){
+  if (S) return; const p = NET.players.find(x=>x.pid===pid); if (!p) return;
+  if (v && !NET.picks.some(x=>x.pid===pid)){ netToast(pid, '탐험대원을 1마리 이상 고른 뒤 준비 완료를 누르세요.'); return; }
+  p.ready = v; netChatSys(`${p.nick} 님이 ${v?'준비를 마쳤습니다':'준비를 취소했습니다'}.`); lobbyBroadcast();
+}
+// 채팅: 방장이 받아서 모두에게 다시 보낸다
+function netChatPost(pid, m){
+  m = String(m||'').replace(/\s+/g,' ').trim().slice(0, 80); if (!m) return;
+  const p = NET.players.find(x=>x.pid===pid); if (!p) return;
+  const c = {n:p.nick, h:pid==='H', m, k:'u'}; NET.chat.push(c); NET.chat = NET.chat.slice(-60);
+  Object.values(NET.conns).forEach(x=>x.send({t:'chat', c})); chatAdd(c, true);
+}
+function netChatSys(m){ if (NET.role!=='host') return; const c = {m, k:'s'}; NET.chat.push(c); NET.chat = NET.chat.slice(-60); Object.values(NET.conns).forEach(x=>x.send({t:'chat', c})); chatAdd(c, true); }
+function chatSend(text){
+  text = String(text||'').trim(); if (!text || !NET.on) return;
+  if (NET.role==='host') netChatPost('H', text); else if (NET.link) NET.link.send({t:'chat', m:text});
+}
+function chatAdd(c, own){
+  if (NET.role!=='host'){ NET.chat.push(c); NET.chat = NET.chat.slice(-60); }
+  if (c.k==='u' && !NET.chatOpen){ NET.unread = (NET.unread||0) + 1; if (S) feedShow(`${c.n}${c.h?'(방장)':''}: ${c.m}`, 'chat'); }
+  if (c.k==='u' && c.n!==NET.nick) sfx('select');
+  chatDraw();
+}
+const CHAT_QUICK = ['안녕하세요', '좋아요', '잠깐만요', '향상 부탁해요', '고마워요', '미안해요'];
+function chatLine(c){ return c.k==='s' ? `<div class="cl sys">${esc(c.m)}</div>` : `<div class="cl"><b class="${c.n===NET.nick?'me':''}">${esc(c.n)}${c.h?'(방장)':''}</b>: ${esc(c.m)}</div>`; }
+function chatDraw(){
+  let el = document.getElementById('chat');
+  if (!NET.on){ if (el) el.remove(); return; }
+  if (!el){ el = document.createElement('div'); el.id = 'chat'; document.body.appendChild(el);
+    el.innerHTML = `<div class="chd"><button class="chtog" data-chat="tog"></button></div><div class="chbody"><div class="chlist"></div>
+      <div class="chq">${CHAT_QUICK.map(q=>`<button data-chat="q" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>
+      <div class="chin"><input id="chatIn" maxlength="80" placeholder="메시지 입력 후 Enter" autocomplete="off"><button data-chat="send">보내기</button></div></div>`;
+    el.addEventListener('click', e=>{ e.stopPropagation(); const b = e.target.closest('[data-chat]'); if (!b) return;
+      if (b.dataset.chat==='tog'){ NET.chatOpen = !NET.chatOpen; if (NET.chatOpen) NET.unread = 0; chatDraw(); if (NET.chatOpen) setTimeout(()=>{ const i = document.getElementById('chatIn'); if (i && !document.body.classList.contains('touch')) i.focus(); }, 50); }
+      else if (b.dataset.chat==='q') chatSend(b.dataset.q);
+      else if (b.dataset.chat==='send'){ const i = document.getElementById('chatIn'); chatSend(i.value); i.value = ''; } }, true);
+    el.addEventListener('keydown', e=>{ e.stopPropagation(); if (e.key==='Enter' && e.target.id==='chatIn'){ chatSend(e.target.value); e.target.value = ''; } else if (e.key==='Escape'){ e.target.blur(); } }, true);
+    ['contextmenu','mousedown','touchstart','touchend'].forEach(ev=>el.addEventListener(ev, e=>e.stopPropagation()));
+  }
+  el.classList.toggle('open', !!NET.chatOpen);
+  el.querySelector('.chtog').textContent = NET.chatOpen ? '채팅 닫기 ▾' : `채팅${NET.unread?` (${NET.unread})`:''} ▴`;
+  const list = el.querySelector('.chlist'); const at = list.scrollTop + list.clientHeight >= list.scrollHeight - 4;
+  list.innerHTML = (NET.chat||[]).map(chatLine).join('') || '<div class="cl sys">아직 메시지가 없습니다.</div>';
+  if (at || NET.chatOpen) list.scrollTop = list.scrollHeight;
+}
+
+// 다른 사람의 안내 창(보기 전용)은 5초 뒤 저절로 닫혀서 내 조작을 막지 않는다
+function netInfoAutoClose(){ const el = topModal(); if (!el) return; setTimeout(()=>{ if (el.parentNode) el.remove(); }, 5000); }
 
 'use strict';
 /* =========================================================
@@ -3971,7 +4069,7 @@ function titleHTML(){
       <button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>S</kbd></button></div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · Rev. 1.4.1.1</div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · Rev. 1.4.2.0</div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -4013,7 +4111,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>S</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.4.1.1</div>
+    <div class="credit">Rev. 1.4.2.0</div>
   </div>`;
 }
 
