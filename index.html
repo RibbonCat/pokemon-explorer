@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>포켓몬 불가사의 던전: 심층 탐험대</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="심층 탐험대">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="theme-color" content="#08151b">
 <style>
 :root{--vw:1vw;--vh:1vh}
 
@@ -676,6 +683,8 @@ button.fsdis{opacity:.45;filter:grayscale(1)}
 @keyframes fuseSpark{50%{background:#ff7a2a;box-shadow:0 0 9px 3px #ffcf5a}}
 .guide .nbtn.kick{background:#5a1a1a;border-color:#ff8a8a}
 body.touch #chat .chlist{height:110px}
+.setup.title .tres{display:flex;flex-direction:column;align-items:center;gap:2px}.setup.title .tres small{font-size:14px;color:#9fe3f5;font-weight:700}
+.hadd-st{margin:6px 0 10px;padding-left:22px;line-height:1.55}.hadd-st li{margin-bottom:6px}
 .lbopt{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:16px}
 .lbopt .tg{padding:3px 12px}.lbopt .tg.on{background:#2a5a3a;border-color:#5fd28a}
 .feedbox .fd.chat{border-left-color:#c8a0ff;color:#ecdfff}
@@ -1534,6 +1543,7 @@ const SND = (() => {
                      tone({f:'C3', d:1.2, w:'triangle', v:0.35, at:t+7*s, r:0.5}); },
     // 패배: 천천히 내려앉는 단조 징글
     tick:    () => { tone({f:1900, d:0.03, w:'square', v:0.07}); noise({d:0.02, v:0.25, bp:3400, q:3}); },   // 「째깍」 차례 시간 마지막 15초
+    myturn:  () => seq(['G5','C6','E6','G6'], 0.075, {w:'triangle', v:0.32, d:0.12}),   // 온라인: 내 차례 알림
     chat:    () => { const t = ctx.currentTime; [0, 0.13].forEach(x=>tone({f:'B6', d:0.05, w:'p25', v:0.16, at:t+x})); },   // 「띡. 띡.」 채팅 도착
     lose:    () => { const t = ctx.currentTime, s = 0.24;
                      ['E5','D5','C5','B4'].forEach((f,i)=>tone({f, d:s*0.95, w:'p25', v:0.18, at:t+i*s}));
@@ -1541,7 +1551,7 @@ const SND = (() => {
                      tone({f:'A2', d:2.2, w:'triangle', v:0.35, at:t, r:0.9}); },
   };
   // 효과음별 크기 보정(휴대폰 스피커 기준으로 들리는 크기를 맞춤)
-  const GAIN = {"select": 1.47, "confirm": 1.19, "cancel": 1.28, "draw": 0.97, "discard": 1.02, "dice": 1.34, "match": 2.05, "complete": 0.84, "damage": 0.74, "block": 0.18, "fail": 1.0, "turn": 0.33, "door": 0.44, "item": 0.42, "charge": 1.33, "heal": 0.28, "hunger": 1.8, "lowhp": 1.6, "boss": 0.7, "win": 0.3, "lose": 0.45, "chat": 1.0, "tick": 0.9};
+  const GAIN = {"select": 1.47, "confirm": 1.19, "cancel": 1.28, "draw": 0.97, "discard": 1.02, "dice": 1.34, "match": 2.05, "complete": 0.84, "damage": 0.74, "block": 0.18, "fail": 1.0, "turn": 0.33, "door": 0.44, "item": 0.42, "charge": 1.33, "heal": 0.28, "hunger": 1.8, "lowhp": 1.6, "boss": 0.7, "win": 0.3, "lose": 0.45, "chat": 1.0, "tick": 0.9, "myturn": 0.9};
   function play(name){ if (!st.on || !init() || !SFX[name]) return;
     const g = ctx.createGain(); g.gain.value = GAIN[name]!=null ? GAIN[name] : 1; g.connect(sfxBus); CUR = g; try { SFX[name](); } finally { CUR = null; } }
 
@@ -1645,6 +1655,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
+const GAME_VER = '1.6.0.1';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -1684,6 +1695,7 @@ async function netHostOpen(code, onConn){
     const p = new Peer(NET_PREFIX + code);
     p.on('open', ()=>res({close:()=>{ try { p.destroy(); } catch(e){} }}));
     p.on('connection', c=>{ c.on('open', ()=>onConn(wrapPeerConn(c))); });
+    p.on('disconnected', ()=>{ setTimeout(()=>{ try { if (!p.destroyed) p.reconnect(); } catch(e){} }, 1000); });   // 앱 전환 등으로 중계 서버와 끊기면 다시 연결
     p.on('error', e=>{ if (e && e.type==='unavailable-id') rej(new Error('ID')); else rej(e); });
   });
 }
@@ -1772,6 +1784,7 @@ function netOnJoin(c){
     if (m.t==='bye'){ if (c._c) c._c(); return; }
     if (m.t==='hello'){
       const nick = String(m.nick||'').slice(0,10) || '손님';
+      if (m.v!==GAME_VER){ c.send({t:'deny', why:`버전이 다릅니다 (방장 ${GAME_VER}, 내 기기 ${m.v||'이전 버전'}). 게임을 완전히 닫았다가 다시 열어 주세요. 방장도 최신 버전인지 확인하세요.`}); setTimeout(()=>c.close(), 300); return; }
       if (nick===NET.nick){ c.send({t:'deny', why:'방장과 같은 닉네임은 쓸 수 없습니다.'}); setTimeout(()=>c.close(), 300); return; }
       if (NET.kicked && NET.kicked[nick]){ c.send({t:'deny', why:'강퇴된 닉네임은 이 방에 다시 들어올 수 없습니다.'}); setTimeout(()=>c.close(), 300); return; }
       const old = NET.players.find(p=>p.nick===nick && p.pid!=='H');   // 같은 닉네임으로 다시 들어오면 자리 그대로 (이전 연결은 끊음)
@@ -1797,18 +1810,21 @@ function netOnJoin(c){
     else { S.net.players = NET.players; netSendState(true); Object.keys(NET.wait).forEach(k=>{ const w = NET.wait[k]; if (w && w.pid===pid){ delete NET.wait[k]; w(w.dflt); } }); }
     lobbyBroadcast(); });
 }
-async function netJoin(){
-  const nick = netReadNick(); if (!nick) return;
-  const inp = document.getElementById('lbCode'); const code = (inp ? inp.value : '').trim().toUpperCase();
+async function netJoin(auto){
+  const nick = auto ? auto.nick : netReadNick(); if (!nick) return;
+  if (auto) NET.nick = nick;
+  const inp = document.getElementById('lbCode'); const code = auto ? auto.code : (inp ? inp.value : '').trim().toUpperCase();
   if (!/^[A-Z0-9]{4}$/.test(code)){ NET.err = '방 코드 4자리를 입력하세요.'; render(); return; }
-  NET.status = '방에 들어가는 중…'; NET.err = ''; render();
+  NET.status = auto ? `방 ${code}에 다시 들어가는 중…` : '방에 들어가는 중…'; NET.err = ''; if (!S) render();
   try {
     const c = await netJoinOpen(code);
     Object.assign(NET, {on:true, role:'client', code, link:c, status:''});
     NET.chat = []; NET.hostSeen = Date.now(); netBeatStart(); NET.chatOpen = !document.body.classList.contains('touch'); chatDraw();
-    c.onData(m=>{ NET.hostSeen = Date.now(); netClientData(m); }); c.onClose(()=>{ if (NET.role!=='client') return; const inGame = !!S; netReset(); S = null; SETUP.screen = 'lobby'; NET.err = '방장과 연결이 끊겼습니다.'; render(); if (inGame) toast('방장과 연결이 끊겼습니다.'); });
-    c.send({t:'hello', nick});
-  } catch(e){ NET.status = ''; NET.err = e && e.message ? e.message : '연결하지 못했습니다.'; render(); }
+    c.onData(m=>{ NET.hostSeen = Date.now(); netClientData(m); }); c.onClose(()=>{ if (NET.role!=='client') return; const inGame = !!S; netReset(); S = null; SETUP.screen = 'lobby'; NET.err = '방장과 연결이 끊겼습니다.'; render(); if (inGame) toast('방장과 연결이 끊겼습니다.'); netRejoinSoon(); });
+    c.send({t:'hello', nick, v:GAME_VER});
+  } catch(e){ NET.status = ''; NET.err = e && e.message ? e.message : '연결하지 못했습니다.';
+    if (auto && !netRejoinSoon()) NET.err = '이전 방에 다시 들어가지 못했습니다. ' + NET.err;
+    render(); }
 }
 function netReadNick(){
   const inp = document.getElementById('lbNick'); const v = (inp ? inp.value : NET.nick).trim().slice(0,10);
@@ -1825,11 +1841,11 @@ function netTogglePick(pid, id){
 }
 function netClientData(m){
   if (!m || typeof m!=='object') return;
-  if (m.t==='welcome'){ NET.pid = m.pid; return; }
-  if (m.t==='ping'){ NET.link.send({t:'pong'}); return; }
+  if (m.t==='welcome'){ NET.pid = m.pid; NET.rejoinN = 0; roomSave({code:NET.code, nick:NET.nick}); return; }
+  if (m.t==='ping'){ NET.link.send({t:'pong'}); roomTouch(); return; }
   if (m.t==='chat'){ chatAdd(m.c); return; }
   if (m.t==='chatlog'){ NET.chat = m.list || []; chatDraw(); return; }
-  if (m.t==='deny'){ const why = m.why, inGame = !!S; netLeave(true); S = null; SETUP.screen = 'lobby'; NET.err = why; render(); if (inGame) toast(why); return; }
+  if (m.t==='deny'){ roomSave(null); const why = m.why, inGame = !!S; netLeave(true); S = null; SETUP.screen = 'lobby'; NET.err = why; render(); if (inGame) toast(why); return; }
   if (m.t==='lobby'){ NET.players = m.players; NET.picks = m.picks; NET.tl = m.tl!==false; if (!S) render(); return; }
   if (m.t==='tm'){ NET.tmv = m.v; tmDraw(); return; }
   if (m.t==='mclose'){ const el = NET.dlgEl && NET.dlgEl[m.id]; if (el && el.parentNode) el.remove(); return; }
@@ -1848,11 +1864,12 @@ function netClientData(m){
     if (!m.id) netInfoAutoClose(); return; }
 }
 function netLeave(silent){
+  if (NET.role==='client') roomSave(null);
   if (NET.role==='client' && NET.link){ NET.link.send({t:'bye'}); setTimeout(()=>{ try { NET.link && NET.link.close(); } catch(e){} }, 100); }
   if (NET.role==='host' && NET.link){ Object.values(NET.conns).forEach(c=>c.send({t:'deny', why:'방장이 방을 닫았습니다.'})); setTimeout(()=>NET.link && NET.link.close(), 200); }
   netReset(); if (!silent){ sfx('cancel'); render(); }
 }
-function netReset(){ const keep = NET.nick, tl = NET.tl; clearInterval(NET.beat); clearInterval(NET.tmI); Object.assign(NET, {on:false, role:null, pid:null, code:null, players:[], picks:[], conns:{}, link:null, wait:{}, snap:null, status:'', err:'', view:null, beat:null, chat:[], chatOpen:false, unread:0, tmI:null, tm:null, tmv:null, tmSig:'', autoRun:false, kicked:{}, hostDlg:0, dlgEl:{}}); NET.nick = keep; NET.tl = tl; chatDraw(); }
+function netReset(){ const keep = NET.nick, tl = NET.tl, rj = NET.rejoinN; clearInterval(NET.beat); clearInterval(NET.tmI); Object.assign(NET, {on:false, role:null, pid:null, code:null, players:[], picks:[], conns:{}, link:null, wait:{}, snap:null, status:'', err:'', view:null, beat:null, chat:[], chatOpen:false, unread:0, tmI:null, tm:null, tmv:null, tmSig:'', autoRun:false, kicked:{}, hostDlg:0, dlgEl:{}}); NET.nick = keep; NET.tl = tl; NET.rejoinN = rj; chatDraw(); }
 function netHostStart(){
   if (NET.role!=='host' || !NET.picks.length){ toast('탐험대원을 1마리 이상 고르세요.'); return; }
   const notReady = NET.players.filter(p=>p.on && p.pid!=='H' && !p.ready);
@@ -1988,7 +2005,7 @@ function lobbyHTML(){
       <label class="lbrow"><span>닉네임</span><input id="lbNick" maxlength="10" value="${esc(NET.nick)}" placeholder="최대 10자" autocomplete="off"></label>
       <div class="lbacts">
         <button class="primary big" data-act="lbCreate">방 만들기</button>
-        <div class="lbjoin"><input id="lbCode" maxlength="4" placeholder="방 코드" autocomplete="off" autocapitalize="characters"><button class="big" data-act="lbJoin">참가</button></div>
+        <div class="lbjoin"><input id="lbCode" maxlength="4" value="${esc(NET.inviteCode||'')}" placeholder="방 코드" autocomplete="off" autocapitalize="characters"><button class="big" data-act="lbJoin">참가</button></div>
       </div>
       ${NET.status?`<p class="lbst">${esc(NET.status)}</p>`:''}${NET.err?`<p class="lberr">${esc(NET.err)}</p>`:''}
       <div class="lbacts"><button class="lbback" data-act="lbBack">처음으로 <kbd>Esc</kbd></button><button class="lbback" data-act="menu">${pxi('gear')} 설정 <kbd>S</kbd></button></div>
@@ -2003,7 +2020,7 @@ function lobbyHTML(){
     const rd = p.pid==='H' ? '' : (p.ready ? ' <span class="lbrd ok">준비 완료</span>' : ' <span class="lbrd">준비 중</span>');
     return `<li class="${p.on?'':'off'}">${p.pid==='H'?'<span class="lbh">방장</span>':''}<b>${esc(p.nick)}</b>${p.pid===NET.pid?' <small>(나)</small>':''}<small> · ${n}마리${n?' / '+esc(names):''}</small>${p.on?rd:' <small>(연결 끊김)</small>'}</li>`; }).join('');
   return `<div class="setup lobby"><div class="lbbox wide">
-    <div class="lbtop"><div><div class="muted">방 코드</div><div class="lbcrow"><div class="lbcode">${esc(NET.code||'')}</div><button data-act="lbCopy">코드 복사</button></div></div>
+    <div class="lbtop"><div><div class="muted">방 코드</div><div class="lbcrow"><div class="lbcode">${esc(NET.code||'')}</div><button data-act="lbInvite">초대 링크 복사</button><button data-act="lbCopy">코드 복사</button></div></div>
       <ul class="lbplayers">${plist}</ul></div>
     <p class="muted">탐험대원을 눌러 고르세요. 모두 합쳐 최대 4마리, 한 사람이 여러 마리를 맡을 수 있습니다. 고른 순서가 차례 순서입니다.</p>
     <div class="lbgrid">${cards}</div>
@@ -2019,13 +2036,21 @@ function lobbyHTML(){
     ${NET.err?`<p class="lberr">${esc(NET.err)}</p>`:''}
   </div></div>`;
 }
-function netCopyCode(){
-  const code = NET.code || ''; if (!code) return;
-  const ok = ()=>{ sfx('confirm'); toast(`방 코드 ${code}를 복사했습니다.`); };
-  const old = ()=>{ const t = document.createElement('textarea'); t.value = code; t.style.cssText = 'position:fixed;left:-99px;top:0;opacity:0'; document.body.appendChild(t); t.select();
-    let r = false; try { r = document.execCommand('copy'); } catch(e){} t.remove(); if (r) ok(); else toast(`복사하지 못했습니다. 방 코드: ${code}`); };
-  try { if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(code).then(ok, old); else old(); } catch(e){ old(); }
+function netInviteURL(){
+  const here = location.origin + location.pathname;
+  if (netLocal()) return here + '?net=local&room=' + NET.code;
+  return (/github\.io$/i.test(location.hostname) ? here : GAME_URL) + '?room=' + NET.code;
 }
+function netCopyCode(link){
+  const code = NET.code || ''; if (!code) return;
+  const text = link ? netInviteURL() : code;
+  const ok = ()=>{ sfx('confirm'); toast(link ? '초대 링크를 복사했습니다. 메신저에 붙여 넣어 보내세요.' : `방 코드 ${code}를 복사했습니다.`); };
+  const old = ()=>{ const t = document.createElement('textarea'); t.value = text; t.style.cssText = 'position:fixed;left:-99px;top:0;opacity:0'; document.body.appendChild(t); t.select();
+    let r = false; try { r = document.execCommand('copy'); } catch(e){} t.remove(); if (r) ok(); else toast(`복사하지 못했습니다. ${link?'링크':'방 코드'}: ${text}`); };
+  try { if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(ok, old); else old(); } catch(e){ old(); }
+}
+function myTurnOn(){ try { return localStorage.getItem('pmd_myturn')!=='0'; } catch(e){ return true; } }
+function myTurnToggle(){ const on = !myTurnOn(); try { localStorage.setItem('pmd_myturn', on?'1':'0'); } catch(e){} sfx('select'); toast(on ? '내 차례 알림을 켰습니다.' : '내 차례 알림을 껐습니다.'); render(); }
 function chatFeedOn(){ try { return localStorage.getItem('pmd_chatfeed')!=='0'; } catch(e){ return true; } }
 function chatFeedToggle(){ const on = !chatFeedOn(); try { localStorage.setItem('pmd_chatfeed', on?'1':'0'); } catch(e){} sfx('select'); toast(on ? '채팅 알림을 켰습니다.' : '채팅 알림을 껐습니다.'); render(); }
 function netAct(a, el){
@@ -2035,7 +2060,8 @@ function netAct(a, el){
   if (a==='lbJoin'){ netJoin(); return true; }
   if (a==='lbLeave'){ netLeave(); SETUP.screen = 'lobby'; render(); return true; }
   if (a==='lbPick'){ sfx('select'); if (NET.role==='host') netTogglePick('H', el.dataset.id); else if (NET.link) NET.link.send({t:'pick', id:el.dataset.id}); return true; }
-  if (a==='lbCopy'){ netCopyCode(); return true; }
+  if (a==='lbCopy'){ netCopyCode(false); return true; }
+  if (a==='lbInvite'){ netCopyCode(true); return true; }
   if (a==='lbStart'){ netHostStart(); return true; }
   if (a==='lbReady'){ const me = NET.players.find(p=>p.pid===NET.pid); if (NET.link) NET.link.send({t:'ready', v:!(me && me.ready)}); sfx('confirm'); return true; }
   if (a==='lbTl'){ if (NET.role!=='host') return true; NET.tl = NET.tl===false; sfx('select'); lobbyBroadcast(); return true; }
@@ -2277,6 +2303,36 @@ function netKick(t){
   const c = NET.conns[t]; if (c){ delete NET.conns[t]; c._c = null; c.send({t:'deny', why:'차례 시간을 넘겨 강퇴되었습니다.'}); setTimeout(()=>{ try { c.close(); } catch(e){} }, 300); }
   const m = `${nickOf(by)} 님이 ${tp.nick} 님을 강퇴했습니다.${names.length?` 이제 ${nickOf(by)} 님이 조작: ${names.join(', ')}`:''}`;
   netChatSys(m); netFeed(m, 'bad', null); sfx('cancel'); render(); netSendState(true);
+}
+
+/* ---------- 초대 링크 · 자동 재접속 ---------- */
+// 참가자는 들어간 방을 기억해 두었다가, 새로고침하거나 앱을 잠깐 나갔다 와서 끊기면 같은 닉네임으로 다시 들어간다(자리 그대로 이어짐).
+const ROOM_KEEP = 30*60*1000;
+function roomLoad(){ try { const r = JSON.parse(localStorage.getItem('pmd_room')||'null'); return r && Date.now() - r.t < ROOM_KEEP ? r : null; } catch(e){ return null; } }
+function roomSave(r){ try { if (r) localStorage.setItem('pmd_room', JSON.stringify(Object.assign({t:Date.now()}, r))); else localStorage.removeItem('pmd_room'); } catch(e){} }
+function roomTouch(){ const now = Date.now(); if (now - (NET.touchT||0) < 20000) return; NET.touchT = now; const r = roomLoad(); if (r) roomSave({code:r.code, nick:r.nick}); }
+function netRejoinSoon(){
+  const r = roomLoad(); if (!r) return false;
+  NET.rejoinN = (NET.rejoinN||0) + 1; if (NET.rejoinN > 6){ NET.rejoinN = 0; roomSave(null); return false; }
+  clearTimeout(NET.rejoinT);
+  const go = ()=>{ if (NET.on) return; if (document.hidden){ NET.rejoinWait = true; return; } NET.rejoinWait = false; netJoin(r); };
+  NET.rejoinT = setTimeout(go, Math.min(8000, 1200 * NET.rejoinN));
+  NET.status = `방 ${r.code}에 다시 들어가는 중… (${NET.rejoinN}번째 시도)`; return true;
+}
+document.addEventListener('visibilitychange', ()=>{
+  if (document.hidden) return;
+  if (NET.rejoinWait && !NET.on){ const r = roomLoad(); NET.rejoinWait = false; if (r) netJoin(r); }
+  if (NET.role==='client' && NET.link && Date.now() - (NET.hostSeen||0) > 10000 && NET.link._c){ const f = NET.link._c; NET.link._c = null; f(); }   // 돌아왔을 때 이미 끊겼으면 바로 다시 연결
+});
+function netBoot(){
+  const q = new URLSearchParams(location.search), room = (q.get('room')||'').trim().toUpperCase();
+  if (/^[A-Z0-9]{4}$/.test(room)){
+    try { q.delete('room'); const rest = q.toString(); history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '') + location.hash); } catch(e){}
+    NET.inviteCode = room; SETUP.screen = 'lobby';
+    NET.status = `초대받은 방: ${room}. 닉네임을 확인하고 「참가」를 누르세요.`; render(); return;
+  }
+  const r = roomLoad();
+  if (r){ SETUP.screen = 'lobby'; NET.inviteCode = r.code; render(); netJoin(r); }
 }
 
 'use strict';
@@ -3518,7 +3574,7 @@ function setPanelHTML(mode){
     ${row('소리 <kbd>M</kbd>', tg('sound', on, '켜짐', '꺼짐'))}
     ${row('배경음악', sl('mus'))}${row('효과음', sl('sfx'))}
     ${mode!=='title' ? row('자동 차례 종료', tg('aeToggle', SETUP.autoEnd!==false, '켜짐', '꺼짐')) : row('오프닝 <kbd>O</kbd>', tg('opToggle', opOn(), '켜짐', '꺼짐'))}
-    ${NET.on ? row('채팅 알림', tg('chatFeed', chatFeedOn(), '켜짐', '꺼짐')) : ''}
+    ${NET.on ? row('채팅 알림', tg('chatFeed', chatFeedOn(), '켜짐', '꺼짐')) + row('내 차례 알림', tg('myTurnTog', myTurnOn(), '켜짐', '꺼짐')) : ''}
     <div class="spb">${fsOK()?`<button data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'} <kbd>F11</kbd></button>`:`<button class="fsdis" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다">전체화면 <kbd>F11</kbd></button>`}<button data-act="keys">조작법 <kbd>F9</kbd></button><button data-act="rules">규칙서 <kbd>F10</kbd></button>${mode==='game'?'<button class="warn" data-act="newgame">'+(NET.role==='client'?'방 나가기':'새 게임')+'</button>':''}</div>
   </div>`;
 }
@@ -3855,7 +3911,8 @@ function aeCheck(){
 /* ---------- 차례 전환 표시 · 던전 카드 등장 효과 ---------- */
 var LASTTURN = null, LASTSLOTS = null, LASTHAND = null, LASTNUM = null; const DRAWN = {}, NUMFX = {};
 function turnBanner(){
-  if (window.__noFx) return; sfx('turn');
+  if (window.__noFx) return;
+  if (netOn() && myTurn() && myTurnOn()) SND.play('myturn'); else sfx('turn');   // 내 차례 알림: 차례 시작음 대신 (진동 없음)
   const s = cur(); let el = document.getElementById('turnban');
   if (!el){ el = document.createElement('div'); el.id = 'turnban'; document.body.appendChild(el); }
   el.style.setProperty('--sc', s.def.color);
@@ -3957,7 +4014,7 @@ function render(){
   HOV = null; if (typeof FXPIN!=='undefined') FXPIN = false;
   if (NET.role==='host' && NET.hadS && !S){ NET.hadS = false; Object.values(NET.conns).forEach(c=>c.send({t:'reset'})); if (NET.on) SETUP.screen = 'lobby'; }
   if (S && NET.role==='host') NET.hadS = true;
-  if (!S){ LASTTURN = null; LASTSLOTS = null; LASTHAND = null; LASTNUM = null; LASTPROG = null; app.innerHTML = pxui(setupHTML() + setPanelHTML(SETUP.screen==='pick'?'pick':'title')); if (typeof syncMusic==='function') syncMusic(); return; }
+  if (!S){ LASTTURN = null; LASTSLOTS = null; LASTHAND = null; LASTNUM = null; LASTPROG = null; app.innerHTML = pxui(setupHTML() + setPanelHTML(SETUP.screen==='pick'?'pick':'title')); if (typeof syncMusic==='function') syncMusic(); afterRender(); return; }
   sortHands();
   aeCheck();
   app.innerHTML = pxui(`<div class="layout onebar">${leftHTML()}${centerHTML()}${rightHTML()}${bottomHTML()}</div>${dicePopHTML()}${over()&&!S.hideOver?overHTML():''}${setPanelHTML('game')}`);
@@ -3966,6 +4023,7 @@ function render(){
   if (typeof syncMusic==='function') syncMusic();
   if (NET.role==='host') netSendState();
   if (NET.on) tmDraw();
+  afterRender();
 }
 // 화면 크기에 맞춰 카드 크기·보드 배치(십자형 / 한 줄)를 계산
 function fit(){
@@ -4204,10 +4262,10 @@ function titleHTML(){
       <div class="tsub">${esc(CFG.subtitle)}</div>
       <h1>${esc(CFG.title)}</h1>
       <button class="primary big tstart" data-act="toPick">탐험 시작 <kbd>Enter</kbd> <kbd>Z</kbd></button>
-      <button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
-      <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>S</kbd></button></div>
+      ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
+      <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>S</kbd></button>${homeAddShow()?'<button class="big kb hadd" data-act="homeAdd"><span>홈 화면에 추가</span></button>':''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · Rev. 1.5.0.0</div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · Rev. 1.6.0.1</div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -4249,7 +4307,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>S</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.5.0.0</div>
+    <div class="credit">Rev. 1.6.0.1</div>
   </div>`;
 }
 
@@ -4762,7 +4820,7 @@ document.addEventListener('click', async e=>{
   if (bb){ e.preventDefault(); e.stopPropagation(); if (S && !S.busy) useBerry(bb.dataset.berry); return; }
   const el = e.target.closest('[data-act]');
   if (MENUOPEN && !(el && el.dataset.act==='menu')){
-    if (e.target.closest('.setp') && (!el || ['sound','aeToggle','opToggle','chatFeed'].includes(el.dataset.act))){ /* 메뉴 안의 조절 버튼·슬라이더: 창 유지 */ }
+    if (e.target.closest('.setp') && (!el || ['sound','aeToggle','opToggle','chatFeed','myTurnTog'].includes(el.dataset.act))){ /* 메뉴 안의 조절 버튼·슬라이더: 창 유지 */ }
     else { MENUOPEN = false; render(); if (!el) return; }
   }
   if (!el) return;
@@ -4780,13 +4838,16 @@ document.addEventListener('click', async e=>{
   if (a==='opSkip'){ opEnd(); return; }
   if (a==='opToggle'){ opToggle(); return; }
   if (a==='chatFeed'){ chatFeedToggle(); return; }
+  if (a==='myTurnTog'){ myTurnToggle(); return; }
   if (a==='pickFocus'){ pickGo(+el.dataset.i); return; }
   if (a==='pickPrev'){ pickGo((SETUP.cur||0)-1); return; }
   if (a==='pickNext'){ pickGo((SETUP.cur||0)+1); return; }
   if (a==='toTitle'){ sfx('cancel'); SETUP.screen = 'title'; render(); return; }
   if (a==='rules'){ showRules(); return; }
   if (a==='fullscreen'){ toggleFullscreen(); return; }
-  if (a==='fsNo'){ sfx('cancel'); toast('이 화면에서는 전체화면을 쓸 수 없습니다. 파일을 브라우저(크롬·엣지)로 직접 열어 주세요.'); return; }
+  if (a==='fsNo'){ sfx('cancel'); toast(isIOS() ? '아이폰에서는 전체화면을 쓸 수 없습니다. 「홈 화면에 추가」로 실행하면 주소창 없이 플레이할 수 있습니다.' : '이 화면에서는 전체화면을 쓸 수 없습니다. 파일을 브라우저(크롬·엣지)로 직접 열어 주세요.'); return; }
+  if (a==='resume'){ soloResume(); return; }
+  if (a==='homeAdd'){ sfx('select'); homeAdd(); return; }
   if (a==='aeHold'){ aeHoldNow(); return; }
   if (a==='keys'){ showKeys(); return; }
   if (a==='aeToggle'){ SETUP.autoEnd = SETUP.autoEnd===false; if (!SETUP.autoEnd && AE.t){ clearTimeout(AE.t); AE.t = null; } sfx('select'); render(); return; }
@@ -4794,7 +4855,7 @@ document.addEventListener('click', async e=>{
   if (a==='newgame'){
     if (S && !over()){ const ok = await (window.MODAL0||modal)({title:'새 게임', html:'<p>진행 중인 게임을 끝내고 준비 화면으로 돌아갈까요?</p>', buttons:[{label:'취소',value:false},{label:'새 게임',value:true,primary:true}]}); if (!ok) return; }
     if (NET.role==='client'){ netLeave(true); S = null; SETUP.screen = 'lobby'; render(); return; }
-    S = null; if (NET.role==='host') SETUP.screen = 'lobby'; render(); return; }
+    S = null; soloClear(); if (NET.role==='host') SETUP.screen = 'lobby'; render(); return; }
   if (!S) return;
   if (a==='closeOver'){ S.hideOver = true; render(); return; }
   if (a==='toglog'){ LOGOPEN = !LOGOPEN; render(); if (LOGOPEN){ const l = document.querySelector('.log'); if (l) l.scrollTop = l.scrollHeight; } return; }
@@ -4975,6 +5036,7 @@ document.addEventListener('mouseover', e=>{
   const box = $('#info'); if (box) box.innerHTML = pxui(infoBoxInner(key));
 });
 render();
+netBoot();
 
 /* =================== 작은 화면(휴대폰 가로) 맞춤 · 터치 조작 =================== */
 // 화면이 작으면 PC 배치(가상 화면)를 그대로 그린 뒤 비율대로 줄여서 보여 준다. 창(모달)·크게 보기는 실제 크기로 뜬다.
@@ -5054,6 +5116,66 @@ document.addEventListener('click', e=>{
   if (!A){ if (S.selSlot!=null){ S.selSlot = null; sfx('cancel'); render(); } return; }
   if (A.step===1){ sfx('cancel'); if (A.sel){ A.sel = null; render(); } else { cancelAttempt(); S.selSlot = null; render(); } }
 });
+
+/* ---------- 홈 화면에 추가 (앱처럼 실행) ---------- */
+// 안드로이드 크롬: 설치 창을 바로 띄울 수 있으면 띄우고, 그 밖에는(아이폰 등) 방법을 안내한다.
+// 아이콘·manifest.webmanifest 파일은 저장소에 index.html과 함께 올려 둔다.
+var A2HS = null;
+window.addEventListener('beforeinstallprompt', e=>{ e.preventDefault(); A2HS = e; if (S==null && SETUP.screen==='title') render(); });
+window.addEventListener('appinstalled', ()=>{ A2HS = null; if (S==null && SETUP.screen==='title') render(); });
+const GAME_URL = 'https://ribboncat.github.io/pokemon-explorer/';
+function isIOS(){ return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints > 1); }
+function isStandalone(){ try { return !!(navigator.standalone || matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches); } catch(e){ return false; } }
+function homeAddShow(){ return !isStandalone() && (!!A2HS || isIOS() || navigator.maxTouchPoints > 0); }
+async function homeAdd(){
+  if (A2HS){ const ev = A2HS; A2HS = null; try { ev.prompt(); const r = await ev.userChoice; if (r && r.outcome==='accepted') toast('홈 화면에 추가했습니다. 홈 화면 아이콘으로 실행하세요.'); } catch(e){} render(); return; }
+  const here = /^https:\/\/ribboncat\.github\.io\//i.test(location.href);
+  const addr = here ? '' : `<p class="muted">게임 주소에서 해야 합니다: <b>${GAME_URL}</b></p>`;
+  const html = isIOS()
+    ? `<ol class="hadd-st"><li><b>Safari</b>로 게임 주소를 엽니다. <span class="muted">(카카오톡 등 앱 안이면 「Safari로 열기」)</span></li>
+        <li><b>공유 버튼</b>(네모에 위쪽 화살표) → <b>「홈 화면에 추가」</b></li>
+        <li>「웹 앱으로 열기」가 보이면 켜고 <b>「추가」</b></li>
+        <li>홈 화면의 <b>「심층 탐험대」</b> 아이콘으로 실행</li></ol>`
+    : `<ol class="hadd-st"><li><b>크롬</b>: 메뉴(⋮) → <b>「홈 화면에 추가」</b> 또는 <b>「앱 설치」</b></li>
+        <li><b>삼성 인터넷</b>: 메뉴(≡) → <b>「현재 페이지 추가」</b> → <b>「홈 화면」</b></li>
+        <li>홈 화면의 <b>「심층 탐험대」</b> 아이콘으로 실행</li></ol>`;
+  (window.MODAL0 || modal)({title:'홈 화면에 추가', html: html + addr + `<p class="muted">업데이트가 안 보이면 앱을 완전히 닫았다가 다시 실행하세요.</p>`, buttons:[{label:'확인', primary:true}]});
+}
+
+/* ---------- 렌더 뒤 공통: 화면 꺼짐 방지 · 내 차례 탭 제목 · 혼자 하기 저장 ---------- */
+function afterRender(){
+  wakeSync();
+  const mine = !!(S && netOn() && !over() && myTurn());
+  const t = mine ? '▶ 내 차례 · ' + CFG.title : CFG.title; if (document.title!==t) document.title = t;
+  if (S && !NET.on && !window.__noFx){ clearTimeout(SOLO_T); SOLO_T = setTimeout(soloSave, 400); }
+}
+// 화면 꺼짐 방지: 게임 중이거나 온라인 방에 있을 때 (지원하는 브라우저만)
+var WAKE = null, WAKE_P = false;
+async function wakeSync(){
+  const want = !!(S || NET.on) && !document.hidden;
+  if (!('wakeLock' in navigator)) return;
+  if (want && !WAKE && !WAKE_P){ WAKE_P = true; try { WAKE = await navigator.wakeLock.request('screen'); WAKE.addEventListener('release', ()=>{ WAKE = null; }); } catch(e){} WAKE_P = false; }
+  else if (!want && WAKE){ const w = WAKE; WAKE = null; try { w.release(); } catch(e){} }
+}
+document.addEventListener('visibilitychange', ()=>{ if (!document.hidden) wakeSync(); });
+// 혼자 하기 이어하기: 도전 진행 중이 아닐 때(차례 시작·행동 뒤)의 상태를 저장한다
+var SOLO_T = null;
+function soloSave(){
+  if (!S || NET.on) return;
+  if (over()){ soloClear(); return; }
+  if (S.busy || S.A || INTRO || topModal()) return;
+  try {
+    const st = Object.assign({}, S, {log: S.log.slice(0, 80)});
+    localStorage.setItem('pmd_save', JSON.stringify({v:GAME_VER, t:Date.now(), uid:UID, turn:S.turnNo, names:S.seekers.map(s=>s.def.name).join(', '), s:netEncode(st)}));
+  } catch(e){}
+}
+function soloLoad(){ try { const d = JSON.parse(localStorage.getItem('pmd_save')||'null'); return d && d.v===GAME_VER && d.s ? d : null; } catch(e){ return null; } }
+function soloClear(){ clearTimeout(SOLO_T); try { localStorage.removeItem('pmd_save'); } catch(e){} }
+function soloResume(){
+  const d = soloLoad(); if (!d){ toast('저장된 게임이 없습니다.'); render(); return; }
+  startGame(()=>{ S = netDecode(d.s); UID = Math.max(UID, d.uid||0); S.busy = false; S.A = null; S.selSlot = null; S.view = S.cur; S.hideOver = false; LASTTURN = S.turnNo;
+    log('저장된 게임을 이어서 시작합니다.', 'sys'); render(); });
+}
 
 netInstall();
 </script>
