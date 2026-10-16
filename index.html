@@ -684,6 +684,17 @@ button.fsdis{opacity:.45;filter:grayscale(1)}
 .guide .nbtn.kick{background:#5a1a1a;border-color:#ff8a8a}
 body.touch #chat .chlist{height:110px}
 .setup.title .tres{display:flex;flex-direction:column;align-items:center;gap:2px}.setup.title .tres small{font-size:14px;color:#9fe3f5;font-weight:700}
+.tuthl.tuthl{outline:3px solid #ffd75e !important;outline-offset:2px !important;animation:tutPulse 1.2s ease-in-out infinite}
+@keyframes tutPulse{50%{outline-color:#fff3b0}}
+#tut{position:fixed;left:50%;top:96px;transform:translateX(-50%);z-index:45;width:min(520px,90%);background:rgba(10,24,30,.97);border:3px solid #ffd75e;box-shadow:6px 6px 0 #000;padding:10px 14px;font-size:15px;line-height:1.5;color:#eef}
+#tut.low{top:auto;bottom:29%}
+#tut.btm{top:auto;bottom:8px}
+body.touch #tut{width:min(380px,58%);font-size:12px;padding:6px 10px;line-height:1.4}
+body.touch #tut .tuthd{font-size:11px}body.touch #tut .tutbt{margin-top:4px}body.touch #tut .tutbt button{font-size:12px;padding:2px 10px}
+#tut .tuthd{color:#ffd75e;font-weight:900;font-size:13px;margin-bottom:2px}
+#tut .tutb b{color:#ffe9a8}
+#tut .tutbt{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
+#tut .tutbt button{padding:3px 14px;font-size:14px}
 .hadd-st{margin:6px 0 10px;padding-left:22px;line-height:1.55}.hadd-st li{margin-bottom:6px}
 .lbopt{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:16px}
 .lbopt .tg{padding:3px 12px}.lbopt .tg.on{background:#2a5a3a;border-color:#5fd28a}
@@ -1655,7 +1666,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.6.0.1';
+const GAME_VER = '1.7.1.0';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -3574,6 +3585,7 @@ function setPanelHTML(mode){
     ${row('소리 <kbd>M</kbd>', tg('sound', on, '켜짐', '꺼짐'))}
     ${row('배경음악', sl('mus'))}${row('효과음', sl('sfx'))}
     ${mode!=='title' ? row('자동 차례 종료', tg('aeToggle', SETUP.autoEnd!==false, '켜짐', '꺼짐')) : row('오프닝 <kbd>O</kbd>', tg('opToggle', opOn(), '켜짐', '꺼짐'))}
+    ${!NET.on ? row('튜토리얼', tg('tutTog', tutOn(), '켜짐', '꺼짐')) : ''}
     ${NET.on ? row('채팅 알림', tg('chatFeed', chatFeedOn(), '켜짐', '꺼짐')) + row('내 차례 알림', tg('myTurnTog', myTurnOn(), '켜짐', '꺼짐')) : ''}
     <div class="spb">${fsOK()?`<button data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'} <kbd>F11</kbd></button>`:`<button class="fsdis" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다">전체화면 <kbd>F11</kbd></button>`}<button data-act="keys">조작법 <kbd>F9</kbd></button><button data-act="rules">규칙서 <kbd>F10</kbd></button>${mode==='game'?'<button class="warn" data-act="newgame">'+(NET.role==='client'?'방 나가기':'새 게임')+'</button>':''}</div>
   </div>`;
@@ -4263,9 +4275,9 @@ function titleHTML(){
       <h1>${esc(CFG.title)}</h1>
       <button class="primary big tstart" data-act="toPick">탐험 시작 <kbd>Enter</kbd> <kbd>Z</kbd></button>
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
-      <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>S</kbd></button>${homeAddShow()?'<button class="big kb hadd" data-act="homeAdd"><span>홈 화면에 추가</span></button>':''}</div>
+      <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>S</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · Rev. 1.6.0.1</div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · Rev. 1.7.1.0</div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -4307,7 +4319,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>S</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.6.0.1</div>
+    <div class="credit">Rev. 1.7.1.0</div>
   </div>`;
 }
 
@@ -4820,7 +4832,7 @@ document.addEventListener('click', async e=>{
   if (bb){ e.preventDefault(); e.stopPropagation(); if (S && !S.busy) useBerry(bb.dataset.berry); return; }
   const el = e.target.closest('[data-act]');
   if (MENUOPEN && !(el && el.dataset.act==='menu')){
-    if (e.target.closest('.setp') && (!el || ['sound','aeToggle','opToggle','chatFeed','myTurnTog'].includes(el.dataset.act))){ /* 메뉴 안의 조절 버튼·슬라이더: 창 유지 */ }
+    if (e.target.closest('.setp') && (!el || ['sound','aeToggle','opToggle','chatFeed','myTurnTog','tutTog'].includes(el.dataset.act))){ /* 메뉴 안의 조절 버튼·슬라이더: 창 유지 */ }
     else { MENUOPEN = false; render(); if (!el) return; }
   }
   if (!el) return;
@@ -4839,6 +4851,7 @@ document.addEventListener('click', async e=>{
   if (a==='opToggle'){ opToggle(); return; }
   if (a==='chatFeed'){ chatFeedToggle(); return; }
   if (a==='myTurnTog'){ myTurnToggle(); return; }
+  if (a==='tutTog'){ tutToggle(); return; }
   if (a==='pickFocus'){ pickGo(+el.dataset.i); return; }
   if (a==='pickPrev'){ pickGo((SETUP.cur||0)-1); return; }
   if (a==='pickNext'){ pickGo((SETUP.cur||0)+1); return; }
@@ -5048,10 +5061,13 @@ function swapMedia(on){
   if (!MQ){ MQ = []; for (const sh of document.styleSheets){ let rs; try { rs = sh.cssRules; } catch(e){ continue; } for (const r of rs) if (r.media && r.conditionText!==undefined) MQ.push([r, r.media.mediaText]); } }
   MQ.forEach(([r, t])=>{ const v = on ? t.replace(/(min|max)-(width|height)/g, (x,a,b)=>a+'-'+(b==='width'?'height':'width')) : t; if (r.media.mediaText!==v) r.media.mediaText = v; });
 }
+var FIT_STAB = {w:0, h:0};
 function fitScreen(){
   const app = document.getElementById('app'); if (!app) return;
-  const W = window.innerWidth, H = window.innerHeight, bs = document.body.style, rs = document.documentElement.style;
   const coarse = window.matchMedia && matchMedia('(pointer:coarse)').matches;
+  const W = window.innerWidth, bs = document.body.style, rs = document.documentElement.style; let H = window.innerHeight;
+  // 휴대폰: 아래 내비게이션 바나 키보드가 잠깐 올라와 높이만 줄어들면 화면을 다시 맞추지 않고 그대로 둔다(가려질 뿐 밀리지 않게)
+  if (coarse){ if (W===FIT_STAB.w && H < FIT_STAB.h) H = FIT_STAB.h; FIT_STAB.w = W; FIT_STAB.h = H; }
   const rot = H > W && (coarse || W < 1000);
   document.body.classList.toggle('touch', !!coarse);
   document.body.classList.toggle('rot', rot);
@@ -5127,19 +5143,23 @@ const GAME_URL = 'https://ribboncat.github.io/pokemon-explorer/';
 function isIOS(){ return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints > 1); }
 function isStandalone(){ try { return !!(navigator.standalone || matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches); } catch(e){ return false; } }
 function homeAddShow(){ return !isStandalone() && (!!A2HS || isIOS() || navigator.maxTouchPoints > 0); }
+function homeAddLabel(){ return isIOS() ? '홈 화면에 추가' : '앱으로 설치'; }
 async function homeAdd(){
-  if (A2HS){ const ev = A2HS; A2HS = null; try { ev.prompt(); const r = await ev.userChoice; if (r && r.outcome==='accepted') toast('홈 화면에 추가했습니다. 홈 화면 아이콘으로 실행하세요.'); } catch(e){} render(); return; }
+  const DONE = '설치한 앱은 <b>앱스 화면(전체 앱 목록)</b>에 「심층 탐험대」로 생깁니다. 홈 화면에 없으면 그 아이콘을 <b>길게 눌러 「홈 화면에 추가」</b>하세요.';
+  if (A2HS){ const ev = A2HS; A2HS = null; try { ev.prompt(); const r = await ev.userChoice;
+      if (r && r.outcome==='accepted') (window.MODAL0 || modal)({title:'앱으로 설치했습니다', html:`<p>${DONE}</p><p class="muted">설치한 앱으로 실행하면 주소창 없이 전체화면으로 열립니다.</p>`, buttons:[{label:'확인', primary:true}]}); } catch(e){} render(); return; }
   const here = /^https:\/\/ribboncat\.github\.io\//i.test(location.href);
   const addr = here ? '' : `<p class="muted">게임 주소에서 해야 합니다: <b>${GAME_URL}</b></p>`;
-  const html = isIOS()
+  const ios = isIOS();
+  const html = ios
     ? `<ol class="hadd-st"><li><b>Safari</b>로 게임 주소를 엽니다. <span class="muted">(카카오톡 등 앱 안이면 「Safari로 열기」)</span></li>
         <li><b>공유 버튼</b>(네모에 위쪽 화살표) → <b>「홈 화면에 추가」</b></li>
         <li>「웹 앱으로 열기」가 보이면 켜고 <b>「추가」</b></li>
         <li>홈 화면의 <b>「심층 탐험대」</b> 아이콘으로 실행</li></ol>`
-    : `<ol class="hadd-st"><li><b>크롬</b>: 메뉴(⋮) → <b>「홈 화면에 추가」</b> 또는 <b>「앱 설치」</b></li>
+    : `<ol class="hadd-st"><li><b>크롬</b>: 메뉴(⋮) → <b>「앱 설치」</b> (또는 「홈 화면에 추가」 → 「설치」)</li>
         <li><b>삼성 인터넷</b>: 메뉴(≡) → <b>「현재 페이지 추가」</b> → <b>「홈 화면」</b></li>
-        <li>홈 화면의 <b>「심층 탐험대」</b> 아이콘으로 실행</li></ol>`;
-  (window.MODAL0 || modal)({title:'홈 화면에 추가', html: html + addr + `<p class="muted">업데이트가 안 보이면 앱을 완전히 닫았다가 다시 실행하세요.</p>`, buttons:[{label:'확인', primary:true}]});
+        <li>${DONE}</li></ol>`;
+  (window.MODAL0 || modal)({title: homeAddLabel(), html: html + addr + `<p class="muted">파일을 내려받는 것이 아니라 게임 주소를 앱처럼 등록하는 것이라, 업데이트는 자동으로 반영됩니다. 안 보이면 앱을 완전히 닫았다가 다시 실행하세요.</p>`, buttons:[{label:'확인', primary:true}]});
 }
 
 /* ---------- 렌더 뒤 공통: 화면 꺼짐 방지 · 내 차례 탭 제목 · 혼자 하기 저장 ---------- */
@@ -5148,6 +5168,7 @@ function afterRender(){
   const mine = !!(S && netOn() && !over() && myTurn());
   const t = mine ? '▶ 내 차례 · ' + CFG.title : CFG.title; if (document.title!==t) document.title = t;
   if (S && !NET.on && !window.__noFx){ clearTimeout(SOLO_T); SOLO_T = setTimeout(soloSave, 400); }
+  tutCheck();
 }
 // 화면 꺼짐 방지: 게임 중이거나 온라인 방에 있을 때 (지원하는 브라우저만)
 var WAKE = null, WAKE_P = false;
@@ -5175,6 +5196,58 @@ function soloResume(){
   const d = soloLoad(); if (!d){ toast('저장된 게임이 없습니다.'); render(); return; }
   startGame(()=>{ S = netDecode(d.s); UID = Math.max(UID, d.uid||0); S.busy = false; S.A = null; S.selSlot = null; S.view = S.cur; S.hideOver = false; LASTTURN = S.turnNo;
     log('저장된 게임을 이어서 시작합니다.', 'sys'); render(); });
+}
+
+/* ---------- 튜토리얼 (혼자 하기) ---------- */
+// 게임을 하면서 상황에 맞는 설명 말풍선을 하나씩 띄운다. 본 설명은 기억해 두고, 다 보면 자동으로 꺼진다.
+// 대상 요소는 노란 테두리로 강조하고, 말풍선은 대상이 위쪽이면 아래에, 아래쪽이면 위에 띄워 가리지 않게 한다.
+const TUT_TIPS = [
+  {id:'goal', tg:'.status .sg.who', c:s=>tutStart(s), t:'<b>목표</b>: 던전 카드를 하나씩 해결하며 내려가, 최심층의 <b>보스</b>를 쓰러뜨리면 승리합니다.<br>여기 <b>팀 HP</b>가 0이 되면 패배합니다. 모든 탐험대원이 HP를 함께 씁니다.'},
+  {id:'deck', tg:'.status .sg.dng', c:s=>tutStart(s), t:'<b>남은 던전 카드</b>입니다. 차례가 끝날 때마다 빈칸을 채우며 줄어들고, 바닥나면 <b>최심층</b>에 도달해 보스전이 시작됩니다.'},
+  {id:'hand', tg:'.hand', c:s=>tutStart(s), t:'<b>기술 카드(패)</b>입니다. 위쪽 큰 숫자는 <b>행동 수치</b>, 아래 막대는 <b>향상 수치와 향상 색</b>입니다.<br>도전과 <b>같은 색</b>(적▼·녹◆·청■, 백색은 모든 색) 카드만 쓸 수 있습니다. 카드는 차례마다 뽑지 않으니 아껴 쓰세요.'},
+  {id:'slots', tg:'.cross', c:s=>tutStart(s), t:'<b>던전 카드</b> 4장 중 1장을 골라 차례를 진행합니다.<br><b>도전</b>은 기술 카드로 시도하고, <b>이벤트</b>는 고르면 바로 실행됩니다. 카드를 눌러 골라 보세요.'},
+  {id:'pick', tg:'.guide', c:s=>!s.A && s.selSlot!=null, t:'선택한 카드를 <b>한 번 더 누르거나</b> <b>도전 시작</b>(Z)을 누르면 시작합니다. 다른 카드를 고르거나 취소(X)할 수도 있습니다.'},
+  {id:'act', tg:'.hand', c:s=>s.A && s.A.step===1, t:'<b>① 행동</b>: 파란 테두리 카드(도전과 같은 색) 1장을 골라 확정하면 그 수치가 더해지고 카드 효과가 적용됩니다.<br>쓸 카드가 없으면 <b>행동 없이</b>(D)로 주사위만 굴릴 수 있습니다. 단, 그러면 향상을 받을 수 없습니다.'},
+  {id:'boost', tg:'.hand', c:s=>s.A && s.A.step===2, t:'<b>② 향상</b>: 카드 아래 <b>향상 막대</b>의 색이 도전 색(또는 백색)이면 그 수치를 더할 수 있습니다(보통 2장까지). 향상으로 쓴 카드의 효과 문구는 무시됩니다.<br>탐험대원이 1마리면 자기 패에서, 2마리 이상이면 <b>다른 탐험대원의 패</b>에서 고릅니다.'},
+  {id:'dice', at:'btm', tg:'.guide', c:s=>s.A && s.A.step===3 && !s.A.dice, t:'<b>③ 주사위</b>: 기술 주사위 3개는 <b>도전 색과 같으면 +1</b>, 운명 주사위는 <b>☀ 행운이면 +1</b>입니다(☠ 불운은 0, 실패하면 추가 불이익).<br><b>굴리기</b>(Z)를 누르세요.'},
+  {id:'reroll', at:'btm', tg:'.dicepop .dpin', c:s=>s.A && s.A.step===3 && s.A.dice && !s.A.rolling, t:'<b>다시 굴리기</b> 효과가 있으면 주사위를 눌러 다시 굴릴 수 있습니다(운명 주사위 포함).<br>결과를 확인했으면 <b>판정</b>(Z)을 누르세요.'},
+  {id:'result', tg:'.guide', c:s=>s.A && s.A.step===4, t:'<b>④ 판정</b>: 행동 + 향상 + 주사위를 더해 도전에 <b>진행도</b>로 쌓습니다. 난이도에 도달하면 <b>완료</b>(🏆 보상), 아니면 <b>실패</b>(✘ 불이익)입니다.<br>실패해도 쌓은 진행도는 남아서 다음에 이어서 도전할 수 있습니다.'},
+  {id:'end', tg:'.guide', c:s=>(s.A && s.A.step===4) || (!s.A && s.T.acted), t:'행동은 <b>차례당 1번</b>입니다. 차례를 마치면 다음 탐험대원의 차례가 됩니다.<br>자동 차례 종료는 설정에서 끌 수 있습니다.'},
+  // 12~15: 첫 행동을 마치면 연달아 설명만 하고 넘긴다 (실제 상황을 기다리지 않음)
+  {id:'info', at:'btm', tg:'#info', c:s=>tutAfter(s), t:'<b>정보창·크게 보기</b>: 카드에 마우스를 올리거나 <b>길게 누르면</b> 이 정보창에 자세한 설명이 나옵니다. 카드 구석의 🔍로 크게 볼 수도 있습니다.'},
+  {id:'hunger', at:'btm', tg:'.status .sg.hgr', c:s=>tutAfter(s), t:'<b>배고픔 선언</b>: 패를 새로 받는 유일한 방법입니다. 차례를 시작할 때 패를 모두 버리고 새로 뽑습니다(패가 비면 반드시 선언).<br>대신 <b>배고픔 카드</b> 1장이 공개되어 불리한 효과가 쌓이고, 「허기」 3장을 모두 받으면 패배합니다.'},
+  {id:'item', tg:'[data-act="item"]', c:s=>tutAfter(s), t:'<b>탐험대 부적</b>: 충전되어 있으면 도전 중 <b>주사위를 굴리기 전</b>에 쓸 수 있습니다. 쓰면 충전이 풀리고, 카드 효과로 다시 충전합니다.'},
+  {id:'final', at:'btm', tg:'.cross .slot.m', c:s=>tutAfter(s), t:'<b>최심층과 시련</b>: 던전 카드가 바닥나면 최심층에 도달해 보스의 정체가 공개되고, 보스 주위에 <b>시련 4장</b>(적▼·녹◆·청■ 각 1장 + 보스 전용 특수 시련)이 놓입니다.<br>시련을 완료할 때마다 보스의 <b>약점 색</b>이 공개되고, 그 색으로만 보스에게 도전할 수 있습니다. 보스 도전을 완료하면 승리!<br><b>이제 직접 해 보세요.</b> 설정에서 튜토리얼을 다시 볼 수 있습니다.'},
+];
+function tutAfter(s){ return s.turnNo>=2 || s.T.acted; }   // 첫 행동 뒤부터 계속 참: 「확인」으로만 넘어간다
+function tutStart(s){ return !s.A && s.selSlot==null && !s.T.acted && s.phase!=='final'; }
+var TUT = {cur:null};
+function tutOn(){ try { return localStorage.getItem('pmd_tut')!=='0'; } catch(e){ return true; } }
+function tutSeen(){ try { return JSON.parse(localStorage.getItem('pmd_tut_seen')||'[]'); } catch(e){ return []; } }
+function tutMark(id){ const a = tutSeen(); if (!a.includes(id)){ a.push(id); try { localStorage.setItem('pmd_tut_seen', JSON.stringify(a)); } catch(e){} }
+  if (TUT_TIPS.every(t=>a.includes(t.id))){ try { localStorage.setItem('pmd_tut', '0'); } catch(e){} } }   // 다 보면 자동으로 꺼짐 (마지막 설명에 안내 포함)
+function tutToggle(){ const on = !tutOn(); try { localStorage.setItem('pmd_tut', on?'1':'0'); if (on) localStorage.removeItem('pmd_tut_seen'); } catch(e){} sfx('select'); toast(on ? '튜토리얼을 켰습니다. 혼자 하기에서 처음부터 안내합니다.' : '튜토리얼을 껐습니다.'); tutHide(); render(); }
+function tutHide(){ TUT.cur = null; const el = document.getElementById('tut'); if (el) el.remove(); document.querySelectorAll('.tuthl').forEach(e=>e.classList.remove('tuthl')); }
+function tutOffTop(el){ let y = 0; while (el && el.id!=='app'){ y += el.offsetTop || 0; el = el.offsetParent; } return y; }
+function tutCheck(){
+  const ok = S && !NET.on && !window.__noFx && tutOn() && !INTRO && !over() && !MENUOPEN && !topModal() && !(typeof zoomOpen==='function' && zoomOpen());
+  if (!ok){ if (document.getElementById('tut')) document.getElementById('tut').style.display = 'none'; document.querySelectorAll('.tuthl').forEach(e=>e.classList.remove('tuthl')); return; }
+  let tip = TUT.cur && TUT_TIPS.find(t=>t.id===TUT.cur);
+  if (tip && !tip.c(S)){ tutMark(tip.id); tip = null; TUT.cur = null; }   // 상황이 넘어가면 본 것으로 친다
+  if (!tip){ const seen = tutSeen(); tip = TUT_TIPS.find(t=>!seen.includes(t.id) && t.c(S) && document.querySelector(t.tg)); if (!tip){ tutHide(); return; } TUT.cur = tip.id; }
+  const tg = document.querySelector(tip.tg);
+  document.querySelectorAll('.tuthl').forEach(e=>{ if (e!==tg) e.classList.remove('tuthl'); }); if (tg) tg.classList.add('tuthl');
+  let el = document.getElementById('tut');
+  if (!el){ el = document.createElement('div'); el.id = 'tut'; document.body.appendChild(el);
+    el.addEventListener('click', e=>{ e.stopPropagation(); const b = e.target.closest('[data-tut]'); if (!b) return;
+      if (b.dataset.tut==='ok'){ sfx('select'); if (TUT.cur) tutMark(TUT.cur); TUT.cur = null; tutCheck(); }
+      else if (b.dataset.tut==='off'){ tutToggle(); } }, true);
+    ['mousedown','touchstart','touchend','contextmenu'].forEach(ev=>el.addEventListener(ev, e=>e.stopPropagation())); }
+  el.style.display = '';
+  const n = TUT_TIPS.findIndex(t=>t.id===tip.id) + 1;
+  if (el.dataset.id!==tip.id){ el.dataset.id = tip.id; el.innerHTML = pxui(`<div class="tuthd">튜토리얼 ${n}/${TUT_TIPS.length}</div><div class="tutb">${tip.t}</div><div class="tutbt"><button data-tut="off">튜토리얼 끄기</button><button class="primary" data-tut="ok">확인</button></div>`); }
+  const app = document.getElementById('app'), H = app ? app.offsetHeight : 740, y = tg ? tutOffTop(tg) + tg.offsetHeight/2 : 0;
+  el.classList.toggle('btm', tip.at==='btm'); el.classList.toggle('low', !tip.at && y < H*0.5);   // 대상이 위쪽이면 말풍선은 아래쪽 (주사위 창은 맨 아래)
 }
 
 netInstall();
