@@ -1670,7 +1670,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.7.2.3';
+const GAME_VER = '1.7.2.4';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -4281,7 +4281,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>S</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.7.2.3</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.7.2.4</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -4323,7 +4323,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>S</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.7.2.3</div>
+    <div class="credit">Rev. 1.7.2.4</div>
   </div>`;
 }
 
@@ -5216,7 +5216,7 @@ const TUT_TIPS = [
   {id:'boost', tg:'.hand', c:s=>s.A && s.A.step===2, t:'<b>② 향상</b> (보통 2장까지)<br>• 다른 기술 카드의 <b>향상 수치</b>를 더합니다. 향상 색이 도전 색과 같은 색(또는 백색)이어야 합니다.<br>• 향상으로 쓴 카드의 효과 문구는 적용되지 않습니다.<br>• 탐험대원이 1마리면 내 패에서, 2마리 이상이면 <b>다른 탐험대원</b>의 패에서만 고릅니다.<br>고른 뒤 <b>향상 확정</b>, 쓰지 않으려면 <b>향상 없이</b>. 다음은 ③ 주사위입니다.'},
   {id:'dice', at:'btm', tg:'.guide', c:s=>s.A && s.A.step===3 && !s.A.dice, t:'<b>③ 주사위</b><br>• 3색(적▼·녹◆·청■)으로 된 <b>기술 주사위</b> 3개: 도전 색과 같은 색이 나온 개수만큼 +1<br>• <b>운명 주사위</b> 1개: ☀ 행운이면 +1, ☠ 불운이면 0<br>오른쪽 위 <b>굴리기</b>를 누르세요.'},
   {id:'reroll', at:'btm', tg:'.dicepop .dpin', c:s=>s.A && s.A.step===3 && s.A.dice && !s.A.rolling, t:'주사위 결과입니다.<br>• <b>다시 굴리기</b> 효과가 있으면 주사위를 눌러 다시 굴릴 수 있습니다(운명 주사위 포함, 남은 횟수는 창 아래에 표시).<br>결과를 확인했으면 <b>판정</b>을 누르세요.'},
-  {id:'result', tg:'.guide', c:s=>s.A && s.A.step===4, t:'<b>④ 판정</b>: 행동 + 향상 + 주사위 합계만큼 <b>진행도</b>가 올라갑니다.<br>• 진행도가 난이도 이상: <b>완료</b>. 🏆 보상을 받고 카드를 치웁니다.<br>• 모자라면: <b>실패</b>. ✘ 불이익을 받지만, 올린 진행도는 남아 다음 시도에 이어집니다.<br>• 난이도 8 이상 도전에는 ☀ 행운 보너스와 ☠ 불운 불이익도 있습니다.'},
+  {id:'result', tg:'.guide', c:s=>s.A && s.A.step===4, t:'<b>④ 판정</b>: 행동 + 향상 + 주사위 합계만큼 <b>진행도</b>가 올라갑니다.<br>• 진행도가 난이도 이상: <b>완료</b>. 🏆 보상을 받고 카드를 치웁니다.<br>• 모자라면: <b>실패</b>. ✘ 불이익을 받지만, 올린 진행도는 남아 다음 시도에 이어집니다.<br>• 일부 도전에는 ☀ 행운 보너스와 ☠ 불운 불이익이 더 있습니다(카드의 ☀·☠ 칸).'},
   {id:'end', tg:'.guide', c:s=>(s.A && s.A.step===4) || (!s.A && s.T.acted), t:'차례마다 던전 카드는 <b>1장만</b> 해결합니다.<br><b>차례 종료</b>를 누르면 빈자리에 던전 카드가 채워지고 다음 차례가 됩니다.<br>설정에서 <b>자동 차례 종료</b>를 켜 두면 자동으로 넘어갑니다.'},
   // 13~16: 첫 행동을 마치면 연달아 설명만 하고 넘긴다 (실제 상황을 기다리지 않음)
   {id:'info', at:'btm', tg:'#info', c:s=>tutAfter(s), t:'<b>카드 정보 보기</b><br>• 카드에 마우스를 올리거나 <b>길게 누르면</b> 오른쪽 <b>카드 정보</b>에 자세한 내용이 나옵니다.<br>• 카드 구석의 🔍를 누르면 크게 볼 수 있습니다.'},
