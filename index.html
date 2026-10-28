@@ -1528,9 +1528,10 @@ body.touch .setup.title.cov button.cvb kbd{display:none}
 .tabs .tab{width:150px;box-sizing:border-box;padding:6px 10px;justify-content:flex-start}
 .tabs .tab .cur{display:none !important}
 .tabs .tab .n{margin-left:auto;min-width:0}
-.tabs .tab.turn{background:#f0c860 !important;border-color:#b88a2a !important}
-.tabs .tab.turn *{color:#2a1d05 !important;text-shadow:none !important}
-body.th1 .tabs .tab.turn,body.th2 .tabs .tab.turn,body.th3 .tabs .tab.turn,body.th4 .tabs .tab.turn,body.th5 .tabs .tab.turn,body.th6 .tabs .tab.turn,body.th7 .tabs .tab.turn,body.th8 .tabs .tab.turn,body.th9 .tabs .tab.turn,body.th10 .tabs .tab.turn,body.th11 .tabs .tab.turn{border-image:none !important;border:3px solid #101010 !important;border-bottom:none !important;box-shadow:3px 3px 0 rgba(0,0,0,.4) !important}
+/* 1.20.6.1 차례 탭: 덜 밝게(어두운 금색 바탕 + 금색 테두리·글자), 1인 게임은 표시 없음 */
+.tabs .tab.turn{background:#4a3c12 !important;border-color:#c9a227 !important;box-shadow:inset 0 2px 0 #c9a227 !important}
+.tabs .tab.turn *{color:#f4d77a !important}
+body.th1 .tabs .tab.turn,body.th2 .tabs .tab.turn,body.th3 .tabs .tab.turn,body.th4 .tabs .tab.turn,body.th5 .tabs .tab.turn,body.th6 .tabs .tab.turn,body.th7 .tabs .tab.turn,body.th8 .tabs .tab.turn,body.th9 .tabs .tab.turn,body.th10 .tabs .tab.turn,body.th11 .tabs .tab.turn{border-image:none !important;border:3px solid #c9a227 !important;border-bottom:none !important;box-shadow:3px 3px 0 rgba(0,0,0,.4) !important}
 .tabs.n3,.tabs.n4{flex-wrap:nowrap}
 .tabs.n3 .sinfo,.tabs.n4 .sinfo{flex-basis:auto;order:0}
 .tabs.n1 .sinfo{margin-left:472px}.tabs.n2 .sinfo{margin-left:318px}.tabs.n3 .sinfo{margin-left:164px}.tabs.n4 .sinfo{margin-left:10px}
@@ -2170,7 +2171,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.20.6.0';
+const GAME_VER = '1.20.6.1';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -5089,7 +5090,7 @@ function bottomHTML(){
   const v = S.seekers[S.view] || cur();
   const helpStep = S.A && S.A.step===2;
   const numbered = S.A && (S.A.step===1 || S.A.step===2);
-  const tabs = S.seekers.map(s=>`<div class="tab ${s.i===S.view?'on':''} ${s.i===S.cur?'turn':''} ${helpStep&&boostOwnerOK(s.i)?'help':''}" data-act="tab" data-i="${s.i}">
+  const tabs = S.seekers.map(s=>`<div class="tab ${s.i===S.view?'on':''} ${s.i===S.cur&&S.seekers.length>1?'turn':''} ${helpStep&&boostOwnerOK(s.i)?'help':''}" data-act="tab" data-i="${s.i}">
       ${miniHTML(s.def)}<span class="tn" data-w="${esc(LONGNAME())}"><span>${esc(s.def.name)}</span></span> <span class="cur ${s.i===S.cur?'':'off'}">차례</span><span class="n">패 ${s.hand.length}</span></div>`).join('');
   const d = v.def;
   return `<div class="bottom"><div class="tabs n${S.seekers.length}">${tabs}
@@ -5142,7 +5143,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.6.0</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.6.1</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -5161,7 +5162,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.6.0</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.6.1</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -5212,7 +5213,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.20.6.0</div>
+    <div class="credit">Rev. 1.20.6.1</div>
   </div>`;
 }
 
