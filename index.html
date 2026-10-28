@@ -1263,6 +1263,13 @@ b.kw{font-weight:900;text-decoration:underline;text-decoration-thickness:1px;tex
 .topbar .tophp .hpbar{width:70px;height:8px;margin:0}
 .topbar .tophp.low{border-color:#e05050;animation:hplow 1s ease-in-out infinite alternate}
 @keyframes hplow{to{background:#4a1c1c}}
+/* 1.19.3.0 위기: 팀 HP 2면 도트 외곽선 흐리게, 1이면 진하게 깜빡임 (HP 3 이하는 HP 칸 깜빡임) */
+@keyframes crisis2{from{filter:drop-shadow(1px 0 0 rgba(224,38,44,.25)) drop-shadow(-1px 0 0 rgba(224,38,44,.25)) drop-shadow(0 1px 0 rgba(224,38,44,.25)) drop-shadow(0 -1px 0 rgba(224,38,44,.25))}
+ to{filter:drop-shadow(1px 0 0 rgba(224,38,44,.7)) drop-shadow(-1px 0 0 rgba(224,38,44,.7)) drop-shadow(0 1px 0 rgba(224,38,44,.7)) drop-shadow(0 -1px 0 rgba(224,38,44,.7))}}
+@keyframes crisis1{from{filter:drop-shadow(1px 0 0 #e0262c) drop-shadow(-1px 0 0 #e0262c) drop-shadow(0 1px 0 #e0262c) drop-shadow(0 -1px 0 #e0262c)}
+ to{filter:drop-shadow(2px 0 0 #ff3a3a) drop-shadow(-2px 0 0 #ff3a3a) drop-shadow(0 2px 0 #ff3a3a) drop-shadow(0 -2px 0 #ff3a3a) drop-shadow(0 0 6px rgba(255,40,40,.85))}}
+.layout.crisis.c2 .pmini{animation:crisis2 1s ease-in-out infinite alternate}
+.layout.crisis.c1 .pmini{animation:crisis1 .7s ease-in-out infinite alternate}
 .status .sg.dng{border-color:#3f7f92;background:#0f2c36;min-width:190px}
 .status .sg.dng .sl{color:#9fd3e0}
 .status .dgrow{display:flex;align-items:center;gap:10px}
@@ -1488,6 +1495,26 @@ body.touch .setup.title.cov button.cvb kbd{display:none}
 .card.chal.rampage{box-shadow:0 0 0 3px #c0262c,0 0 14px 3px rgba(230,40,40,.55)}
 .card.chal.rampage .name{color:#b01818}
 .dicepop .dpart.rmp{filter:drop-shadow(0 0 6px rgba(255,40,40,.9)) saturate(1.3)}
+
+/* 1.19.2.1 폭주를 켜면 선택 화면의 탐험대원 설명 창 흰 테두리가 붉게 */
+.setup.pick.rampage .pickp.big{border-color:#e0262c !important;box-shadow:inset 0 0 0 3px #7a1a1e,8px 8px 0 rgba(0,0,0,.55),0 0 18px rgba(255,40,40,.45) !important}
+/* 보관(지금은 쓰지 않음): 포켓몬 도트 붉은 외곽선. 쓰려면 화면 최상위에 sprite-rage 클래스를 붙이면 됨 */
+.setup.sprite-rage .pport{filter:drop-shadow(2px 0 0 #e0262c) drop-shadow(-2px 0 0 #e0262c) drop-shadow(0 2px 0 #e0262c) drop-shadow(0 -2px 0 #e0262c) drop-shadow(0 0 6px rgba(255,40,40,.75))}
+.setup.sprite-rage .pport.pg{filter:none}
+
+/* 1.20.0.0 결과 연출: 패배 = 던전에 꽂힌 백기(2프레임 펄럭임), 승리 = 좌우 폭죽 */
+.overart{width:288px;height:180px;margin:0 auto 10px;background-size:576px 180px;background-repeat:no-repeat;image-rendering:pixelated;border:3px solid #0a141a;box-shadow:inset 0 0 0 2px #3a6a78;animation:flagwave .9s steps(1) infinite,overartin .6s ease-out}
+@keyframes flagwave{0%{background-position:0 0}50%{background-position:-288px 0}}
+@keyframes overartin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (max-height:520px){.overart{width:192px;height:120px;background-size:384px 120px}@keyframes flagwave{0%{background-position:0 0}50%{background-position:-192px 0}}}
+.poppers{position:fixed;inset:0;pointer-events:none;z-index:9000;overflow:hidden}
+.poppers .cone{position:absolute;bottom:-6px;width:0;height:0;border-left:22px solid transparent;border-right:22px solid transparent;border-bottom:64px solid #ffd84a;filter:drop-shadow(3px 3px 0 #0a141a);animation:conepop .5s ease-out both}
+.poppers .cone.l{left:calc(3*var(--vw));transform:rotate(38deg);--r:38deg}
+.poppers .cone.r{right:calc(3*var(--vw));transform:rotate(-38deg);--r:-38deg;border-bottom-color:#ff6a6a;animation-delay:.18s}
+@keyframes conepop{0%{transform:rotate(var(--r)) translateY(40px) scale(.6);opacity:0}40%{transform:rotate(var(--r)) translateY(-6px) scale(1.15);opacity:1}100%{transform:rotate(var(--r)) translateY(0) scale(1);opacity:1}}
+.poppers .cf{position:absolute;bottom:40px;background:var(--c);box-shadow:1px 1px 0 rgba(0,0,0,.45);opacity:0;animation:cfly 3.6s cubic-bezier(.15,.7,.3,1) both}
+.poppers .cf.l{left:calc(calc(3*var(--vw)) + 22px)} .poppers .cf.r{right:calc(calc(3*var(--vw)) + 22px)}
+@keyframes cfly{0%{opacity:1;transform:translate(0,0) rotate(0)}35%{opacity:1;transform:translate(var(--dx),var(--dy)) rotate(calc(var(--rot)*.4))}100%{opacity:0;transform:translate(calc(var(--dx)*1.15),calc(var(--dy) + var(--fall))) rotate(var(--rot))}}
 .card .art .tt-0,.tci.tt-0{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAl0lEQVR4nMWTMQ6FIAyGy4uLV3B4ZyjXcHbgiA7exY7ODhyhjnWqAaLVaKL/REv/j9IAgCFEFEQUq8Y0y9SKTK0J+d2iXz2dmYWZzS6q1HQFrGsicgAATjfGvsmKl/+QxfXcZbEPEYjIudRcmo6kMB/i8yE+v4ImyiGOfbNB6rkDH2IG0CFWZWIPtldzqm9fYtrF7c/0mlZd41u6TdGskwAAAABJRU5ErkJggg==)}
 .card .art .tt-1,.tci.tt-1{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAoklEQVR4nMVTOQ6EMAx0Ih5k8RpKyi15SkpKyrxjq4gicrm/YauNwBmHSBQ7XcaeGeciegiHSGY+NCcisPdC/oRxC1XjNC/QqCyY+dDClFJlFNZ4MXFIjISWidfFljhnqTh/Tu8R5yy0vKZyXmWCu7EtVFtAqURE48iQ91Y62i/CYBXOiS1DLyIurLHZqLn3/inXOKCm3vGJ1EvsFVn/4j/4AoHgV4K94GI6AAAAAElFTkSuQmCC)}
 .card .art .tt-2,.tci.tt-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAZElEQVR4nGNgIBEYGBj8NzAw+E+qPrjmb9++/V+15QDphowEzegKSNb8YocDXCFZzkY2ZNWWA+T7+cUOBxTXEAJMyJqjtH4xeFR8IMlSuOauKC2UMCDaFeiakcWJtp3szDEoAADDZYHQZl6TNAAAAABJRU5ErkJggg==)}
@@ -1556,7 +1583,7 @@ body.touch .setup.title.cov button.cvb kbd{display:none}
 .p18.px-win{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAApUlEQVR4nN2T3QmAMAyE0+IIgisEKc7gSI7iSM4gIl1BcIf6dBLbiK345D31h1y/XlpDQswuUIG8XwzGVbw5jXWWST/sl7mRFDBp2o62dS4ysyUUmlBr4ez9YmLcJxpZY1+jRDqNmF3IpQKNzLeSLYRygia6tj8xAR3GCFOSaoc/itmFnIf6fdj/M0rSj4PVukaUdi75/bL4bk17tJ9dTSUq+bzQAXZ/Rq2dhfE8AAAAAElFTkSuQmCC)}
 .p18.px-zoom{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAtklEQVR4nK2TsQ3DIBBFIYqYwEP8ghFoPIQ9BsMwRjxEGo9AcUNkAjekiCD2yeBA+B0Hejw4EKJT5FkR0GE/JvKn67KgCLCP52GRm8dLYJoAdOAAHjePWdiNFyYMYsJQBGZBv9gI8Tkyv7+YOy8s9Kq2SUY90hdE5GVscSlVXWtN04MEdOBm1V8E0MEaJdy6HeqXf4hvYI36mu5gVXdE5KVbtzS2RiX7KqOSWVPXuNnfAXSIR3sDQB9T86ay/l4AAAAASUVORK5CYII=)}
 html,body{background:#0e1e26 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAlElEQVR4nJVSMQ6EMAwzCCQiZib+/zskplMq0YEhKErdiLvLlLp24zQZZNvxT0wAZlmfwyK1qCV6HrOshjgOYIxqR11mieMs8DrTIsRrLFGkvKaCvfdjJJbIHuXju4d49fwEgEs/KTvFmzkQ2+cQ8aaHvvvItu/mpkkTj7VoLcqTJgNU4bulXpzvUh++L8lqvDwP4AY2704k7v/XPgAAAABJRU5ErkJggg==) 0 0/48px 48px !important;image-rendering:pixelated}
-/* ===== UI 테마 (설정에서 고름, body.th1~th10) ===== */
+/* ===== UI 테마 (설정에서 고름, body.th1~th11) ===== */
 html body.th1{background:#252e5a url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAmUlEQVR4nO3YsQ2DQBAFUUBXgiMiR64AERO4KtdGJY6owBIVQIYuRuDRl+ZFkBw32ohth+mzNWGW73w8d+A9LhEfUOqX9bdA1zgvfgIG0AygGUAzgGYAzQCaATQDaO2jH+N+6mvxE4gPKM/X+/JD673NHefX4icQH1D+uQu641vxEzCAZgDNAJoBNANoBtAMoBlAcy9Eiw/YAYb7E1ScxRHzAAAAAElFTkSuQmCC) 0 0/auto 48px !important}
 body.th1 .modal,body.th1 .setp,body.th1 .lbbox,body.th1 #chat .chbody,body.th1 #zoom .zpanel,body.th1 .dicepop .dpin,body.th1 .setup .sr,body.th1 .setup .opts{border-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAABICAYAAAC9bQZsAAABbUlEQVR4nO2bIW4CQRSGd5t1uN6gByCgMVwAWVnVIFAoREVlRQUKhSCoykou0ISswUA4ADfAoYubvE2ZMLtbhv3//J+aLLuZ+fJedufNMGniofXY/fX91iROx2166fpD7IHEglasEEabfsPJ/OrDi+nItT9m36U6fh8/u3ZIX75+LTYtaSNGK5aVTb+m0em9uPYuT5wLbcRoxbJ7D6AKNv180EaMViyt81GOSUj67fIv16aNGK1YWqc8eWq//udY/nDYLys/SxsxWrHCBzqk9LDlRkz6g7er9/ysPl2bNmISQ0NiaEgMDYmhITE0VLagQStWKFu0mAOAxNCQGBoSQ0NiaEgMDZUtaNCKabcFDYmhITE0JIYGrVit/yvWmcvdGtqI0YoFlS2+5WW7pBwyl7PYeV3I8rWvXx+0EaMV8+62bPJ19MFUoXigQLstuGT2aNJiOnJvyLJvqnth00/HrJC5eHAzSXT4tLHQip0B9xhg/YNtLUUAAAAASUVORK5CYII=) 15 fill / 15px / 4px stretch !important;border-style:solid !important;background:none !important;outline:none !important;box-shadow:7px 7px 0 rgba(0,0,0,.45) !important}
 body.th1 .status .sg,body.th1 .guide,body.th1 .sinfo .sib,body.th1 .selbox,body.th1 .lbpc,body.th1 .setup .pickp,body.th1 .setup .pchip,body.th1 .infobox,body.th1 .tab{border-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAwCAYAAAB5R9gVAAABIUlEQVR4nO2ZIQ7CQBBFfwkOxw04AAGN4QJIJIogqlAIBBKBQKEQDQqJ5AIkpAYD4QDcAIcuagoZ2M4mbWHEPNfNZvbnN/s7mQZg1OrthK+VyeN+Dt6fK7883IdUHTkzmqy/boyWIQBgvtplFpyN+8iqw+sR5JQ6h6qSM2XT6gwAAJcYCaDRoX8dTM5w1DkU+N6uonA5c4m3ADQ7JNFoDnMddLtuvPapcyi9Za4EpuQtim5v+nX9sF8AUOiQCZIwQRImSMKSWiJNavvaOzBBEiZIwgRJWFJLWE8tYYIkTJCE93zIN0fyos4hZ1Lzzo46OleOEJQnrs6Q1+Ooc+ijpz7Fx58KeE1hlfbUVZqgR8swAeR3XzTkjNpJfsAX7G8Q4wljAGDNVAMg8wAAAABJRU5ErkJggg==) 10 fill / 10px / 3px stretch !important;border-style:solid !important;background:none !important;outline:none !important;box-shadow:4px 4px 0 rgba(0,0,0,.4) !important}
@@ -1697,6 +1724,20 @@ body.th10 button:hover:not(:disabled){filter:brightness(1.15)}body.th10 button.p
 body.th10 #toast,body.th10 #tut,body.th10 .feedbox .fd{border-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAoCAYAAADt5povAAAAlElEQVR4nGNkQAMGFh7/0cUoARdO7GBE5jNR03BiANx2mM/OH99OVQsMLT0ZGBgQPqW/D9F9BnMRtcCMGVMYGBgYGDIychgYGAbAhyy4JE4c2ECRwRYOAVjF6e7DUQtHLRy1cNTCUQtHLRy1cNTCUQtHLRy1kB4AZ98CV9+AUjDwPWBYf45aANYvHLgeMLrAsBvFAAD8oCHHpk5OdAAAAABJRU5ErkJggg==) 6 fill / 6px / 2px stretch !important;border-style:solid !important;background:none !important;outline:none !important;box-shadow:4px 4px 0 rgba(0,0,0,.4) !important;color:#303848 !important;text-shadow:none}
 body.th10 #tut .tuthd{color:#c04018 !important}body.th10 #tut .tutb b,body.th10 #toast b{color:#2048a8 !important}
 body.th10 .feedbox .fd.good{color:#1c7a3a !important}body.th10 .feedbox .fd.bad{color:#b02828 !important}body.th10 .feedbox .fd.req{color:#a86a00 !important}body.th10 .feedbox .fd.chat{color:#5a2aa0 !important}
+html body.th11{background:#1a1a14 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAhUlEQVR4nO3YMQ6AIBAFUTUWHMCK+x+SwkRLLYmEjD+ZV1Mw2W1grfW4lmAbfYFRBtAMoBlAiw/Yew6V8hxr7Zx2mS/iJxAf0LVCf1ubt/gJGEAzgGYAzQCaATQDaAbQDKAZQIsP6HrUzzby7xQ/gfiAX6zQyL9T/AQMoBlAM4BmAM0A2g1piQ2HSWK83AAAAABJRU5ErkJggg==) 0 0/auto 48px !important}
+body.th11 .modal,body.th11 .setp,body.th11 .lbbox,body.th11 #chat .chbody,body.th11 #zoom .zpanel,body.th11 .dicepop .dpin,body.th11 .setup .sr,body.th11 .setup .opts{border-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADYAAABICAYAAAC9bQZsAAABK0lEQVR4nO2boQ6DMBCG6TIxSVATqEnCU0z1efYge56qPQVBTiGmCHJuc01J2iyFFfpf/k9dCk3uy53pQVURoCzLT+hZTkzTpHzrh60T2QqxYrMyuu3XNM322Syg73sbu20ptmJixVSo/R735y4JxXK9XWzstqXYilEMDYqhcYzdcNbvFHn85GVOUe+LrZhYsehWdKmq6l95eBnHcfFesRWjGBoUQ4NiaFAMDYqhQTE0xIqpNV9VeGzZAYqhQTE0KIYGxdCgGBqzEbcxxsZt23o31HWdNqMAwzB417uus7HW2sZiK0YxNCiGBsXQoBgaFEODYmiIFVv1Z86aEXRqxFZMrFh0K4ZOsrkhtmIUQ4NiaASvWbkzxpxxZ4m8ZoWM9+JmUfDyabaIFfsC7EE2afpxn2wAAAAASUVORK5CYII=) 15 fill / 15px / 4px stretch !important;border-style:solid !important;background:none !important;outline:none !important;box-shadow:7px 7px 0 rgba(0,0,0,.45) !important}
+body.th11 .status .sg,body.th11 .guide,body.th11 .sinfo .sib,body.th11 .selbox,body.th11 .lbpc,body.th11 .setup .pickp,body.th11 .setup .pchip,body.th11 .infobox,body.th11 .tab{border-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAwCAYAAAB5R9gVAAAA7ElEQVR4nO2ZrQ6DMBSFD8vEJEFNoCYJTzHV59mD7Hmq9hSkcgoxRZBzmyo/XbLbBGguyflcy03ulyPKpWQIyPP8E+5tSd/32XR9SNk8hsHOJ1NVVVIB5xyAMSl9CYXJPO7PpALX2wXAmJS6hCgkcZQKzua9asOXPf19vr+EPEVRLGrUdV1UnbqEKCRBIQkKSVBIIoudoXlSa4FCEhSSUCc0TIzWWgBAXdezgrIsV23Ytu1s3TQNAMAYA0BhQhSSoJAEhSQoJBH9bR878S1lfwmF756tUZcQhSR+bvL9XJQKPwfpvckPN/g3KOALsM02OUb50loAAAAASUVORK5CYII=) 10 fill / 10px / 3px stretch !important;border-style:solid !important;background:none !important;outline:none !important;box-shadow:4px 4px 0 rgba(0,0,0,.4) !important}
+body.th11 .right{background:#181814 !important}body.th11 .topbar{background:#181814 !important}body.th11 .bottom{background:#181814 !important;border-top-color:#f4f4f4 !important}body.th11 .seat{background:#26261e !important}
+body.th11 .tab.on,body.th11 .tab.cur,body.th11 .lbpc.on{filter:brightness(1.3)}
+body.th11 button:not(.lnk):not(.zb):not(.cbtn):not(.zlink):not(.mx):not(.zclose):not(.cvb):not(.cvs){border-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAcCAYAAAB75n/uAAAAgElEQVR4nGNkgAIBAYH/DFQEHz58YGRgYGBgoqah2AAjzOVaWlpUNfjatWsMDAx08AELLpvJBeghQX8f4HIJIYDL5zT3wdC3AB4HlKYeXOYM/SAatWAkWbBjxw6GHTt2UGwgujnDKIhoBXDWB9Qqm+jvA2qkJGRA+3YRjDFkW3YAN+UkvR+vNxQAAAAASUVORK5CYII=) 6 fill / 6px / 2px stretch !important;border-style:solid !important;background:none !important;box-shadow:3px 3px 0 rgba(0,0,0,.45) !important;color:#ffffff;text-shadow:1px 1px 0 rgba(0,0,0,.6)}
+body.th11 button.primary:not(.lnk):not(.zb):not(.cbtn):not(.zlink):not(.mx):not(.zclose):not(.cvb):not(.cvs),body.th11 button.nbtn:not(.lnk):not(.zb):not(.cbtn):not(.zlink):not(.mx):not(.zclose):not(.cvb):not(.cvs){border-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAcCAYAAAB75n/uAAAAeUlEQVR4nGNkgAIrNbb/DFQEx279YmRgYGBgoqah2AAjzOVHL+yiqsHWBm4MDAx08AELLpvJBWVBXCh8+vsABrbN0iLJIK+0a1jFae6DUQtGLRi1YNSCUQuoAXDWB7jKd1IB/XywsSmAgYEBs06lFNC+XQRjDNmWHQBkiBUBW6nGqQAAAABJRU5ErkJggg==) 6 fill / 6px / 2px stretch !important;border-style:solid !important;color:#3a2606 !important;text-shadow:none}
+body.th11 button.warn:not(.lnk):not(.zb):not(.cbtn):not(.zlink):not(.mx):not(.zclose):not(.cvb):not(.cvs),body.th11 button.kick:not(.lnk):not(.zb):not(.cbtn):not(.zlink):not(.mx):not(.zclose):not(.cvb):not(.cvs){border-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAcCAYAAAB75n/uAAAAeUlEQVR4nGNkgAIrLq7/DFQEx759Y2RgYGBgoqah2AAjzOVHt62jqsHWXkEMDAx08AELLpvJBQFiYih8+vsABqaZmZFkUNapU1jFae6DUQtGLRi1YNSCUQuoAXDWB7jKd1IB/VoV6HUppWDDq1cMDAz08AGMMWRbdgDYkxcm8eypiQAAAABJRU5ErkJggg==) 6 fill / 6px / 2px stretch !important;border-style:solid !important;color:#fff !important}
+body.th11 button.tg:not(.lnk):not(.zb):not(.cbtn):not(.zlink):not(.mx):not(.zclose):not(.cvb):not(.cvs){border-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAcCAYAAAB75n/uAAAAeUlEQVR4nGNkgAIpKan/DFQEz549Y2RgYGBgoqah2AAjzOXr1q2jqsFBQUEMDAx08AELLpvJBQoKCih8+vsABvz8/EgyaNOmTVjFae6DUQtGLRi1YNSCUQuoAXDWB7jKd1IB/VoV6HUppeDBgwcMDAz08AGMMWRbdgAXwRdBgM25PQAAAABJRU5ErkJggg==) 6 fill / 6px / 2px stretch !important;border-style:solid !important;color:#fff !important}
+body.th11 button.tg.on:not(.lnk):not(.zb):not(.cbtn):not(.zlink):not(.mx):not(.zclose):not(.cvb):not(.cvs){border-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAcCAYAAAB75n/uAAAAeUlEQVR4nGNkgAIOLZH/DFQEP669YWRgYGBgoqah2AAjzOUHzu2hqsEORi4MDAx08AELLpvJBUIOMih8+vsABnTKbEgy6ErXEaziNPfBqAWjFoxaMGrBqAXUADjrA1zlO6mAfq0K9LqUUvDuwBMGBgZ6+ADGGLItOwAhQRcL2E+LtQAAAABJRU5ErkJggg==) 6 fill / 6px / 2px stretch !important;border-style:solid !important;color:#fff !important}
+body.th11 button:hover:not(:disabled){filter:brightness(1.15)}body.th11 button.primary kbd{color:#3a2606}
+body.th11 #toast,body.th11 #tut,body.th11 .feedbox .fd{border-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAoCAYAAADt5povAAAAlElEQVR4nGNkQAMGFh7/0cUoARdO7GBE5jNR03BiANx2mM/OH99OVQsMLT0ZGBgQPqW/D9F9BnMRtcCMGVMYGBgYGDIychgYGAbAhyy4JE4c2ECRwRYOAVjF6e7DUQtHLRy1cNTCUQtHLRy1cNTCUQtHLRy1kB4AZ98CV9+AUjDwPWBYf45aANYvHLgeMLrAsBvFAAD8oCHHpk5OdAAAAABJRU5ErkJggg==) 6 fill / 6px / 2px stretch !important;border-style:solid !important;background:none !important;outline:none !important;box-shadow:4px 4px 0 rgba(0,0,0,.4) !important;color:#303848 !important;text-shadow:none}
+body.th11 #tut .tuthd{color:#c04018 !important}body.th11 #tut .tutb b,body.th11 #toast b{color:#2048a8 !important}
+body.th11 .feedbox .fd.good{color:#1c7a3a !important}body.th11 .feedbox .fd.bad{color:#b02828 !important}body.th11 .feedbox .fd.req{color:#a86a00 !important}body.th11 .feedbox .fd.chat{color:#5a2aa0 !important}
 .cart-DGN-001{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAYAAABG1c6oAAABzUlEQVR4nKWVIZDiQBBFX6gTJ1de5Ehk2h3uInPu4jYSuXEgkZHggkQikRsZybpeGTmrFotbOSuozCYQrqjlV6Wqq6fzp//vySRwznEPRMQTqGoQ3EOYpqnLJjMAtvsV1lpG93TWkgGImQJ8n7CL7X7l4x/fJVHVQEScMcZ3B4Bz7uKJoshFUeSG1oZqi9mzr7+QLCJukZUYY3oTHIKIuMk46+Wuetg1vEtwvkkYjtnVC1Q1gP942ByOnqT1a5GVPgeQxkWP7CphczgyDh/oErTxr6jC7A3ZZNabrpfclSEiLo0LxuGDL6j1hTQuAEgeX1mtG2/HkC0jgHKZeBldMoBYfvtcltc9kuZwJI2L3vAC5xwi4spl0tu9i1pfCMPxkDsA/En25PMKVQ1GcDqk+bwaLC62OeV2htqNz3VjgDfb9CW3OO+u2ObsxQAQ/pygdoPaDdZadvXC1y3X1sf+tmkn2U44eXw9ddMceLMN/5LYvzT5u/GfXqvwgrAlVVXqumK93jB7Ovm2Wn9JAtjtdgFXcPGl1HVFHCdYe5KRzyustYiZImbq89fQO9hfMhY+VlVE5LR+NoxB3HKbfLyX7uO9vOkGuukXMGT+NXwCEDBNgo2N5AkAAAAASUVORK5CYII=)}
 .cart-DGN-002{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAABd0lEQVR4nLWULZPCMBRFDwyiOGxlLC6RlUhs3drK4pAgWQcOZH8CtnIlspWVlVhc67KCSWja8rG7bGYy00yS8+69b5qB1hqllAbIsmzAG8bQfPhhZOFvg8aV9zJYKaXN7Nsf/VSFUkoHm72zBje6gdbabgohACjL0h5qqxFC4EdLyjx3ip2Pib0z6qvuN2B+GCGkvF1OdvY7rjwO47rjZiCldIDNi360BODjMgZgd9xYlXHlATCZKj7Lk6N2BFDmuaPGwADmp4ILkBRpx/ZkqgBYicCCrdIsy1DqeqBpt8xzvOwLgFrNOpZXIgBgsY3s3fMxuTaq2QxTwA+jTlZx5Vl1bctw64PT/TbEgE1+SZECsAzXVmHfXzhsLpLEbZiJ4TCuSYqUWs2o1YzFNnIybA+r1KgNNnvKPGczl6zTa6Ymz6bdR++FA23HIIToAO+BHkLvFTCwl140rfXTKaXUj9btObxb7Q/jJWif1UdP5K+UPmvUv9j/Bj+cDJ4Y1khVAAAAAElFTkSuQmCC)}
 .cart-DGN-003{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAABqklEQVR4nKWVIZeCQBSFLx6C1eZGIpHXJBqJEona3H8gcfgHEo1EjUQi214lTrVRt7EBZ5zB8ezq3gLMYb53Z+5j8IZhwCsiImsCM3vTd/yXiDe1+f6hiAn3XnVqgkx4LEoNfgtqwl3g2dtEjEuORfkw/i/oVFWagoiGt4JSIqKhSlPI7mqN/xk6bSXlzCUL6moPV9JKWVUDAATR+Hw+g5k935ysKpuuFEwBAKDKEuuaVbUGA0ZLmVAACMKlBcoWCyTJCnX9harvNRAAZHfVLgEjfWb2cmYE4RJBuNRO1GQFTJKVtQXTkCwoEQ1mdVN6uX1vQcz7nEhv20wBmfnBwXyzxXyz1WOCCDkzBJEF7KREGAT6WQdVFvf9XIMQHg4gIjAz5pstuqJwrsIln4iGYx6D1vdKp7JFU6SYuu+k1Ckrd8q5GZQXRdHQNpmz4qlssT+c8X05OQPppIS4FTZ7e8bMXryuLBAAcCMRhR8oi/EzzCeuAUAwg5m96UHtqyoquWMegxsJAPgUY4EmGPt0GsgzPZyn5tekHKjuuOx2Gmru4a/QZ/rLv0npBwD4/PsMXz44AAAAAElFTkSuQmCC)}
@@ -1764,6 +1805,7 @@ body.th10 .feedbox .fd.good{color:#1c7a3a !important}body.th10 .feedbox .fd.bad{
 .bart-BOS-001{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAcCAYAAACdz7SqAAADT0lEQVR4nKVWIXTbMBD92SsITKGgoMskVkPBlNVsHUtZzWzWwpTZTIFhS5nHUlazuUyBhoIeW6GZBhypcp20SXbv+T3ZsvTv/zudbmSMwSnGOTcAoJQaHb3YGHP0wxgzxhjz8vJiGGNm+37w+rNT2FFK3TelFDjnRxH9FHSXhEoplGUJABBCuPFR9pmE4j4ZSGeltebPHyr1t2MctMz3zWVZtnfOX3tQTP1Y0qQAAFwtGgCAkGonoA9CZms0yytwzo1SavRtlyecc3M+FbBAQioIqQAAOo+QVkDACAJGUG8al1hpmvbin2UZSCg74FDapDNO3vOp2CufziPoPMJbQN07ANSbjm0rJBaLBbIsG+6xXZNct+7TGdBlp2XHOTeUUrwBmNQaABzYpNagSYF603TAQrqNWiGRpld7i4Wf6YNEopQ6kH2AqDVakmBcxu4/f2yJpGnasQxqAO/yj/wy6MfSt0mt0XqsdoForQcsOeeGhBJrGYJz7uYHTK2kdjzZsnJWa4zLGC1J0ArpnCGzNT4mI5mt7bjnUA9UKTXSWjswrTWKouh7ZaUPKNZ3BOs74qYope4kkFACtca9ePrIq39OrXd0exRWmx/9v2uNcZP3HImiqCc9ma2BWjvnHsvvAKreNo4p59zIh7A7e08VAkaQsp9dEfDYtUIiiiKUZdmru+MyxjITXawD2rEkj2iqeBDrnryvSuOBLLBKNrj+E0M0tz0Px2XsEmixWEAIgaIouhh7bFfTXx3L5n4gLQCMjDEuy5oqdtUlDFpccop81aAV0oElN+8xzFeNG1tQ50Ctd7IEgDMf0FpRFIiiCJcfrsmWJMhXOcKg3ToGXHJ7ph+dg6K5xaWgiPuhfGfKGHOg9kKmlGJ+/oaHvxMkNwT5qoHW2iXJuMl7jF9Vd8ysA69KY/Xc7K1OO2+Z+fkbaDAFqgoXLICeV65UktkautKI5x3QzZQMwIDPe6czt1koXdtBgynGSQJUQ30CRtB4m3LOjQX6CsyaK4O2mtxMCap6DABYZgIiWvY24pwbIRXKmJ/WCcKT1/dcPoS4YAGWy+dT9vza9vVHu/odxphJfpujW86DWtDPZLMX9//YUY1Zh6oHN8qx1rtPDzEf7NRE+gccHLx5dUS+pQAAAABJRU5ErkJggg==)}
 .bart-BOS-002{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAYCAYAAAAGXva8AAACY0lEQVR4nI1WLZerMBC93bPiyWfXLRJJZCUykvyElYtrHUhkcVSurcPGFQcycpH8hfcP8kQ7OZMAhTmHc/LB5M6d3ElysNYCAIQQjwYAY8wh7FObj4dze+09WADdMLiFjTEzoEvTID0enQ/7dz+4tdZ9SZJYa629970tisJmWWa5FUVhl+ze9/bpiz3fbCBJEnvv+03gLMu8OQLeA/4eMqf9jKIIbdsCAJRSrj2O42rWyGcz5UuRUJo5C2JGWeBzNB/aGusDqTcQxSy4sixdO5XSm7vWtcvEz+2G6fcXWmuXuXCtg7V2FawbBnRP59vHF2T8geyPcWPAPN1SKUSfnzjn+Wp634QQ1hjjALthQDcMKMsS17pGKiX+pSX+/ijPMZXSA4zjGACgn4wvTTOr6UWm3KIoAgB8n04+e61deq917QES82maXJ/YcgxvT8lIvd+nk0tlKuUmIJnWenaKRVGEOI6htZ6XjBDCSrYwAS8BcnZkYRB8PQpmpl5jjKfUcRxdikN2BEbKfa6xyHKaJje+WDKXpsG1rt3e0P6GYABmW5Aejw54ieUMlAMDvggImKeRwHlKUylxznMXLP+P2C4KKTQuBGJKi7Vt647Jsiy9QMKgSNlvewBlcAJxtko96lcphaqqPMBQVNR/CUrCqqrKi5wsZKKUWgQK/V6ml1iSQIhVGDkpnC73EJxvxzRN66BCCEsqdkfcU6WUbmLAAYHHUUp+nCUJaXY4cDvnuSsfMv5+4ormWQhLi0pvtWRCtrwf3hohOFe0EGLVb9ebZuujS58u8q1ny6463bKlW+rV6/A/p6EA3qbW3A0AAAAASUVORK5CYII=)}
 .bart-BOS-003{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAcCAYAAACZOmSXAAACf0lEQVR4nK1XsZLaMBB9vmEGSuiSUt3lOusTfH+Ay3yCy1BSUtL6E66EP7A+YVMFulOZSWXKpFIK34oVloXh2BmNbSTt8759uzKZcw6PNq21AwAiylLrnj4DwCCXv22323FOnHPRkee5uzLnnHMuz3M/mqZxTdO41F45JrGIgGHKtNaOiPwzEcEYcwNnZwto11o7pdTNTlarVXB/LdfeJJXL5TJJmaRb0s5zY+nm9T3BKaUwJCRJ96URUXYtYvbL10yWmqTdWgsiyoZAjTE3Ucy+rbX+ZYPIiSjjSWbgEcDSpKaSdX6P+GI2JORJatFut+tt4LISzPSil5qR85Jy4I4OV9c1AKCqKqzns6g4lVIoCo2i0EGuL0WZBC/L0t8bY1CWJaY/Kl/X377M8PY877VapRZ+X1HoQf+D4N/b3x7UGIO6rrHb7fDn+BMAcNqsAQDrf4tIlC2M6YRqbTsIHpQacKZtM22986qqUNf1OWdlF01JbRAlmzHky5R/i2mj19t503E+6978ZLFaraCUCtR//PUOoA8sI737SH1bfMXy9UU4tbDWYjNtsW8OUTBrWy+sFChb9FTjCPfNAVRq7JsDNqe/nm7gPdiTymvKfM45P0ELLM9K3TcHLF9fPujutHAGP3dF+cwMDOU+c85FezpvolJ7QLZLYG7BWusPbXTzrPiYEVE2SZ3hLL6353kPNAbcRZ8GDiLP8zwatbSwgYTUXppsKvIFYn6f5Ek2ZNwWL0+91MGTopwtEFyqRKQgY2atRVFoWNs1nmtRA6LUrgGPPV6ttT7vD/1uH0pPB6h8W+XrNX+jwDnXMufyKud5/ahoxn5txv5Q3PK1Ghv/ARgGtd/JiVy4AAAAAElFTkSuQmCC)}
+.overart.flag{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAAA8CAYAAAAwjLVlAAAFBUlEQVR4nO2dz0sbQRTHXyRYDW0ItUgwoQSRUHqwUkRKTlKkpx48+wf00IP0DxBqwYMHz/0TpMccPPRUegoleJCcpJQSREMoCouUaEPRHsrGTTIzu7M7v3bmfW5x38x895t9uzOTl5jJPZy9BQRxlGxh7jH1oNc5Adrxv3+uqe1+X/yC+zOz3GJY7bL3pqjtbNDJG5+W8zJd5wT36AhiEZgAiNNgAiBOgwmAOE0mbbtAP79sQPu4DS/fNnRLcRLb/M8CgPCVeFg7np0QH69zMjRe1LF164wyDvpPbqfC/yz3CJr5/OkYmq02iJS+836Lemx7d0/YODbA43/Q160PO/JEJSB1CeDDumh9gqaz4msry1CZK479fb9+EE+cA0Txf2P9daS+dCZHahOgtrIMAEC8cEnQ3ox2pytMk0uE+Tn6vgTjaTEkZD+BU5sAUeBNEkQPpGRqd7rQaB5KHzsL8H/BEYe47bzOSYLxyrHaxiWOVl5f0H86sv3PslbMaakNkQlJj6qdG/Rfvv/4QRjiNJgAiNNgAiBOgwmAOE02bMWsZ6eBhdpdCJoeVTs36L9c/7MAoKTmIihAZW1IUni18urk/ZZYsB36Pw6vTpwCIU5j9SfBUWk0D8GO4l6EF+cToNE8JBZjmfihUNoIFhPSaof26weRi+Zk4EwC0Co7TS3TtYHt3T3mWqUB+v1P3TfCPr55Ds1WG5Y2trnavdvclCPIMXj8T4PnsWuBWKioYQneOaLo5K0pMaHWJu3+h2k3wX/cBUKcBhMAcRpMAMRpMAEQp5FWCySvhqVM7N88nWLGM++87PI/0e8C6axh4fldGpNrbUz/3ZzgeDb6j1MgxGkwARCnwQRAnAYTAHGa1NQCrS8WAADg1Yt5aLba4PVuoN7ytGpyCVv9N/5/hK2V+nd6LntDx1Yrk1DI56De8rTr9LHtf4TZ7r+x5dDLDzwo5HOD195lj/p6fbEA3mUXjvr4E4iicMV/4xJgrdRnmu1DOr4KlwAA8PU8r0ashbjmf+ZprWbEGmBp8hwA2HcagOE5aFj8Uf+RCulW4Kr/2p8AvvEA4eaPzkHD4ivXJ1DI51LxRujCdf8z80vPBk+A694VTOWmmQ1ExTyZuIg8xxT1+vhmRvp5JYlB/9X7n5mrVm9VDrw6p8Zs1utv3rTw80rDRY/+j8cMPQFUDFwsl6B7eia8n2K5BO3vP4RrJumNq5kH9F+N/2NToEp1AQCAOKjIgWkxwRPWeYcQdaHwxKD/6v1nToF8EbQsJMWKFBcWwxrThMdrlBhWW/RffswE7S5w3bsanBzrJH2ixNBEhsX4eorl0lAM6Q6RdCzVMei/3pihYji/Qff0TIm4UUNp/fh6aHPB0bH8fpNqFtUPK4b0d/Rfnf8TcTodFRZXXFRDeWO6p2dCLoKwfvy2STSj/3r9J06Bgp0Xy6WxToOLpLgDmxKT5CLw24aNRfIwrH/0P7wfEf5r+yAMY/gWxBgjJybyFCjqfFFVjEo9MscyQUOcGFv8V/5BWJpiVGzzidBpa4wK/4m7QADm3GmCMaIWf1FjVGzzye4f/WfHxNoF0hWja/FnwhTIhBgb/afuApEaqNiXFXmnYfVTLJcGZQdh/cjaLuRti/4n00PC+F2gSnVhYICO+hwfWcVeonWKjrHdf+Xl0CbH6CqAM9kTlTE6/OeaAo0SfMSZPn+NEqNjjov+36HD/3/b6RpEAtw2OAAAAABJRU5ErkJggg==)}
 </style>
 </head>
 <body>
@@ -1912,6 +1954,40 @@ const SND = (() => {
   // 1.15.4.0: 곡마다 약 1분(제목 32마디, 탐험 40마디, 보스 24마디), 구간(A·B·C…)을 나눠 반복감을 줄임
   const SONGS = {"title": {"bpm": 138, "bm": "oct", "drum": "basic", "pad": false, "lead": "E5 . G5 . C6 . G5 E5 | D5 . G5 . B5 - A5 G5 | A5 . E5 . C5 . E5 A5 | G5 - F5 - E5 . D5 . | E5 . G5 . C6 . D6 E6 | D6 - B5 - G5 . A5 B5 | C6 . A5 . F5 . A5 C6 | B5 - D6 - B5 . G5 D5 | A5 - - - C6 - A5 - | B5 - - - D6 - B5 G5 | G5 - - - B5 - G5 E5 | A5 - - - - - E5 . | F5 - A5 - D6 - C6 - | B5 - A5 - G5 - F5 - | E5 - G5 - C6 - - - | E6 - D6 - C6 . G5 . | C6 . B5 . A5 . E5 . | G5 . F5 . E5 . B4 . | A5 . G5 . F5 . C5 . | E5 - - - G5 - - - | F5 . E5 . D5 . A4 . | C5 . B4 . A4 . E5 . | F5 - A5 - C6 - F6 - | D6 - - - B5 - G5 . | E5 . G5 . C6 . G5 E5 | D5 . G5 . B5 - A5 G5 | A5 . E5 . C5 . E5 A5 | G5 - F5 - E5 . D5 . | E5 . G5 . C6 . D6 E6 | D6 - B5 - G5 . A5 B5 | C6 . A5 . F5 . A5 C6 | B5 - - - G5 . D5 .", "chords": ["C4 E4 G4", "G3 B3 D4", "A3 C4 E4", "F3 A3 C4", "C4 E4 G4", "G3 B3 D4", "F3 A3 C4", "G3 B3 D4", "F3 A3 C4", "G3 B3 D4", "E3 G3 B3", "A3 C4 E4", "D3 F3 A3", "G3 B3 D4", "C4 E4 G4", "C4 E4 G4", "A3 C4 E4", "E3 G3 B3", "F3 A3 C4", "C4 E4 G4", "D3 F3 A3", "A3 C4 E4", "F3 A3 C4", "G3 B3 D4", "C4 E4 G4", "G3 B3 D4", "A3 C4 E4", "F3 A3 C4", "C4 E4 G4", "G3 B3 D4", "F3 A3 C4", "G3 B3 D4"], "bass": ["C3", "G2", "A2", "F2", "C3", "G2", "F2", "G2", "F2", "G2", "E2", "A2", "D2", "G2", "C3", "C3", "A2", "E2", "F2", "C3", "D2", "A2", "F2", "G2", "C3", "G2", "A2", "F2", "C3", "G2", "F2", "G2"]}, "battle": {"bpm": 150, "bm": "drive", "drum": "groove", "pad": false, "lead": ". . . . . . . . | . . . . . . . . | . . . . . . . . | . . . . . . A4 C5 | D5 . A5 . G5 F5 E5 D5 | B4 . D5 . G5 - F5 E5 | F5 . C6 . A5 G5 F5 E5 | E5 - - - G5 - E5 C5 | D5 . A5 . G5 F5 E5 D5 | B4 . D5 . G5 - A5 B5 | C6 . A5 . F5 . A5 C6 | D6 - - - - - . . | D5 . D5 . E5 F5 - . | . . F5 G5 F5 . E5 . | D5 . D5 . E5 F5 - - | A5 - - - - - . . | D5 . D5 . E5 F5 - . | . . F5 G5 A5 . G5 . | F5 - E5 - D5 - C5 - | C#5 - - - E5 - A5 - | D6 - C6 A5 - G5 A5 C6 | D6 - - - A5 - G5,A5 C6 | B5 - A5 G5 - D5 G5 A5 | B5 - - - D6 - B5,A5 G5 | A5 - G5 F5 - C5 F5 G5 | A5 - - - C6 - A5,G5 F5 | E5 . G5 . C6 . E6 D6 | C#6 - - - E6 - - - | D#5 . A#5 . G#5 F#5 F5 D#5 | C5 . D#5 . G#5 - F#5 F5 | F#5 . C#6 . A#5 G#5 F#5 F5 | F5 - - - G#5 - F5 C#5 | D#5 . A#5 . G#5 F#5 F5 D#5 | C5 . D#5 . G#5 - A#5 C6 | C#6 . A#5 . F#5 . A#5 C#6 | D#6 - - - - - . . | D5 . A5 . G5 F5 E5 D5 | B4 . D5 . G5 F5 E5 D5 | C5 . F5 . A5 G5 F5 E5 | E5 - - - C#5 - A4 -", "chords": ["D3 F3 A3", "G2 B2 D3", "F2 A2 C3", "C3 E3 G3", "D3 F3 A3", "G2 B2 D3", "F2 A2 C3", "C3 E3 G3", "D3 F3 A3", "G2 B2 D3", "F2 A2 C3", "C3 E3 G3", "A#2 D3 F3", "C3 E3 G3", "D3 F3 A3", "D3 F3 A3", "A#2 D3 F3", "C3 E3 G3", "F2 A2 C3", "A2 C#3 E3", "D3 F3 A3", "D3 F3 A3", "G2 B2 D3", "G2 B2 D3", "F2 A2 C3", "F2 A2 C3", "C3 E3 G3", "A2 C#3 E3", "D#3 F#3 A#3", "G#2 C3 D#3", "F#2 A#2 C#3", "C#3 F3 G#3", "D#3 F#3 A#3", "G#2 C3 D#3", "F#2 A#2 C#3", "C#3 F3 G#3", "D3 F3 A3", "G2 B2 D3", "F2 A2 C3", "A2 C#3 E3"], "bass": ["D3", "G2", "F2", "C3", "D3", "G2", "F2", "C3", "D3", "G2", "F2", "C3", "A#2", "C3", "D3", "D3", "A#2", "C3", "F2", "A2", "D3", "D3", "G2", "G2", "F2", "F2", "C3", "A2", "D#3", "G#2", "F#2", "C#3", "D#3", "G#2", "F#2", "C#3", "D3", "G2", "F2", "A2"], "bassl": "D2 . D3 D2 . D2,D2 C3 A2 | G1 . G2 G1 . G1,G1 A1 B1 | F1 . F2 F1 . F1,F1 G1 A1 | C2 . C3 C2 . C2,C2 D2 E2 | D2 . D3 D2 . D2,D2 C3 A2 | G1 . G2 G1 . G1,G1 A1 B1 | F1 . F2 F1 . F1,F1 G1 A1 | C2 . C3 C2 . C2,C2 D2 E2 | D2 . D3 D2 . D2,D2 C3 A2 | G1 . G2 G1 . G1,G1 A1 B1 | F1 . F2 F1 . F1,F1 G1 A1 | C2 . C3 C2 . C2,C2 D2 E2 | A#1 . A#2 A#1 . A#1,A#1 C2 D2 | C2 . C3 C2 . C2,C2 D2 E2 | D2 . D3 D2 . D2,D2 C3 A2 | D2 D3 C3 A2 G2 A2 C3,D3 E3 | A#1 . A#2 A#1 . A#1,A#1 C2 D2 | C2 . C3 C2 . C2,C2 D2 E2 | F1 . F2 F1 . F1,F1 G1 A1 | A1 A2 G2 E2 C#2 E2 G2,A2 C#3 | D2 D3 C3 A2 G2 A2 C3,D3 E3 | D2 . D3 D2 . D2,D2 C3 A2 | G1 G2 F2 D2 C2 D2 F2,G2 A2 | G1 . G2 G1 . G1,G1 A1 B1 | F1 F2 E2 C2 A#1 C2 E2,F2 G2 | F1 . F2 F1 . F1,F1 G1 A1 | C2 . C3 C2 . C2,C2 D2 E2 | A1 A2 G2 E2 C#2 E2 G2,A2 C#3 | D#2 . D#3 D#2 . D#2,D#2 C#3 A#2 | G#1 . G#2 G#1 . G#1,G#1 A#1 C2 | F#1 . F#2 F#1 . F#1,F#1 G#1 A#1 | C#2 . C#3 C#2 . C#2,C#2 D#2 F2 | D#2 . D#3 D#2 . D#2,D#2 C#3 A#2 | G#1 . G#2 G#1 . G#1,G#1 A#1 C2 | F#1 . F#2 F#1 . F#1,F#1 G#1 A#1 | C#2 . C#3 C#2 . C#2,C#2 D#2 F2 | D2 . D3 D2 . D2,D2 C3 A2 | G1 . G2 G1 . G1,G1 A1 B1 | F1 . F2 F1 . F1,F1 G1 A1 | A1 A2 G2 E2 C#2 E2 G2,A2 C#3", "dyn": "112F2222222FX222222F1122222FC333333F222F"}, "boss": {"bpm": 160, "bm": "drive", "drum": "rock", "pad": true, "lead": ". . . . . . . . | . . . . . . . . | . . . . . . . . | . . . . D5 . F#5 A5 | G5 . D5 . C5 A#4 C5 D5 | A4 - - - F#5 - A5 - | C6 . A5 . G5 F5 G5 A5 | G5 - - - E5 - C5 - | G5 . A#5 . C6 A#5 G5 D#5 | D5 - - - G5 - A#5 - | A5 . G5 . F5 . A5 C6 | D6 - - - - - C6 A5 | G5 . D5 . C5 A#4 C5 D5 | A4 - - - F#5 - A5 - | C6 . A5 . G5 F5 G5 A5 | G5 - - - E5 - C5 - | G5 . A#5 . C6 A#5 G5 D#5 | D5 - - - G5 - A#5 - | A5 . C6 . F6 . E6 D6 | D6 - - - F#6 - A6 - | D#5 - - - G5 - A#5 - | A5 - - - C6 - F6 - | G6 - - - - - D6 - | F6 - - - - - A#5 - | C6 . C6 . A5 . F5 . | F#5 - - - A5 - D6 - | D#6 - D6 - C6 - A#5 - | A5 - - - F#5 - - - | D5 . D5 . D5 . D5 . | G5 - - G5 - - G5 - | F#5 - - F#5 - - D5 - | F5 - - F5 - - G5 F5 | E5 - - E5 - - B4 - | D#5 - - D#5 - - D#5 - | F5 - - F5 - - F5 - | G5 - - - A#5 - D6 - | G5 . D5 . C5 A#4 C5 D5 | A4 - - - F#5 - A5 - | C6 . A5 . G5 F5 G5 A5 | G5 - - - E5 - C5 - | G5 . A#5 . C6 A#5 G5 D#5 | D5 - - - G5 - A#5 - | A5 . G5 . F5 . A5 C6 | D6 - - - - - C6 A5", "chords": ["G2 A#2 D3", "G2 A#2 D3", "G2 A#2 D3", "D3 F#3 A3", "G2 A#2 D3", "D3 F#3 A3", "F2 A2 C3", "C3 E3 G3", "D#3 G3 A#3", "G2 A#2 D3", "F2 A2 C3", "D3 F#3 A3", "G2 A#2 D3", "D3 F#3 A3", "F2 A2 C3", "C3 E3 G3", "D#3 G3 A#3", "G2 A#2 D3", "F2 A2 C3", "D3 F#3 A3", "D#3 G3 A#3", "F2 A2 C3", "G2 A#2 D3", "A#2 D3 F3", "F2 A2 C3", "D3 F#3 A3", "D#3 G3 A#3", "D3 F#3 A3", "D3 F#3 A3", "G2 A#2 D3", "F#2 A#2 C#3", "F2 G#2 C3", "E2 G#2 B2", "D#3 G3 A#3", "F2 A2 C3", "D3 F#3 A3", "G2 A#2 D3", "D3 F#3 A3", "F2 A2 C3", "C3 E3 G3", "D#3 G3 A#3", "G2 A#2 D3", "F2 A2 C3", "D3 F#3 A3"], "bass": ["G2", "G2", "G2", "D3", "G2", "D3", "F2", "C3", "D#3", "G2", "F2", "D3", "G2", "D3", "F2", "C3", "D#3", "G2", "F2", "D3", "D#3", "F2", "G2", "A#2", "F2", "D3", "D#3", "D3", "D3", "G2", "F#2", "F2", "E2", "D#3", "F2", "D3", "G2", "D3", "F2", "C3", "D#3", "G2", "F2", "D3"], "bassl": "G1 G1 G1 G1 G1 G1 G1 G1 | G1 G1 G1 G1 G1 G1 G1 G1 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | C2 C2,C2 C3 C2,C2 C2 C2,C2 C3 C2,C2 | D#2 D#2,D#2 D#3 D#2,D#2 D#2 D#2,D#2 D#3 D#2,D#2 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | C2 C2,C2 C3 C2,C2 C2 C2,C2 C3 C2,C2 | D#2 D#2,D#2 D#3 D#2,D#2 D#2 D#2,D#2 D#3 D#2,D#2 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | D#2 D#2,D#2 D#3 D#2,D#2 D#2 D#2,D#2 D#3 D#2,D#2 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | A#1 A#1,A#1 A#2 A#1,A#1 A#1 A#1,A#1 A#2 A#1,A#1 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | D#2 D#2,D#2 D#3 D#2,D#2 D#2 D#2,D#2 D#3 D#2,D#2 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | D2 - - D2 - - D3 - | G1 - - G1 - - G2 - | F#1 - - F#1 - - F#2 - | F1 - - F1 - - F2 - | E2 - - E2 - - E3 - | D#2 - - D#2 - - D#3 - | F1 - - F1 - - F2 - | D2 - - D2 - - D3 - | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | C2 C2,C2 C3 C2,C2 C2 C2,C2 C3 C2,C2 | D#2 D#2,D#2 D#3 D#2,D#2 D#2 D#2,D#2 D#3 D#2,D#2 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2", "dyn": "TT2FC222222FX333333FC333333FHHHHHH2FC333333F"}};
   let mus = null, cur = null, pend = null;
+  // 1.20.0.0 직접 작곡한 배경음악 파일(bgm 폴더). 파일이 없으면 코드로 만든 곡으로 대신 연주
+  const FILES = {title:'bgm/title.mp3', battle:'bgm/dungeon.mp3', boss:'bgm/boss.mp3', defeat:'bgm/defeat.mp3'};
+  const ONCE = {defeat:true};          // 한 번만 재생(반복 없음)
+  const FGAIN = 2.3;                   // 파일 곡 음량 보정(코드로 만든 곡과 비슷한 크기)
+  const fbuf = {}, fbad = {};
+  let fm = null;                       // 지금 재생 중인 파일 곡 {src} 또는 {el}
+  function loadBuf(name){
+    if (fbuf[name]) return fbuf[name];
+    fbuf[name] = fetch(FILES[name]).then(r=>{ if (!r.ok) throw 0; return r.arrayBuffer(); })
+      .then(ab=>new Promise((ok,no)=>ctx.decodeAudioData(ab, ok, no))).catch(()=>null);
+    return fbuf[name];
+  }
+  function stopFile(){ if (!fm) return; try { if (fm.src) fm.src.stop(); if (fm.el){ clearInterval(fm.el._f); fm.el.pause(); fm.el.src=''; } } catch(e){} fm = null; }
+  function elVol(){ return Math.min(1, st.mus * 0.64 * FGAIN); }
+  // 파일 곡 재생. 실패하면 fallback() 호출
+  function playFile(name, fadeIn, delay, fallback){
+    loadBuf(name).then(buf=>{
+      if (cur!==name) return;
+      const t = ctx.currentTime + delay;
+      if (buf){
+        const src = ctx.createBufferSource(), g = ctx.createGain(); src.buffer = buf; src.loop = !ONCE[name];
+        g.gain.value = FGAIN; src.connect(g); g.connect(musBus);
+        musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(0.0001, ctx.currentTime); musBus.gain.setValueAtTime(0.0001, t); musBus.gain.linearRampToValueAtTime(Math.max(0.0001, st.mus), t+fadeIn);
+        stopFile(); src.start(t); fm = {src, name}; if (ONCE[name]) src.onended = ()=>{ if (fm && fm.src===src) fm = null; };
+        return;
+      }
+      // 내 컴퓨터에서 파일로 열었을 때(fetch 불가): audio 태그로 재생
+      const el = new Audio(FILES[name]); el.loop = !ONCE[name]; el.volume = 0;
+      el.onerror = ()=>{ if (fm && fm.el===el) fm = null; fbad[name] = true; if (cur===name) fallback(); };
+      stopFile(); fm = {el, name};
+      setTimeout(()=>{ if (!fm || fm.el!==el) return; el.play().catch(()=>{}); const v = elVol(), n = Math.max(1, Math.round(fadeIn*20)); let k = 0;
+        el._f = setInterval(()=>{ k++; el.volume = Math.min(v, v*k/n); if (k>=n) clearInterval(el._f); }, 50); }, delay*1000);
+    });
+  }
   function parseLine(s){ return s.split('|').flatMap(b=>b.trim().split(/\s+/)); }
   const up = (n, k=1) => n.replace(/(\d)$/, d=>String(+d+k));
   // 1.18.0.0: 북 세트(탐험 groove, 보스 rock). dyn 글자: 0 없음, 1 약하게, 2 보통, 3 세게, T 탐 북 쌓기, H 하프타임, C 심벌+세게, X 심벌+보통, F 보통+마지막 박 필인
@@ -2010,25 +2086,29 @@ const SND = (() => {
     };
     sched(); mus.timer = setInterval(sched, 40);
   }
-  function stopMusic(now){ if (pend){ clearTimeout(pend); pend = null; } if (mus){ clearInterval(mus.timer); mus = null; } if (!now) cur = null; }
+  function stopMusic(now){ if (pend){ clearTimeout(pend); pend = null; } if (mus){ clearInterval(mus.timer); mus = null; } stopFile(); if (!now) cur = null; }
   // 원하는 곡으로 전환: 이전 곡은 잠깐 줄여 끄고, 새 곡은 무음에서 서서히 키운다(보스전은 정적 뒤 더 천천히)
   function want(name){
     if (window.__noFx) return;
     if (!st.bgm){ stopMusic(); cur = null; return; }
     if (name===cur) return;
-    if (!name){ if (mus && ctx){ musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(musBus.gain.value, ctx.currentTime); musBus.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+1.2); pend = setTimeout(()=>stopMusic(), 1300); } cur = null; return; }
+    if (!name){ if (fm && fm.el){ const el = fm.el; clearInterval(el._f); el._f = setInterval(()=>{ el.volume = Math.max(0, el.volume-0.03); }, 50); } if ((mus||fm) && ctx){ musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(musBus.gain.value, ctx.currentTime); musBus.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+1.2); pend = setTimeout(()=>stopMusic(), 1300); } cur = null; return; }
     if (!init()) return;
-    const boss = name==='boss', had = !!mus;
+    const boss = name==='boss', had = !!mus || !!fm;
+    if (fm && fm.el){ const el = fm.el; clearInterval(el._f); el._f = setInterval(()=>{ el.volume = Math.max(0, el.volume-0.05); }, 50); }
     if (had){ musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(musBus.gain.value, ctx.currentTime); musBus.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+0.6); }
     cur = name; if (pend) clearTimeout(pend);
-    pend = setTimeout(()=>{ pend = null; if (cur===name) startMusic(name, boss ? 2.5 : (!had && name==='title' ? 0.6 : 2.5), boss ? 0.5 : (!had && name==='title' ? 0.4 : 0)); }, had ? 650 : 0);   // 첫 시작 화면: 0.5초 뒤 바로 들리게
+    pend = setTimeout(()=>{ pend = null; if (cur!==name) return;
+      const fi = boss ? 2.5 : (!had && name==='title' ? 0.6 : (name==='defeat' ? 0.3 : 2.5)), dl = boss ? 0.5 : (!had && name==='title' ? 0.4 : (name==='defeat' ? 1.0 : 0));
+      const synth = ()=>{ if (cur===name && SONGS[name]){ stopFile(); startMusic(name, fi, dl); } };
+      if (FILES[name] && !fbad[name]){ if (mus){ clearInterval(mus.timer); mus = null; } playFile(name, fi, dl, synth); } else synth(); }, had ? 650 : 0);   // 첫 시작 화면: 0.5초 뒤 바로 들리게
   }
-  function setVol(k, v){ st[k] = v; try { localStorage.setItem('pmd_vol_'+k, String(v)); } catch(e){} if (!ctx) return; if (k==='sfx') sfxBus.gain.value = v; if (k==='mus' && mus){ musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(Math.max(0.0001, v), ctx.currentTime); } }
+  function setVol(k, v){ st[k] = v; try { localStorage.setItem('pmd_vol_'+k, String(v)); } catch(e){} if (!ctx) return; if (k==='sfx') sfxBus.gain.value = v; if (k==='mus' && fm && fm.el){ clearInterval(fm.el._f); fm.el.volume = elVol(); } if (k==='mus' && (mus || (fm && fm.src))){ musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(Math.max(0.0001, v), ctx.currentTime); } }
   function save(){ try { localStorage.setItem('pmd_bgm', st.bgm?'1':'0'); localStorage.setItem('pmd_fx', st.fx?'1':'0'); } catch(e){} }
   function toggle(){ const on = !(st.bgm || st.fx); st.bgm = st.fx = on; save(); if (!on) stopMusic(); return on; }   // M: 둘 다 켜기·끄기
   function setBgm(v){ st.bgm = v; save(); if (!v){ stopMusic(); cur = null; } }
   function setFx(v){ st.fx = v; save(); }
-  return {play, want, startMusic:(n)=>{ if (st.bgm) startMusic(n); }, stopMusic, setVol, st, init, toggle, setBgm, setFx, list:Object.keys(SFX), playing:()=>!!mus, current:()=>cur, songs:Object.keys(SONGS)};
+  return {play, want, startMusic:(n)=>{ if (st.bgm) startMusic(n); }, stopMusic, setVol, st, init, toggle, setBgm, setFx, list:Object.keys(SFX), playing:()=>!!mus || !!fm, current:()=>cur, songs:Object.keys(SONGS)};
 })();
 
 // 게임에서 부르는 짧은 이름 (시뮬레이션 중에는 소리 없음)
@@ -2036,7 +2116,7 @@ function sfx(n){ if (!window.__noFx) SND.play(n); }   // function 선언: 멀티
 // 휴대폰: 첫 터치·클릭 때 소리 장치를 깨운다
 ['pointerdown','keydown','touchstart'].forEach(ev=>document.addEventListener(ev, ()=>{ if (SND.st.bgm || SND.st.fx){ SND.init(); if (typeof syncMusic==='function') syncMusic(); } }, {once:true, capture:true}));
 // 지금 화면에 맞는 배경음악: 시작·선택 화면 → title, 게임 중 → battle, 최심층 → boss, 게임 끝 → 없음
-function syncMusic(){ if (window.__noFx) return; SND.want(typeof S==='undefined' || !S ? 'title' : (over() ? null : (S.phase==='final' ? 'boss' : 'battle'))); }
+function syncMusic(){ if (window.__noFx) return; SND.want(typeof S==='undefined' || !S ? 'title' : (over() ? (S.phase==='lost' ? 'defeat' : null) : (S.phase==='final' ? 'boss' : 'battle'))); }
 
 /* =================== 온라인 멀티플레이 (방장 진행 · P2P) ===================
    - 방장 브라우저가 게임을 진행(무작위 포함)하고, 참가자는 화면만 받아 그린다.
@@ -2047,7 +2127,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.19.1.0';
+const GAME_VER = '1.20.0.0';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -2492,7 +2572,7 @@ function lobbyHTML(){
   const plist = NET.players.map(p=>{ const mine = NET.picks.filter(x=>x.pid===p.pid), n = mine.length, names = mine.map(x=>{ const d = seekerDef(x.id); return d ? d.name : ''; }).join(', ');
     const rd = p.pid==='H' ? '' : (p.ready ? ' <span class="lbrd ok">준비 완료</span>' : ' <span class="lbrd">준비 중</span>');
     return `<li class="${p.on?'':'off'}">${p.pid==='H'?'<span class="lbh">방장</span>':''}<b>${esc(p.nick)}</b>${p.pid===NET.pid?' <small>(나)</small>':''}<small> · ${n}마리${n?' / '+esc(names):''}</small>${p.on?rd:' <small>(연결 끊김)</small>'}</li>`; }).join('');
-  return `<div class="setup lobby"><div class="lbbox wide">
+  return `<div class="setup lobby ${SETUP.rampage?'rampage':''}"><div class="lbbox wide">
     <div class="lbtop"><div><div class="muted">방 코드</div><div class="lbcrow"><div class="lbcode">${esc(NET.code||'')}</div><button data-act="lbInvite">초대 링크 복사</button><button data-act="lbCopy">코드 복사</button></div></div>
       <ul class="lbplayers">${plist}</ul></div>
     <p class="muted">탐험대원을 눌러 고르세요. 모두 합쳐 최대 4마리, 한 사람이 여러 마리를 맡을 수 있습니다. 고른 순서가 차례 순서입니다.</p>
@@ -4281,7 +4361,7 @@ function setPanelHTML(mode){
     ${row('배경음악', tg('bgmTog', SND.st.bgm, '켜짐', '꺼짐') + sl('mus'))}
     ${row('효과음', tg('fxTog', SND.st.fx, '켜짐', '꺼짐') + sl('sfx'))}
     ${mode!=='title' ? row('자동 차례 종료', tg('aeToggle', SETUP.autoEnd!==false, '켜짐', '꺼짐')) : row('오프닝 <kbd>O</kbd>', tg('opToggle', opOn(), '켜짐', '꺼짐'))}
-    ${row('UI 테마', `<select class="thsel" data-theme-sel>${THEMES.map((n,i)=>`<option value="${i}" ${i===themeIdx()?'selected':''}>${n}</option>`).join('')}</select>`)}
+    ${row('UI 테마', `<select class="thsel" data-theme-sel>${THEME_ORDER.map(i=>`<option value="${i}" ${i===themeIdx()?'selected':''}>${THEMES[i]}</option>`).join('')}</select>`)}
     ${!NET.on ? row('튜토리얼', tg('tutTog', tutOn(), '켜짐', '꺼짐')) : ''}
     ${NET.on ? row('채팅 글자 크기', `<button class="tg on" data-act="chatFs">${CHAT_FS[chatFsIdx()][0]}</button>`) : ''}
     ${NET.on ? row('채팅 알림', tg('chatFeed', chatFeedOn(), '켜짐', '꺼짐')) + row('내 차례 알림', tg('myTurnTog', myTurnOn(), '켜짐', '꺼짐')) : ''}
@@ -4723,6 +4803,24 @@ function sortHands(){
   if (A.step===1) key(cur(), c => actionEligible(c));
   else if (A.step===2) S.seekers.forEach(x => key(x, c => boostCardOK(c) && boostEligible(c)));
 }
+let LASTPHASE = null;
+// 1.20.0.0 승리 연출: 화면 왼쪽 아래·오른쪽 아래에서 색종이가 터져 나와 흩날림 (#app 바깥에 그려 다시 그리기에 영향 없음)
+function popperFx(){
+  if (window.__noFx) return;
+  const box = document.createElement('div'); box.className = 'poppers';
+  const cols = ['#ffd84a','#ff6a6a','#6ad0ff','#8fe3a8','#ff9ee0','#ffffff','#c8a0ff'];
+  let h = '';
+  for (const side of ['l','r']){
+    h += `<i class="cone ${side}"></i>`;
+    for (let k=0;k<34;k++){
+      const ang = 22 + Math.random()*46, sp = 46 + Math.random()*44, dx = Math.cos(ang*Math.PI/180)*sp*(side==='l'?1:-1), dy = -Math.sin(ang*Math.PI/180)*sp;
+      const w = 6 + (k%3)*3, hh = k%2 ? 6 : 12, dl = (k%4)*0.06 + (side==='r' ? 0.18 : 0);
+      h += `<b class="cf ${side}" style="--dx:${dx.toFixed(1)}vw;--dy:${dy.toFixed(1)}vh;--fall:${(30+Math.random()*40).toFixed(0)}vh;--rot:${(Math.random()*1080-540).toFixed(0)}deg;--c:${cols[k%cols.length]};width:${w}px;height:${hh}px;animation-delay:${dl.toFixed(2)}s"></b>`;
+    }
+  }
+  box.innerHTML = h; document.body.appendChild(box);
+  setTimeout(()=>box.remove(), 4800);
+}
 function render(){
   const app = $('#app');
   HOV = null; if (typeof FXPIN!=='undefined') FXPIN = false;
@@ -4731,9 +4829,11 @@ function render(){
   if (!S){ LASTTURN = null; LASTSLOTS = null; LASTHAND = null; LASTNUM = null; LASTPROG = null; app.innerHTML = pxui(setupHTML() + setPanelHTML(SETUP.screen==='pick'?'pick':'title')); if (typeof syncMusic==='function') syncMusic(); afterRender(); return; }
   sortHands();
   aeCheck();
-  app.innerHTML = pxui(`<div class="layout onebar">${leftHTML()}${centerHTML()}${rightHTML()}${bottomHTML()}</div>${dicePopHTML()}${over()&&!S.hideOver?overHTML():''}${setPanelHTML('game')}`);
+  app.innerHTML = pxui(`<div class="layout onebar ${S.hp>0&&S.hp<=2?'crisis c'+S.hp:''}">${leftHTML()}${centerHTML()}${rightHTML()}${bottomHTML()}</div>${dicePopHTML()}${over()&&!S.hideOver?overHTML():''}${setPanelHTML('game')}`);
   fit();
   postFx();
+  if (S.phase==='won' && LASTPHASE!=='won') popperFx();   // 승리: 좌우 폭죽(빵빠레)
+  LASTPHASE = S.phase;
   if (typeof syncMusic==='function') syncMusic();
   if (NET.role==='host') netSendState();
   if (NET.on) tmDraw();
@@ -4945,7 +5045,7 @@ function bottomHTML(){
 }
 function overHTML(){
   const won = S.phase==='won';
-  return `<div class="over"><div class="modal"><h2 style="color:${won?'#8fe3a8':'#ff9d9d'}">${won?'던전 정복!':'탐험 실패…'}</h2>
+  return `<div class="over"><div class="modal">${won?'':'<div class="overart flag"></div>'}<h2 style="color:${won?'#8fe3a8':'#ff9d9d'}">${won?'던전 정복!':'탐험 실패…'}</h2>
     <p>${won?`던전 보스 「${esc(S.master.def.name)}」을(를) 쓰러뜨렸습니다!<br>탐험대는 무사히 길드로 돌아갑니다.`:esc(S.loseMsg||'')}</p>
     <p class="muted">차례 ${S.turnNo} · 완료한 도전 ${S.completed.length}장 · 남은 HP ${S.hp}</p>
     <div class="mbtns" style="justify-content:center"><button data-act="closeOver">보드 보기 <kbd>Esc</kbd></button><button class="primary" data-act="newgame">${NET.role==='client'?'방 나가기':'새 게임'} <kbd>Enter</kbd></button></div></div></div>`;
@@ -4981,7 +5081,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.19.1.0</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.0.0</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -5000,7 +5100,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.19.1.0</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.0.0</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -5012,7 +5112,7 @@ function setupHTML(){
   const n = SETUP.sel.length, L = DATA.seekers; SETUP.cur = Math.max(0, Math.min(L.length-1, SETUP.cur||0));
   const d = L[SETUP.cur], k = SETUP.sel.indexOf(d.id), slide = SETUP.slide||''; SETUP.slide = '';
   const enter = SETUP.enter ? 'enter' : ''; SETUP.enter = false;
-  return `<div class="setup pick ${enter}">
+  return `<div class="setup pick ${enter} ${SETUP.rampage?'rampage':''}">
     <div class="sl">
       <div class="lead">탐험대원을 1~4마리 고르세요 <span class="muted" style="font-weight:500">— 고른 순서가 차례 순서</span></div>
       <div class="pstrip">${L.map((x,i)=>{ const o = SETUP.sel.indexOf(x.id);
@@ -5044,14 +5144,14 @@ function setupHTML(){
       <div class="opts">
         <label>난이도 <select data-act="opt" data-k="hard"><option value="0" ${!SETUP.hard?'selected':''}>보통 (HP ${CFG.hpNormal})</option><option value="1" ${SETUP.hard?'selected':''}>어려움 (HP ${CFG.hpHard})</option></select></label>
         <label>보스 <select data-act="opt" data-k="boss"><option value="random">무작위</option>${DATA.masters.map(m=>`<option value="${m.code}" ${SETUP.boss===m.code?'selected':''}>${esc(m.name)}</option>`).join('')}</select></label>
-        <label class="ck"><input type="checkbox" data-act="opt" data-k="rampage" ${SETUP.rampage?'checked':''}> <span>폭주<small>전투 던전 카드 18장이 더 사나운 폭주판으로 바뀜</small></span></label>
+        <label class="ck"><input type="checkbox" data-act="opt" data-k="rampage" ${SETUP.rampage?'checked':''}> <span>폭주<small>심층의 기운에 포켓몬들이 폭주한다</small></span></label>
         <label class="ck"><input type="checkbox" data-act="opt" data-k="quick" ${SETUP.quick?'checked':''}> <span>빠른 게임<small>던전 카드 ${CFG.quickDiscard}장을 덜고 시작 · 대신 피해 2, 배고픔 1</small></span></label>
         <label class="ck"><input type="checkbox" data-act="opt" data-k="autoEnd" ${SETUP.autoEnd!==false?'checked':''}> <span>자동 차례 종료</span></label>
       </div>
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>${pxi('gear')} 설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.19.1.0</div>
+    <div class="credit">Rev. 1.20.0.0</div>
   </div>`;
 }
 
@@ -5339,7 +5439,7 @@ function rulesHTML(){
 <h2 id="r-end">12. 승리와 패배</h2>
 <ul><li><b>승리</b>: 보스 도전을 완료합니다.</li>
 <li><b>패배</b>: 팀 HP가 0이 되거나, 「허기」 배고픔 카드 3장을 모두 획득합니다.</li></ul>
-<p><b>게임 변형</b> — <b>어려움</b>: HP ${CFG.hpHard}로 시작합니다. <b>빠른 게임</b>: 준비 때 던전 카드 ${CFG.quickDiscard}장을 버리고, 피해 2와 배고픔 1장을 받고 시작합니다. <b>폭주</b>: 전투 던전 카드 18장이 원래 특징이 더 사나워진 폭주판으로 바뀝니다(보상도 조금 늘어남). 보통·어려움 어느 쪽과도 함께 켤 수 있습니다.</p>
+<p><b>게임 변형</b> — <b>어려움</b>: HP ${CFG.hpHard}로 시작합니다. <b>빠른 게임</b>: 준비 때 던전 카드 ${CFG.quickDiscard}장을 버리고, 피해 2와 배고픔 1장을 받고 시작합니다. <b>폭주</b>: 전투 던전 카드 18장이 원래 특징이 더 사나워진 폭주 포켓몬으로 바뀝니다. 퍼즐·장애물·함정·이벤트·시련·보스는 그대로입니다. 보통·어려움 어느 쪽과도 함께 켤 수 있습니다.</p>
 
 <h2 id="r-more">13. 더 알아두기</h2>
 <p class="muted">처음에는 건너뛰어도 됩니다. 카드에서 처음 보는 표시가 나오면 여기서 찾아보세요.</p>
@@ -5662,7 +5762,7 @@ document.addEventListener('change', e=>{
   const k = el.dataset.k;
   if (k==='hard') SETUP.hard = el.value==='1';
   if (k==='quick') SETUP.quick = el.checked;
-  if (k==='rampage') SETUP.rampage = el.checked;
+  if (k==='rampage'){ SETUP.rampage = el.checked; if (!S) render(); }   // 폭주: 선택 화면 포켓몬 외곽을 붉게
   if (k==='boss') SETUP.boss = el.value;
   if (k==='autoEnd') SETUP.autoEnd = el.checked;
   if (NET.role==='host' && !S) lobbyBroadcast();   // 온라인 로비: 참가자에게 설정 알림
@@ -6033,13 +6133,14 @@ function tutCheck(){
 
 /* ---------- UI 테마 (기본 + 1~4) ---------- */
 // 원래 화면(기본)은 그대로 두고, 고르면 body.th1~th4 클래스로 창틀·버튼·말풍선·배경을 도트 창 스타일로 바꾼다 (theme/gen_pkm.py)
-const THEMES = ['기본', '남색 돌', '몬스터볼', '초록 풀', '갈색 나무', '피카츄', '이상해씨', '꼬부기', '파이리', '이브이', '푸린'];
+const THEMES = ['기본', '남색 돌', '몬스터볼', '초록 풀', '갈색 나무', '피카츄', '이상해씨', '꼬부기', '파이리', '이브이', '푸린', '하이퍼볼'];   // 번호(저장값)는 바꾸지 않음. 새 테마는 맨 뒤에
+const THEME_ORDER = [0, 2, 11, 1, 3, 4, 5, 6, 7, 8, 9, 10];   // 고르는 화면에 보이는 순서
 function themeIdx(){ let v = ''; try { v = localStorage.getItem('pmd_theme') || ''; } catch(e){} if (v==='pkm') v = '1'; const n = +v; return n>0 && n<THEMES.length ? n : 0; }
 function themeName(){ return THEMES[themeIdx()]; }
 function pkmApply(){ const n = themeIdx(); for (let k=1;k<THEMES.length;k++) document.body.classList.toggle('th'+k, k===n); }
 function pkmSet(n){ try { localStorage.setItem('pmd_theme', String(n)); } catch(e){} pkmApply(); sfx('select'); render(); }
 document.addEventListener('change', e=>{ const t = e.target; if (t.matches && t.matches('[data-theme-sel]')) pkmSet(+t.value); });
-function pkmToggle(){ const n = (themeIdx() + 1) % THEMES.length; try { localStorage.setItem('pmd_theme', String(n)); } catch(e){} pkmApply(); sfx('select'); toast('UI 테마: ' + THEMES[n]); render(); }
+function pkmToggle(){ const n = THEME_ORDER[(THEME_ORDER.indexOf(themeIdx()) + 1) % THEME_ORDER.length]; try { localStorage.setItem('pmd_theme', String(n)); } catch(e){} pkmApply(); sfx('select'); toast('UI 테마: ' + THEMES[n]); render(); }
 pkmApply();
 
 /* ---------------- 탐험 기록 · 업적 · 탐험대 암호 (1.12.0.0) ----------------
