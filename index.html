@@ -676,6 +676,11 @@ button.fsdis{opacity:.45;filter:grayscale(1)}
 #actpop{position:fixed;left:50%;top:18%;transform:translateX(-50%);z-index:86;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:6px;background:rgba(8,21,27,.92);border:3px solid #ffd75e;padding:10px 16px 12px;box-shadow:6px 6px 0 #000;animation:apIn .25s cubic-bezier(.2,.8,.3,1.2)}
 #actpop .apcap{color:#ffe08a;font-weight:900;font-size:17px}#actpop .apcap2{color:#cfe;font-size:15px}
 #actpop.out{opacity:0;transition:opacity .35s}
+#bpop{position:fixed;left:50%;top:26%;transform:translateX(-50%);z-index:86;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:6px;background:rgba(8,21,27,.94);border:3px solid #ffd75e;padding:10px 18px 12px;box-shadow:6px 6px 0 rgba(0,0,0,.6);animation:bpopIn .4s ease-out both}
+#bpop .apcap{color:#ffe08a;font-weight:900;font-size:18px}#bpop .apcap2{color:#cfe;font-size:15px}#bpop .bpsum{color:#f2ecd8;font-size:16px}#bpop .bpsum b,#bpop .apcap b{color:#ffd76a}
+#bpop .bpcards{display:flex;gap:8px}
+#bpop.out{opacity:0;transition:opacity .35s}
+@keyframes bpopIn{0%{opacity:0;transform:translateX(-50%) scale(.7)}60%{opacity:1;transform:translateX(-50%) scale(1.06)}100%{transform:translateX(-50%) scale(1)}}
 @keyframes apIn{from{opacity:0;transform:translateX(-50%) scale(.8)}to{opacity:1;transform:translateX(-50%) scale(1)}}
 .nwait{color:#9fb9c2;font-size:15px;padding:0 10px;align-self:center}
 .guide .gnet{display:flex;align-items:center;flex-wrap:nowrap;gap:4px;margin-left:auto;flex:0 1 auto;min-width:0;overflow:hidden;white-space:nowrap}
@@ -1265,6 +1270,7 @@ b.kw{font-weight:900;text-decoration:underline;text-decoration-thickness:1px;tex
 b.kwk{cursor:help}
 #kwtip{position:fixed;z-index:75;pointer-events:none;max-width:280px;padding:7px 10px;background:#1b2430;color:#f2ecd8;border:2px solid #e8c25a;border-radius:4px;font-size:13px;line-height:1.45;box-shadow:4px 4px 0 rgba(0,0,0,.45);animation:hcIn .1s ease-out both}
 #kwtip b{color:#ffd76a;margin-right:4px}
+#kwtip.dtip{max-width:340px}
 #fxtip{position:fixed;z-index:75;pointer-events:none;max-width:520px;padding:8px 12px;background:#1b2430;color:#f2ecd8;border:2px solid #e8c25a;border-radius:4px;font-size:13.5px;line-height:1.5;box-shadow:4px 4px 0 rgba(0,0,0,.45);animation:hcIn .1s ease-out both}
 #fxtip .ih{color:#ffd76a;font-weight:900;margin-bottom:3px}
 #fxtip b{color:#ffe9a8}
@@ -1518,6 +1524,9 @@ body.touch .setup.title.cov button.cvb kbd{display:none}
 /* 1.20.1.0 폭주 표시 A+B: 테마를 바꿔도 보이도록 바깥 붉은 빛 + 오른쪽 위 「폭주」 딱지 */
 .setup.pick.rampage .pickp.big{position:relative;box-shadow:0 0 0 2px rgba(224,38,44,.85),0 0 22px 6px rgba(255,40,40,.55),8px 8px 0 rgba(0,0,0,.55) !important}
 .setup.pick.rampage .pickp.big::after{content:'폭주';position:absolute;top:-14px;right:18px;padding:3px 12px 4px;background:#c81e24;color:#fff;font-size:18px;font-weight:700;letter-spacing:2px;border:3px solid #0a141a;box-shadow:inset 0 0 0 2px #ff7a7a,3px 3px 0 rgba(0,0,0,.55);text-shadow:1px 1px 0 #5a0a0a;z-index:3;pointer-events:none}
+/* 1.20.24.0 함께하기 로비에도 폭주 표시 */
+.setup.lobby.rampage .lbbox{position:relative;border-color:#e0262c !important;box-shadow:0 0 0 2px rgba(224,38,44,.85),0 0 22px 6px rgba(255,40,40,.55),6px 6px 0 #000 !important}
+.setup.lobby.rampage .lbbox::after{content:'폭주';position:absolute;top:-14px;right:18px;padding:3px 12px 4px;background:#c81e24;color:#fff;font-size:18px;font-weight:700;letter-spacing:2px;border:3px solid #0a141a;box-shadow:inset 0 0 0 2px #ff7a7a,3px 3px 0 rgba(0,0,0,.55);text-shadow:1px 1px 0 #5a0a0a;z-index:3;pointer-events:none}
 
 /* 1.20.0.0 결과 연출: 패배 = 던전에 꽂힌 백기(2프레임 펄럭임), 승리 = 좌우 폭죽 */
 .overart{width:288px;height:180px;margin:0 auto 10px;background-size:576px 180px;background-repeat:no-repeat;image-rendering:pixelated;border:3px solid #0a141a;box-shadow:inset 0 0 0 2px #3a6a78;animation:flagwave .9s steps(1) infinite,overartin .6s ease-out}
@@ -2138,7 +2147,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.20.23.0';
+const GAME_VER = '1.20.26.1';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -2507,6 +2516,13 @@ function netRemoteDialog(kind, o, dflt){
   return new Promise(res=>{ const w = v=>res(v); w.pid = pid; w.dflt = dflt; NET.wait[id] = w; c.send({t:kind, id, o}); });
 }
 
+// 1.20.24.0 선택 창이 열려 있는 동안 누가 고르는 중인지 모두에게 알린다
+function netDlgMark(o, pid, p){
+  if (NET.role!=='host' || !S || !S.net) return p;
+  const d = {pid, t:String(o && o.title || '').replace(/<[^>]*>/g, '').trim()};
+  (S.net.dlg = S.net.dlg || []).push(d); render(); netSendState(true);
+  return Promise.resolve(p).finally(()=>{ if (S && S.net && S.net.dlg){ const k = S.net.dlg.indexOf(d); if (k>=0) S.net.dlg.splice(k,1); if (!S.net.dlg.length) delete S.net.dlg; render(); netSendState(true); } });
+}
 /* ---------- 조작 함수 감싸기 ---------- */
 function netInstall(){
   window.MODAL0 = modal; window.PICK0 = pickModal;
@@ -2515,16 +2531,16 @@ function netInstall(){
       const info = !(o.buttons && o.buttons.length > 1);
       const pid = netDecider();
       if (info){ Object.entries(NET.conns).forEach(([p,c])=>{ if (p!==pid) c.send({t:'modal', o}); }); }
-      if (pid!=='H'){ if (info){ MODAL0(o); netInfoAutoClose(); } const r = netRemoteDialog('modal', o, (o.buttons||[]).find(b=>b.primary) ? (o.buttons.find(b=>b.primary)).value : undefined); if (r) return r; }
-      else if (!info){ NET.hostDlg = (NET.hostDlg||0) + 1; return MODAL0(o).finally(()=>{ NET.hostDlg--; }); }
+      if (pid!=='H'){ if (info){ MODAL0(o); netInfoAutoClose(); } const r = netRemoteDialog('modal', o, (o.buttons||[]).find(b=>b.primary) ? (o.buttons.find(b=>b.primary)).value : undefined); if (r) return info ? r : netDlgMark(o, pid, r); }
+      else if (!info){ NET.hostDlg = (NET.hostDlg||0) + 1; return netDlgMark(o, 'H', MODAL0(o).finally(()=>{ NET.hostDlg--; })); }
     }
     return MODAL0(o);
   };
   window.pickModal = function(o){
     if (NET.role==='host' && S && S.net && netDecider()!=='H'){
-      const r = netRemoteDialog('pick', o, o.items && o.items.length ? [o.items[0].v] : []); if (r) return r;
+      const r = netRemoteDialog('pick', o, o.items && o.items.length ? [o.items[0].v] : []); if (r) return netDlgMark(o, netDecider(), r);
     }
-    if (NET.role==='host' && S && S.net){ NET.hostDlg = (NET.hostDlg||0) + 1; return PICK0(o).finally(()=>{ NET.hostDlg--; }); }
+    if (NET.role==='host' && S && S.net){ NET.hostDlg = (NET.hostDlg||0) + 1; return netDlgMark(o, 'H', PICK0(o).finally(()=>{ NET.hostDlg--; })); }
     return PICK0(o);
   };
   for (const fn of NET_FNS){
@@ -2663,7 +2679,7 @@ function netAct(a, el){
 
 /* ---------- 다른 사람이 한 일 알림 · 향상 요청 ---------- */
 // 화면 연출 함수: 방장에서 실행되면 참가자 화면에서도 똑같이 실행한다. (새 연출을 만들면 여기에 이름을 추가)
-const NET_FX = ['blockFx','showMilled','itemFx'];
+const NET_FX = ['blockFx','showMilled','itemFx','boostPopFx'];
 const NET_FXO = {};
 function netFeed(m, cls, origin){   // origin: 그 일을 한 사람(본인에게는 보내지 않음)
   if (NET.role!=='host') return;
@@ -2692,6 +2708,7 @@ function netNoBoost(){
   S.A.net.done = S.A.net.done || {}; S.A.net.done[pid] = 'no';
   S.A.selBoost = S.A.selBoost.filter(u=>{ const i = cardOwnerSeeker(u); return !(i>=0 && ownerPid(i)===pid); });   // 고른 카드가 있으면 취소
   netFeed(`${nickOf(pid)}: 향상하지 않음`, 'bad', pid); render();
+  netBoostAllPop(0);
 }
 // 향상 단계(온라인): 차례 주인 이외의 사람은 「향상 완료」 또는 「향상 안 함」을 눌러야 차례 주인이 바로 진행할 수 있다
 function netBoostDone(){
@@ -2700,6 +2717,29 @@ function netBoostDone(){
   S.A.net = S.A.net || {}; S.A.net.done = S.A.net.done || {}; S.A.net.done[pid] = 'ok';
   if (S.A.net.no) delete S.A.net.no[pid];
   netFeed(`${nickOf(pid)}: 향상 완료 (${n}장)`, 'good', pid); render();
+  const uids = S.A.selBoost.filter(u=>{ const i = cardOwnerSeeker(u); return i>=0 && ownerPid(i)===pid; });   // 1.20.26.0 향상 완료 팝업(A)
+  boostPopFx({by:pid, nick:nickOf(pid), uids, plus:uids.reduce((a,u)=>{ const c = findSkill(u); return a + (c ? boostBreak(c).v : 0); }, 0)});
+  netBoostAllPop(1900);
+}
+// 1.20.26.0 모두 향상 선택을 마치면 차례인 사람에게 합계 팝업(B)
+function netBoostAllPop(delay){
+  const A = S && S.A; if (!A || A.step!==2 || netBoostPending().length || A.allPop) return; A.allPop = true;
+  setTimeout(()=>{ if (!S || S.A!==A || A.step!==2) return;
+    const sum = A.boostVal + boostPrev(A), pre = Math.max(0, A.actionVal + sum + A.bonus), rem = Math.max(0, effDiff(A.tg) - tgRef(A.tg).progress);
+    boostPopFx({all:true, to:ownerPid(S.cur), sum, pre, rem}); }, delay||0);
+}
+// 향상 팝업: A = 한 사람이 향상 완료(본인 빼고 모두에게), B = 모두 완료(차례인 사람에게만)
+function boostPopFx(d){
+  if (window.__noFx || !S || !d) return;
+  if (d.by && d.by===NET.pid) return;
+  if (d.all && d.to!==NET.pid) return;
+  let el = document.getElementById('bpop'); if (el) el.remove();
+  el = document.createElement('div'); el.id = 'bpop';
+  if (d.all) el.innerHTML = pxui(`<div class="apcap">모두 향상 선택 완료</div><div class="bpsum">향상 합계 <b>+${d.sum}</b> · 주사위 전 <b>${d.pre}</b> / 남은 난이도 ${d.rem}</div><div class="apcap2">「향상 확정」을 눌러 진행하세요</div>`);
+  else { const cs = (d.uids||[]).map(u=>findSkill(u)).filter(Boolean);
+    el.innerHTML = pxui(`<div class="apcap">${esc(d.nick)} 향상 완료 <b>+${d.plus}</b></div>${cs.length?`<div class="bpcards">${cs.map(c=>skillHTML(c,{w:'130px', noZb:true})).join('')}</div>`:'<div class="apcap2">고른 카드 없음</div>'}`); }
+  document.body.appendChild(el); sfx('select');
+  setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(), 350); }, d.all ? 2200 : 1800);
 }
 function netDropBoost(u){   // 차례 주인이 다른 사람이 고른 향상 카드를 뺀다 (넘치는 향상 방지)
   if (!S || !S.A || S.A.step!==2 || !S.A.selBoost.includes(u)) return;
@@ -2715,7 +2755,7 @@ function netMyBoostCount(pid){ return S.A ? S.A.selBoost.filter(u=>{ const i = c
 function netCanBoost(pid){ return S.seekers.some(s=>ownerPid(s.i)===pid && s.i!==S.cur && s.hand.some(c=>boostCardOK(c) && boostEligible(c))); }
 function netBoostHelpers(){ const actor = ownerPid(S.cur); return S.net.players.filter(p=>p.pid!==actor && p.on!==false && S.net.owner.includes(p.pid)); }
 function netBoostPending(){
-  if (!netOn() || !S.A || S.A.step!==2) return [];
+  if (!netOn() || !S.A || S.A.step!==2 || boostCap(S.A)<=0) return [];
   const d = (S.A.net && S.A.net.done) || {};
   return netBoostHelpers().filter(p=>!d[p.pid] && netCanBoost(p.pid));
 }
@@ -2748,6 +2788,8 @@ function netGuide(g){
 function netGuide0(g){
   if (!netOn() || over() || !S) return g;
   const A = S.A, actor = ownerPid(S.cur), who = `${esc(nickOf(actor))} · ${esc(cur().def.name)}`;
+  { const dl = S.net.dlg && S.net.dlg.filter(d=>d.pid!==NET.pid); if (dl && dl.length){ const d = dl[dl.length-1];   // 다른 사람이 선택 창을 보고 있음
+      return {n:'⏳', tone:'', t:`${esc(nickOf(d.pid))} 님이 고르는 중입니다. 잠시 기다려 주세요`, d: d.t ? esc(d.t) : '', keys:''}; } }
   const others = S.net.players.filter(p=>p.pid!==actor && S.net.owner.includes(p.pid));
   const chips = () => others.map(p=>{ const n = netMyBoostCount(p.pid), d = (A.net && A.net.done && A.net.done[p.pid]) || '';
       const st = d==='ok' ? `완료 ${n}장` : d==='no' ? '향상 안 함' : !netCanBoost(p.pid) ? '낼 카드 없음' : n ? `${n}장 고르는 중` : '고르는 중';
@@ -3938,6 +3980,7 @@ async function confirmAction(){
     const A2 = S.A; S.busy = true; try { if (!over()) await runAfter(A2); } finally { S.busy = false; }
     flushCharge(); S.T.acted = true; S.A = null; render();
     if (!over()) await endTurn(); return; }
+  if (boostCap(S.A)<=0){ log('향상 제한 0: 향상 단계를 건너뜁니다.','sys'); await confirmBoost(); return; }   // 1.20.25.0
   if (!S.seekers.some(x=>x.hand.some(c=>boostCardOK(c) && boostEligible(c)))){ log('향상에 쓸 수 있는 카드가 없어 향상 단계를 건너뜁니다.','sys'); await confirmBoost(); return; }
   if (S.seekers.length>1){ const h = S.seekers.find(x=>x.i!==S.cur && x.hand.some(boostEligible)) || S.seekers.find(x=>x.i!==S.cur); if (h) S.view = h.i; }
   render();
@@ -4894,7 +4937,7 @@ function leftHTML(){
   const hs = handSize(), rl = globalRules();
   const RL = {bossDiff:'보스 난이도', bossDiffPerItem:'소지품마다 보스 난이도', hand:'패 크기', slots:'던전 카드 칸', diff:'난이도', failDamage:'실패 피해', boostMax:'향상 한도', noWhite:'백색 카드 행동 불가', noItem:'부적 사용 불가', noLight:'☀ 불일치', dieBlock:'주사위 불일치', valueMod:'행동 수치', failLose:'실패 누적 패배', setLose:'같은 카드 누적 패배', failDrain:'실패하면 모든 시련 진행도 -', darkDrain:'☠ 나오면 모든 도전 진행도 -', diffOther:'다른 도전 난이도', bossReduce:'보스에게 올리는 진행도 -', noWhiteBoost:'백색 향상 불가'};
   const modLines = rl.map(r=>`<div>• ${esc(RL[r.k]||r.k)}${['hand','slots','diff','failDamage','valueMod','diffOther','bossDiff','bossDiffPerItem'].includes(r.k)?' '+(r.n>0?'+':'')+r.n:['darkDrain','failDrain','bossReduce'].includes(r.k)?r.n:r.k==='boostMax'?' '+r.n+'장':r.k==='dieBlock'?' '+(COL[r.s]?COL[r.s].s+COL[r.s].n:r.s):r.k==='failLose'||r.k==='setLose'?' '+r.n:''}${r.f?' ('+esc(fName(r.f))+')':''} <span class="muted">— ${esc(r.src)}</span></div>`).join('');
-  const chips = rl.map(r=>`<span class="chip" title="${escT(r.src)}">${esc(RL[r.k]||r.k)}${['hand','slots','diff','failDamage','valueMod','diffOther','bossDiff'].includes(r.k)?' '+(r.n>0?'+':'')+r.n:['darkDrain','failDrain','bossReduce'].includes(r.k)?r.n:r.k==='boostMax'?' '+r.n+'장':r.k==='dieBlock'?' '+(COL[r.s]?COL[r.s].s+COL[r.s].n:r.s):r.k==='failLose'||r.k==='setLose'?' '+r.n:''}${r.f?' ('+esc(fName(r.f))+')':''}</span>`).join('');
+  const chips = rl.map(r=>`<span class="chip">${esc(RL[r.k]||r.k)}${['hand','slots','diff','failDamage','valueMod','diffOther','bossDiff'].includes(r.k)?' '+(r.n>0?'+':'')+r.n:['darkDrain','failDrain','bossReduce'].includes(r.k)?r.n:r.k==='boostMax'?' '+r.n+'장':r.k==='dieBlock'?' '+(COL[r.s]?COL[r.s].s+COL[r.s].n:r.s):r.k==='failLose'||r.k==='setLose'?' '+r.n:''}${r.f?' ('+esc(fName(r.f))+')':''}</span>`).join('');
   const m = S.master;
   return `<div class="status ${S.A?'attempting':''}">
     <div class="sg who" style="--sc:${cur().def.color}"><div class="curwho">${miniHTML(cur().def)}<span class="cwt"><span>${whoPre(S.cur)}${esc(cur().def.name)}의 차례 <small>${S.turnNo}번째</small></span><span class="gh" aria-hidden="true">${netOn()?`<b class="nwho">${esc(NET.players.reduce((a,p)=>p.nick.length>a.length?p.nick:a,''))}</b> · `:''}${esc(LONGNAME())}의 차례 <small>888번째</small></span></span></div>${netOn()?tmNumHTML():''}
@@ -4904,9 +4947,9 @@ function leftHTML(){
       <div class="dgsub">지나온 층 ${S.delveDiscard.length} · 완료 ${S.completed.length} <button class="lnk" data-act="viewCompleted">보기</button></div></div></div>`}</div>
     <div class="sg opt bossg">
       <div class="bossl"><span class="sl">던전 보스</span> <b>${m.revealed?esc(m.def.name):'정체불명'}</b>${S.phase==='delve'?` <span class="${backActive()?'warn':'muted'}">${esc(CFG.backName)}: ${backActive()?'발동 중 (모든 도전 난이도 +1)':`덱 ${CFG.backDeck}장 이하에서 발동`}</span>`:''}</div>
-      <div class="chips">${m.items.length?m.items.map(x=>`<span class="chip boss" title="${escT(x.text)}">☗ ${esc(x.name)}</span>`).join(''):'<span class="muted">소지품 없음</span>'}</div></div>
+      <div class="chips">${m.items.length?m.items.map(x=>`<span class="chip boss" data-tip="${escT(x.name+': '+x.text)}">☗ ${esc(x.name)}</span>`).join(''):'<span class="muted">소지품 없음</span>'}</div></div>
     <div class="sg hgr"><div class="sl">배고픔 <span class="muted">배고픔 덱 ${S.exhaustDeck.length}</span>${!S.A&&!S.T.acted&&!over()?` <button class="hgbtn" data-act="exhaust" ${S.T.exhausted||!cur().hand.length?'disabled':''} title="차례 시작 시: 패를 모두 버리고 배고픔 1장 공개 후 ${handSize()}장 새로 뽑기">🍎 배고픔 선언</button>`:''}</div>
-      <div class="chips">${S.exhaustActive.map(c=>`<span class="chip hg" data-zoom="hunger:${c.uid}" title="${escT(c.text||opsText(c.effect))}">🍽 ${esc(c.name)}${hungerCounter(c)?` [${hungerCounter(c)}]`:''}</span>`).join('') || '<span class="muted">공개된 카드 없음</span>'}</div></div>
+      <div class="chips">${S.exhaustActive.map(c=>`<span class="chip hg" data-zoom="hunger:${c.uid}" data-tip="${escT(c.name+': '+(c.text||opsText(c.effect)))}">🍽 ${esc(c.name)}${hungerCounter(c)?` [${hungerCounter(c)}]`:''}</span>`).join('') || '<span class="muted">공개된 카드 없음</span>'}</div></div>
     ${S.A ? `<div class="sg grow att s${S.A.step}">${actionHTML()}${chips?`<div class="chips">${chips}</div>`:''}</div>`
           : `<div class="sg grow fx"><span class="sl">적용 중인 효과</span>${chips || '<span class="muted">없음</span>'}</div>`}
     <div class="sg sys"><div class="topact">${topActHTML()}</div>
@@ -4928,7 +4971,6 @@ function rightHTML(){
   const s = cur();
   const last = S.log[S.log.length-1];
   return `<div class="right ${LOGOPEN?'logopen':''}">
-    ${!S.A && S.T.exhausted && !S.T.acted ? '<div class="action"><p class="muted" style="font-size:13px;margin:0">이번 차례에 배고픔을 선언했습니다. 차례는 그대로 진행합니다.</p></div>' : ''}
     <div class="infobox" id="info">${infoBoxInner()}</div>
     <div class="loghead" data-act="toglog">진행 기록 ${LOGOPEN?'▾ 접기':'▸ 펼치기'}${!LOGOPEN&&last?`<span class="lastlog ${last.cls}">${esc(last.msg)}</span>`:''}</div>
     ${LOGOPEN?`<div class="log">${S.log.map(l=>`<div class="${l.cls}">${esc(l.msg)}</div>`).join('')}</div>`:''}</div>`;
@@ -4940,8 +4982,13 @@ function pendingTotal(A){
 }
 /* 미리 보기: 고르는 중인 향상 카드 / 주사위를 굴린 뒤 발동할 행동 카드 효과 */
 function boostPrev(A){ if (!A || A.step!==2) return 0; return A.selBoost.reduce((a,u)=>{ const c = findSkill(u); return a + (c ? boostBreak(c).v : 0); }, 0); }
-function rollPrev(A){ if (!A || A.step!==3 || A.rollDone || !A.dice || !A.dice.length || A.rolling || A.rrAnim!=null || !A.action) return 0;
-  let n = 0; parseEffect(A.action.effect).clauses.forEach(cl=>{ if (cl.when!=='roll' || cl.cost || !cl.conds.every(c=>condOK(c))) return; cl.ops.forEach(o=>{ if (o.op==='progress') n += (+o.n||0); }); }); return n; }
+function rollPrev(A){   // 1.20.24.0 향상 단계(고르는 중인 향상 포함)부터 「주사위를 굴린 뒤」 수치 효과를 미리 더해 보여 준다
+  if (!A || !A.action || A.rollDone || (A.step!==2 && A.step!==3) || A.rolling || A.rrAnim!=null) return 0;
+  const nb = A.step===2 ? A.boosts.length + A.selBoost.length : A.boosts.length, hasDice = !!(A.dice && A.dice.length);
+  let n = 0; parseEffect(A.action.effect).clauses.forEach(cl=>{ if (cl.when!=='roll' || cl.cost) return;
+    if (!cl.conds.every(c => c.k==='boosted' ? nb>0 : (LATE.has(c.k) && !hasDice) ? false : condOK(c))) return;
+    cl.ops.forEach(o=>{ if (o.op==='progress') n += (+o.n||0); if (o.op==='progressPerBoost') n += nb; }); });
+  return n; }
 const tallyParts = A => { const b = A.boostVal + boostPrev(A), x = A.bonus + rollPrev(A); return `향상 <b>+${b}</b>${x?` · 추가 <b>${x>0?'+':''}${x}</b>`:''}`; };
 function dicePopHTML(){   // ③ 주사위 단계: 화면 가운데 큰 창
   const A = S.A; if (!A || A.step!==3 || A.popOff || !A.dice || !A.dice.length || over()) return '';
@@ -4995,7 +5042,6 @@ function actionHTML(){
   const s = cur(), A = S.A, T = S.T;
   if (!A){
     let h = '';
-    if (T.exhausted && !T.acted) h += '<p class="muted" style="font-size:13px">이번 차례에 배고픔을 선언했습니다. 차례는 그대로 진행합니다.</p>';
     return h;
   }
   const tg = A.tg, card = A.card, diff = A.step===4 && A.result ? A.result.diff : effDiff(tg);
@@ -5048,7 +5094,7 @@ function bottomHTML(){
   return `<div class="bottom"><div class="tabs n${S.seekers.length}">${tabs}
       <div class="sinfo" style="--sc:${d.color}">
         <button class="itembtn" data-act="item" data-i="${v.i}" ${itemUsable(v)?'':'disabled'} title="${escT(CFG.itemTiming)}"><i class="px p18 px-charm"></i> 부적 사용 <kbd>F</kbd></button>
-        <div class="sib ${v.charged?'':'usedb'}" title="${escT(d.item_text)}"><b>부적 「${esc(d.item_name)}」</b><span class="st ${v.charged?'':'used'}">${v.charged?'충전됨':v.chargeNext?'충전 대기':'사용함'}</span> ${tcol(esc(d.item_text))}</div>
+        <div class="sib ${v.charged?'':'usedb'}" data-tip="${escT('부적은 '+CFG.itemTiming+'에만 쓸 수 있습니다.')}"><b>부적 「${esc(d.item_name)}」</b><span class="st ${v.charged?'':'used'}">${v.charged?'충전됨':v.chargeNext?'충전 대기':'사용함'}</span> ${tcol(esc(d.item_text))}</div>
         <div class="sib" title="${escT(d.ability_text)}"><b>특성 「${esc(d.ability_name)}」</b> ${tcol(esc(d.ability_text))}</div>
         <div class="sic"><span><span class="l2">버린 더미 맨 위</span> ${topLine(v)}</span>${(()=>{ const k = deckTopKnown(v); return k ? `<span class="dtop" title="덱 맨 위 카드가 공개되어 있습니다"><span class="l2">덱 맨 위(공개)</span> <b class="tln" data-zoombtn="skill:${k.uid}">${cols(k.colors).map(x=>COL[x]?COL[x].s:'').join('')}${esc(k.name)}</b></span>` : ''; })()}<span>덱 <b>${v.deck.length}</b> · 버림 <b>${v.discard.length}</b> <button class="lnk" data-act="viewDiscard" data-i="${v.i}">보기</button> <button class="lnk zlink" data-zoombtn="seeker:${d.id}">🔍</button></span></div>
       </div></div>
@@ -5095,7 +5141,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.23.0</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.26.1</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -5114,7 +5160,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.23.0</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.26.1</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -5165,7 +5211,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.20.23.0</div>
+    <div class="credit">Rev. 1.20.26.1</div>
   </div>`;
 }
 
@@ -5940,6 +5986,12 @@ document.addEventListener('mousedown', hovCardHide, true);
 // 1.20.20.0 카드 문구의 키워드(굵은 글씨)에 마우스를 올리면 바로 설명을 띄운다
 function kwTipHide(){ const h = document.getElementById('kwtip'); if (h) h.remove(); }
 document.addEventListener('mouseover', e=>{
+  const dt = e.target.closest && !e.target.closest('b.kw') && e.target.closest('[data-tip]');   // 1.20.26.0 data-tip: 바로 뜨는 짧은 안내
+  if (dt){ let h = document.getElementById('kwtip'); if (h && h.dataset.k==='tip:'+dt.dataset.tip) return; kwTipHide();
+    h = document.createElement('div'); h.id = 'kwtip'; h.className = 'dtip'; h.dataset.k = 'tip:'+dt.dataset.tip; h.textContent = dt.dataset.tip; document.body.appendChild(h);
+    const r = dt.getBoundingClientRect(), hr = h.getBoundingClientRect();
+    h.style.left = Math.max(8, Math.min(window.innerWidth - hr.width - 8, r.left + r.width/2 - hr.width/2)) + 'px';
+    h.style.top = (r.top - hr.height - 8 >= 8 ? r.top - hr.height - 8 : r.bottom + 8) + 'px'; return; }
   const b = e.target.closest && e.target.closest('b.kw');
   if (!b){ kwTipHide(); return; }
   const n = b.textContent.replace(/[\s:.]*\d*[\s:.]*$/, '').trim(), k = KEYWORDS.find(x=>x[0]===n);
