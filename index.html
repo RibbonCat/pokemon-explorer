@@ -274,6 +274,8 @@ body.touch .dicepop .dpart{width:clamp(110px,calc(30*var(--vh)),170px);height:cl
 .sinfo .sic{font-size:13.5px}
 /* v1.0.5: 가독성 */
 .pickgrid .pick .card{--w:clamp(190px,calc(15.5*var(--vw)),250px) !important}
+.pickgrid[style*="--pw"] .pick .card{--w:var(--pw) !important}
+.modal .mbtns{position:sticky;bottom:-20px;z-index:4;background:inherit;padding:8px 0 6px;margin-bottom:-6px}
 .pickgrid{gap:22px 18px;justify-content:center}
 .modal:has(.pickgrid){max-width:calc(96*var(--vw))}
 .card.chal .sub{opacity:1;display:flex;align-items:center;gap:.3em;flex-wrap:wrap;font-size:.7em}
@@ -2147,7 +2149,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.20.26.1';
+const GAME_VER = '1.20.27.0';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -5141,7 +5143,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.26.1</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.27.0</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -5160,7 +5162,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.26.1</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.27.0</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -5211,7 +5213,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.20.26.1</div>
+    <div class="credit">Rev. 1.20.27.0</div>
   </div>`;
 }
 
@@ -5249,7 +5251,7 @@ function pickModal({title, desc, items, n=1, skip=false}){
     };
     const pick = v => {
       if (n===1){ el.remove(); res([v]); return; }
-      const k = sel.indexOf(v); if (k>=0) sel.splice(k,1); else if (sel.length<need) sel.push(v); draw();
+      const k = sel.indexOf(v); if (k>=0) sel.splice(k,1); else if (sel.length<need) sel.push(v); draw(); fitPick(el);
     };
     draw();
     el.addEventListener('click', e=>{
@@ -5260,9 +5262,18 @@ function pickModal({title, desc, items, n=1, skip=false}){
     });
     el._num = k => { if (items[k]) pick(items[k].v); };
     el._enter = () => { if (n>1 && sel.length===need){ el.remove(); res([...sel]); } };
-    el._cancel = () => { if (n>1 && sel.length){ sel.pop(); draw(); } else if (skip){ el.remove(); res([]); } };
-    $('#modal-root').appendChild(el);
+    el._cancel = () => { if (n>1 && sel.length){ sel.pop(); draw(); fitPick(el); } else if (skip){ el.remove(); res([]); } };
+    $('#modal-root').appendChild(el); fitPick(el);
   });
+}
+// 1.20.27.0 고르기 창: 카드가 많아도 스크롤 없이 한 화면에 들어오도록 카드 크기를 줄인다(처음 한 번 정하고 유지)
+function fitPick(el){
+  const m = el.querySelector('.modal'), g = el.querySelector('.pickgrid'); if (!m || !g || !g.querySelector('.card')) return;
+  m.style.maxWidth = 'calc(96*var(--vw))';
+  if (!el._pw){ let w = Math.round(Math.min(250, Math.max(190, innerWidth*0.155))); g.style.setProperty('--pw', w+'px');
+    while (w > 96 && m.scrollHeight > m.clientHeight + 1){ w -= 8; g.style.setProperty('--pw', w+'px'); }
+    el._pw = w; }
+  else g.style.setProperty('--pw', el._pw+'px');
 }
 
 /* =================== 크게 보기 (더블클릭 / 🔍) =================== */
