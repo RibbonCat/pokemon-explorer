@@ -1507,9 +1507,6 @@ body.touch .setup.title.cov button.cvb kbd{display:none}
 /* 1.20.1.0 폭주 표시 A+B: 테마를 바꿔도 보이도록 바깥 붉은 빛 + 오른쪽 위 「폭주」 딱지 */
 .setup.pick.rampage .pickp.big{position:relative;box-shadow:0 0 0 2px rgba(224,38,44,.85),0 0 22px 6px rgba(255,40,40,.55),8px 8px 0 rgba(0,0,0,.55) !important}
 .setup.pick.rampage .pickp.big::after{content:'폭주';position:absolute;top:-14px;right:18px;padding:3px 12px 4px;background:#c81e24;color:#fff;font-size:18px;font-weight:700;letter-spacing:2px;border:3px solid #0a141a;box-shadow:inset 0 0 0 2px #ff7a7a,3px 3px 0 rgba(0,0,0,.55);text-shadow:1px 1px 0 #5a0a0a;z-index:3;pointer-events:none}
-/* 보관(지금은 쓰지 않음): 포켓몬 도트 붉은 외곽선. 쓰려면 화면 최상위에 sprite-rage 클래스를 붙이면 됨 */
-.setup.sprite-rage .pport{filter:drop-shadow(2px 0 0 #e0262c) drop-shadow(-2px 0 0 #e0262c) drop-shadow(0 2px 0 #e0262c) drop-shadow(0 -2px 0 #e0262c) drop-shadow(0 0 6px rgba(255,40,40,.75))}
-.setup.sprite-rage .pport.pg{filter:none}
 
 /* 1.20.0.0 결과 연출: 패배 = 던전에 꽂힌 백기(2프레임 펄럭임), 승리 = 좌우 폭죽 */
 .overart{width:288px;height:180px;margin:0 auto 10px;background-size:576px 180px;background-repeat:no-repeat;image-rendering:pixelated;border:3px solid #0a141a;box-shadow:inset 0 0 0 2px #3a6a78;animation:flagwave .9s steps(1) infinite,overartin .6s ease-out}
@@ -1569,6 +1566,9 @@ body.th1 .tabs .tab.turn,body.th2 .tabs .tab.turn,body.th3 .tabs .tab.turn,body.
 /* 1.20.14.0 배고픔 카드 공개: 칩이 살짝 튀어나오며 붉게 한 번 빛남 */
 @keyframes hgIn{0%{opacity:0;transform:scale(.6) translateY(-4px)}45%{opacity:1;transform:scale(1.12);filter:drop-shadow(0 0 6px rgba(255,90,60,.85))}100%{transform:none;filter:none}}
 .chip.hg.hgnew{display:inline-block;animation:hgIn .7s ease-out both}
+/* 1.20.17.0 배고픔 카드 공개, 이벤트 이야기 창: 살짝 커졌다가 제자리로 */
+@keyframes mpop{0%{transform:scale(.86);opacity:0}55%{transform:scale(1.06);opacity:1}100%{transform:scale(1);opacity:1}}
+.mback .modal.pop{animation:mpop .38s ease-out both}
 .card .art .tt-0,.tci.tt-0{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAl0lEQVR4nMWTMQ6FIAyGy4uLV3B4ZyjXcHbgiA7exY7ODhyhjnWqAaLVaKL/REv/j9IAgCFEFEQUq8Y0y9SKTK0J+d2iXz2dmYWZzS6q1HQFrGsicgAATjfGvsmKl/+QxfXcZbEPEYjIudRcmo6kMB/i8yE+v4ImyiGOfbNB6rkDH2IG0CFWZWIPtldzqm9fYtrF7c/0mlZd41u6TdGskwAAAABJRU5ErkJggg==)}
 .card .art .tt-1,.tci.tt-1{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAoklEQVR4nMVTOQ6EMAx0Ih5k8RpKyi15SkpKyrxjq4gicrm/YauNwBmHSBQ7XcaeGeciegiHSGY+NCcisPdC/oRxC1XjNC/QqCyY+dDClFJlFNZ4MXFIjISWidfFljhnqTh/Tu8R5yy0vKZyXmWCu7EtVFtAqURE48iQ91Y62i/CYBXOiS1DLyIurLHZqLn3/inXOKCm3vGJ1EvsFVn/4j/4AoHgV4K94GI6AAAAAElFTkSuQmCC)}
 .card .art .tt-2,.tci.tt-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAZElEQVR4nGNgIBEYGBj8NzAw+E+qPrjmb9++/V+15QDphowEzegKSNb8YocDXCFZzkY2ZNWWA+T7+cUOBxTXEAJMyJqjtH4xeFR8IMlSuOauKC2UMCDaFeiakcWJtp3szDEoAADDZYHQZl6TNAAAAABJRU5ErkJggg==)}
@@ -1878,12 +1878,11 @@ const CTYPE_ICONS=["이벤트", "장애물", "전투", "퍼즐", "함정"];
 const CARDART=["DGN-001", "DGN-002", "DGN-003", "DGN-004", "DGN-005", "DGN-006", "DGN-007", "DGN-008", "DGN-009", "DGN-010", "DGN-011", "DGN-012", "DGN-013", "DGN-014", "DGN-015", "DGN-016", "DGN-017", "DGN-018", "DGN-019", "DGN-020", "DGN-021", "DGN-022", "DGN-023", "DGN-024", "DGN-025", "DGN-026", "DGN-027", "DGN-028", "DGN-029", "DGN-030", "DGN-031", "DGN-032", "DGN-033", "DGN-034", "DGN-035", "DGN-036", "DGN-037", "DGN-038", "DGN-039", "DGN-040", "DGN-041", "DGN-042", "DGN-043", "DGN-044", "DGN-045", "DGN-046", "DGN-047", "DGN-048", "DGN-049", "DGN-050", "DGN-051", "DGN-052", "TRL-001", "TRL-002", "TRL-003", "TRL-004", "TRL-005", "TRL-006", "TRL-007", "TRL-008", "TRL-009", "TRL-010", "TRL-011", "TRL-012"];
 const BOSSART=["BOS-001", "BOS-002", "BOS-003"];
 const TYPE_ICONS=["강철", "격투", "고스트", "노말", "독", "드래곤", "땅", "물", "바위", "불꽃", "악", "얼음", "에스퍼", "전기", "페어리", "풀"];
-/* =================== 사운드: 코드로 만드는 8비트 효과음·배경음악 (소리 파일 없음) =================== */
+/* =================== 사운드: 코드로 만드는 8비트 효과음 + bgm 폴더의 배경음악 파일 =================== */
 const SND = (() => {
-  let ctx = null, master = null, sfxBus = null, musBus = null, melIn = null, drmIn = null, brtIn = null, CUR = null;
-  const st = {on:true, bgm:true, fx:true, sfx:0.5, mus:0.35};   // on: 전체(항상 켬, 예전 설정 호환), bgm: 배경음악, fx: 효과음
-  try { const v = localStorage.getItem('pmd_sound'); if (v==='0'){ st.bgm = st.fx = false; localStorage.removeItem('pmd_sound'); }
-    const g = localStorage.getItem('pmd_bgm'), f = localStorage.getItem('pmd_fx'); if (g!=null) st.bgm = g!=='0'; if (f!=null) st.fx = f!=='0'; const a = localStorage.getItem('pmd_vol_sfx'), b = localStorage.getItem('pmd_vol_mus'); if (a!=null) st.sfx = +a; if (b!=null) st.mus = +b; } catch(e){}
+  let ctx = null, master = null, sfxBus = null, musBus = null, CUR = null;
+  const st = {on:true, bgm:true, fx:true, sfx:0.5, mus:0.35};   // bgm: 배경음악, fx: 효과음
+  try { const g = localStorage.getItem('pmd_bgm'), f = localStorage.getItem('pmd_fx'); if (g!=null) st.bgm = g!=='0'; if (f!=null) st.fx = f!=='0'; const a = localStorage.getItem('pmd_vol_sfx'), b = localStorage.getItem('pmd_vol_mus'); if (a!=null) st.sfx = +a; if (b!=null) st.mus = +b; } catch(e){}
   const waves = {};
   function init(){
     if (ctx) { if (ctx.state==='suspended') ctx.resume(); return true; }
@@ -1893,16 +1892,7 @@ const SND = (() => {
     sfxBus = ctx.createGain(); sfxBus.gain.value = st.sfx; sfxBus.connect(master);
     musBus = ctx.createGain(); musBus.gain.value = st.mus; musBus.connect(master);
     // 옛 게임기 느낌의 펄스파(듀티 12.5% / 25%)
-    { const n = 32, re = new Float32Array(n), im = new Float32Array(n);   // 부드러운 소리: 홀수 배음을 빠르게 줄인 따뜻한 파형(배경음악용)
-      for (let k=1;k<n;k++) im[k] = (k%2 ? 1 : 0.25) / (k*k);
-      waves.soft = ctx.createPeriodicWave(re, im); }
-    { const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2600; lp.Q.value = 0.5;   // 배경음악: 높은 소리를 깎아 쨍하지 않게
-      const mg = ctx.createGain(); mg.gain.value = 0.8; musBus.disconnect(); melIn = ctx.createGain(); melIn.connect(lp); lp.connect(musBus); musBus.connect(mg); mg.connect(master);
-      { const dlp2 = ctx.createBiquadFilter(); dlp2.type = 'lowpass'; dlp2.frequency.value = 9000; drmIn = ctx.createGain(); drmIn.connect(dlp2); dlp2.connect(musBus);
-        const blp = ctx.createBiquadFilter(); blp.type = 'lowpass'; blp.frequency.value = 4500; blp.Q.value = 0.5; brtIn = ctx.createGain(); brtIn.connect(blp); blp.connect(musBus); }   // 보스: 날이 선 리드·기타   // 1.18.0.0: 북은 높은 소리를 덜 깎아 또렷하게(멜로디는 그대로 2600Hz)
-      const dl = ctx.createDelay(1), fb = ctx.createGain(), wet = ctx.createGain(), dlp = ctx.createBiquadFilter();   // 은은한 울림(에코)
-      dl.delayTime.value = 0.27; fb.gain.value = 0.25; wet.gain.value = 0.22; dlp.type = 'lowpass'; dlp.frequency.value = 1800;
-      lp.connect(dl); dl.connect(dlp); dlp.connect(fb); fb.connect(dl); dlp.connect(wet); wet.connect(musBus); }
+    { const mg = ctx.createGain(); mg.gain.value = 0.8; musBus.disconnect(); musBus.connect(mg); mg.connect(master); }   // 배경음악 버스 (1.20.16.0 코드 음악 삭제, 파일 곡 음량 기준 유지)
     for (const d of [0.125, 0.25]){
       const n = 32, re = new Float32Array(n), im = new Float32Array(n);
       for (let k=1;k<n;k++) im[k] = (2/(k*Math.PI)) * Math.sin(k*Math.PI*d);
@@ -1919,7 +1909,7 @@ const SND = (() => {
   function tone({f, d=0.1, w='p25', v=0.3, to=null, at=0, bus=null, a=0.004, r=0.03}){
     const t = (at||ctx.currentTime), o = ctx.createOscillator(), g = ctx.createGain();
     const fr = typeof f==='string' ? hz(f) : f;
-    if (w==='p25') o.setPeriodicWave(waves[0.25]); else if (w==='p12') o.setPeriodicWave(waves[0.125]); else if (w==='soft') o.setPeriodicWave(waves.soft); else o.type = w;
+    if (w==='p25') o.setPeriodicWave(waves[0.25]); else if (w==='p12') o.setPeriodicWave(waves[0.125]); else o.type = w;
     o.frequency.setValueAtTime(fr, t);
     if (to) o.frequency.exponentialRampToValueAtTime(typeof to==='string'?hz(to):to, t+d);
     g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t+a);
@@ -1993,6 +1983,9 @@ const SND = (() => {
                      tone({f:'C3', d:1.2, w:'triangle', v:0.35, at:t+7*s, r:0.5}); },
     // 패배: 천천히 내려앉는 단조 징글
     tick:    () => { tone({f:1900, d:0.03, w:'square', v:0.07}); noise({d:0.02, v:0.25, bp:3400, q:3}); },   // 「째깍」 차례 시간 마지막 15초
+    event:   () => { const t = ctx.currentTime;   // 1.20.17.0 이벤트 이야기 창: 신비로운 화음을 올라갔다 내려오는 「띠리링」 (약 1초)
+                     ['C5','E5','G#5','B5','E6','B5','G#5','E5'].forEach((f,i)=>tone({f, d:0.4, w:'triangle', v:0.28, at:t+i*0.085, a:0.006, r:0.33}));
+                     tone({f:'C6', d:0.5, w:'triangle', v:0.17, at:t+0.7, a:0.02, r:0.4}); },
     myturn:  () => seq(['G5','C6','E6','G6'], 0.075, {w:'triangle', v:0.32, d:0.12}),   // 온라인: 내 차례 알림
     chat:    () => { const t = ctx.currentTime; [0, 0.13].forEach(x=>tone({f:'B6', d:0.05, w:'p25', v:0.16, at:t+x})); },   // 「띡. 띡.」 채팅 도착
     lose:    () => { const t = ctx.currentTime, s = 0.24;
@@ -2001,15 +1994,14 @@ const SND = (() => {
                      tone({f:'A2', d:2.2, w:'triangle', v:0.35, at:t, r:0.9}); },
   };
   // 효과음별 크기 보정(휴대폰 스피커 기준으로 들리는 크기를 맞춤)
-  const GAIN = {"select": 1.47, "confirm": 1.19, "cancel": 1.28, "draw": 0.97, "discard": 1.02, "dice": 1.34, "match": 2.05, "complete": 0.84, "damage": 0.74, "hit": 0.8, "block": 0.18, "fail": 1.0, "turn": 0.33, "door": 0.44, "item": 0.42, "charge": 1.33, "heal": 0.28, "hunger": 1.8, "lowhp": 1.6, "boss": 0.7, "win": 0.3, "lose": 0.45, "chat": 1.0, "tick": 0.9, "myturn": 0.9};
+  const GAIN = {"event": 1.0, "select": 1.47, "confirm": 1.19, "cancel": 1.28, "draw": 0.97, "discard": 1.02, "dice": 1.34, "match": 2.05, "complete": 0.84, "damage": 0.74, "hit": 0.8, "block": 0.18, "fail": 1.0, "turn": 0.33, "door": 0.44, "item": 0.42, "charge": 1.33, "heal": 0.28, "hunger": 1.8, "lowhp": 1.6, "boss": 0.7, "win": 0.3, "lose": 0.45, "chat": 1.0, "tick": 0.9, "myturn": 0.9};
   function play(name){ if (!st.fx || !init() || !SFX[name]) return;
     const g = ctx.createGain(); g.gain.value = GAIN[name]!=null ? GAIN[name] : 1; g.connect(sfxBus); CUR = g; try { SFX[name](); } finally { CUR = null; } }
 
   /* ---------- 배경음악: 음표 데이터 + 앞서 예약하는 재생기 ---------- */
   // 한 칸 = 8분음표. '-' = 앞 음 이어짐, '.' = 쉼
   // 1.15.4.0: 곡마다 약 1분(제목 32마디, 탐험 40마디, 보스 24마디), 구간(A·B·C…)을 나눠 반복감을 줄임
-  const SONGS = {"title": {"bpm": 138, "bm": "oct", "drum": "basic", "pad": false, "lead": "E5 . G5 . C6 . G5 E5 | D5 . G5 . B5 - A5 G5 | A5 . E5 . C5 . E5 A5 | G5 - F5 - E5 . D5 . | E5 . G5 . C6 . D6 E6 | D6 - B5 - G5 . A5 B5 | C6 . A5 . F5 . A5 C6 | B5 - D6 - B5 . G5 D5 | A5 - - - C6 - A5 - | B5 - - - D6 - B5 G5 | G5 - - - B5 - G5 E5 | A5 - - - - - E5 . | F5 - A5 - D6 - C6 - | B5 - A5 - G5 - F5 - | E5 - G5 - C6 - - - | E6 - D6 - C6 . G5 . | C6 . B5 . A5 . E5 . | G5 . F5 . E5 . B4 . | A5 . G5 . F5 . C5 . | E5 - - - G5 - - - | F5 . E5 . D5 . A4 . | C5 . B4 . A4 . E5 . | F5 - A5 - C6 - F6 - | D6 - - - B5 - G5 . | E5 . G5 . C6 . G5 E5 | D5 . G5 . B5 - A5 G5 | A5 . E5 . C5 . E5 A5 | G5 - F5 - E5 . D5 . | E5 . G5 . C6 . D6 E6 | D6 - B5 - G5 . A5 B5 | C6 . A5 . F5 . A5 C6 | B5 - - - G5 . D5 .", "chords": ["C4 E4 G4", "G3 B3 D4", "A3 C4 E4", "F3 A3 C4", "C4 E4 G4", "G3 B3 D4", "F3 A3 C4", "G3 B3 D4", "F3 A3 C4", "G3 B3 D4", "E3 G3 B3", "A3 C4 E4", "D3 F3 A3", "G3 B3 D4", "C4 E4 G4", "C4 E4 G4", "A3 C4 E4", "E3 G3 B3", "F3 A3 C4", "C4 E4 G4", "D3 F3 A3", "A3 C4 E4", "F3 A3 C4", "G3 B3 D4", "C4 E4 G4", "G3 B3 D4", "A3 C4 E4", "F3 A3 C4", "C4 E4 G4", "G3 B3 D4", "F3 A3 C4", "G3 B3 D4"], "bass": ["C3", "G2", "A2", "F2", "C3", "G2", "F2", "G2", "F2", "G2", "E2", "A2", "D2", "G2", "C3", "C3", "A2", "E2", "F2", "C3", "D2", "A2", "F2", "G2", "C3", "G2", "A2", "F2", "C3", "G2", "F2", "G2"]}, "battle": {"bpm": 150, "bm": "drive", "drum": "groove", "pad": false, "lead": ". . . . . . . . | . . . . . . . . | . . . . . . . . | . . . . . . A4 C5 | D5 . A5 . G5 F5 E5 D5 | B4 . D5 . G5 - F5 E5 | F5 . C6 . A5 G5 F5 E5 | E5 - - - G5 - E5 C5 | D5 . A5 . G5 F5 E5 D5 | B4 . D5 . G5 - A5 B5 | C6 . A5 . F5 . A5 C6 | D6 - - - - - . . | D5 . D5 . E5 F5 - . | . . F5 G5 F5 . E5 . | D5 . D5 . E5 F5 - - | A5 - - - - - . . | D5 . D5 . E5 F5 - . | . . F5 G5 A5 . G5 . | F5 - E5 - D5 - C5 - | C#5 - - - E5 - A5 - | D6 - C6 A5 - G5 A5 C6 | D6 - - - A5 - G5,A5 C6 | B5 - A5 G5 - D5 G5 A5 | B5 - - - D6 - B5,A5 G5 | A5 - G5 F5 - C5 F5 G5 | A5 - - - C6 - A5,G5 F5 | E5 . G5 . C6 . E6 D6 | C#6 - - - E6 - - - | D#5 . A#5 . G#5 F#5 F5 D#5 | C5 . D#5 . G#5 - F#5 F5 | F#5 . C#6 . A#5 G#5 F#5 F5 | F5 - - - G#5 - F5 C#5 | D#5 . A#5 . G#5 F#5 F5 D#5 | C5 . D#5 . G#5 - A#5 C6 | C#6 . A#5 . F#5 . A#5 C#6 | D#6 - - - - - . . | D5 . A5 . G5 F5 E5 D5 | B4 . D5 . G5 F5 E5 D5 | C5 . F5 . A5 G5 F5 E5 | E5 - - - C#5 - A4 -", "chords": ["D3 F3 A3", "G2 B2 D3", "F2 A2 C3", "C3 E3 G3", "D3 F3 A3", "G2 B2 D3", "F2 A2 C3", "C3 E3 G3", "D3 F3 A3", "G2 B2 D3", "F2 A2 C3", "C3 E3 G3", "A#2 D3 F3", "C3 E3 G3", "D3 F3 A3", "D3 F3 A3", "A#2 D3 F3", "C3 E3 G3", "F2 A2 C3", "A2 C#3 E3", "D3 F3 A3", "D3 F3 A3", "G2 B2 D3", "G2 B2 D3", "F2 A2 C3", "F2 A2 C3", "C3 E3 G3", "A2 C#3 E3", "D#3 F#3 A#3", "G#2 C3 D#3", "F#2 A#2 C#3", "C#3 F3 G#3", "D#3 F#3 A#3", "G#2 C3 D#3", "F#2 A#2 C#3", "C#3 F3 G#3", "D3 F3 A3", "G2 B2 D3", "F2 A2 C3", "A2 C#3 E3"], "bass": ["D3", "G2", "F2", "C3", "D3", "G2", "F2", "C3", "D3", "G2", "F2", "C3", "A#2", "C3", "D3", "D3", "A#2", "C3", "F2", "A2", "D3", "D3", "G2", "G2", "F2", "F2", "C3", "A2", "D#3", "G#2", "F#2", "C#3", "D#3", "G#2", "F#2", "C#3", "D3", "G2", "F2", "A2"], "bassl": "D2 . D3 D2 . D2,D2 C3 A2 | G1 . G2 G1 . G1,G1 A1 B1 | F1 . F2 F1 . F1,F1 G1 A1 | C2 . C3 C2 . C2,C2 D2 E2 | D2 . D3 D2 . D2,D2 C3 A2 | G1 . G2 G1 . G1,G1 A1 B1 | F1 . F2 F1 . F1,F1 G1 A1 | C2 . C3 C2 . C2,C2 D2 E2 | D2 . D3 D2 . D2,D2 C3 A2 | G1 . G2 G1 . G1,G1 A1 B1 | F1 . F2 F1 . F1,F1 G1 A1 | C2 . C3 C2 . C2,C2 D2 E2 | A#1 . A#2 A#1 . A#1,A#1 C2 D2 | C2 . C3 C2 . C2,C2 D2 E2 | D2 . D3 D2 . D2,D2 C3 A2 | D2 D3 C3 A2 G2 A2 C3,D3 E3 | A#1 . A#2 A#1 . A#1,A#1 C2 D2 | C2 . C3 C2 . C2,C2 D2 E2 | F1 . F2 F1 . F1,F1 G1 A1 | A1 A2 G2 E2 C#2 E2 G2,A2 C#3 | D2 D3 C3 A2 G2 A2 C3,D3 E3 | D2 . D3 D2 . D2,D2 C3 A2 | G1 G2 F2 D2 C2 D2 F2,G2 A2 | G1 . G2 G1 . G1,G1 A1 B1 | F1 F2 E2 C2 A#1 C2 E2,F2 G2 | F1 . F2 F1 . F1,F1 G1 A1 | C2 . C3 C2 . C2,C2 D2 E2 | A1 A2 G2 E2 C#2 E2 G2,A2 C#3 | D#2 . D#3 D#2 . D#2,D#2 C#3 A#2 | G#1 . G#2 G#1 . G#1,G#1 A#1 C2 | F#1 . F#2 F#1 . F#1,F#1 G#1 A#1 | C#2 . C#3 C#2 . C#2,C#2 D#2 F2 | D#2 . D#3 D#2 . D#2,D#2 C#3 A#2 | G#1 . G#2 G#1 . G#1,G#1 A#1 C2 | F#1 . F#2 F#1 . F#1,F#1 G#1 A#1 | C#2 . C#3 C#2 . C#2,C#2 D#2 F2 | D2 . D3 D2 . D2,D2 C3 A2 | G1 . G2 G1 . G1,G1 A1 B1 | F1 . F2 F1 . F1,F1 G1 A1 | A1 A2 G2 E2 C#2 E2 G2,A2 C#3", "dyn": "112F2222222FX222222F1122222FC333333F222F"}, "boss": {"bpm": 160, "bm": "drive", "drum": "rock", "pad": true, "lead": ". . . . . . . . | . . . . . . . . | . . . . . . . . | . . . . D5 . F#5 A5 | G5 . D5 . C5 A#4 C5 D5 | A4 - - - F#5 - A5 - | C6 . A5 . G5 F5 G5 A5 | G5 - - - E5 - C5 - | G5 . A#5 . C6 A#5 G5 D#5 | D5 - - - G5 - A#5 - | A5 . G5 . F5 . A5 C6 | D6 - - - - - C6 A5 | G5 . D5 . C5 A#4 C5 D5 | A4 - - - F#5 - A5 - | C6 . A5 . G5 F5 G5 A5 | G5 - - - E5 - C5 - | G5 . A#5 . C6 A#5 G5 D#5 | D5 - - - G5 - A#5 - | A5 . C6 . F6 . E6 D6 | D6 - - - F#6 - A6 - | D#5 - - - G5 - A#5 - | A5 - - - C6 - F6 - | G6 - - - - - D6 - | F6 - - - - - A#5 - | C6 . C6 . A5 . F5 . | F#5 - - - A5 - D6 - | D#6 - D6 - C6 - A#5 - | A5 - - - F#5 - - - | D5 . D5 . D5 . D5 . | G5 - - G5 - - G5 - | F#5 - - F#5 - - D5 - | F5 - - F5 - - G5 F5 | E5 - - E5 - - B4 - | D#5 - - D#5 - - D#5 - | F5 - - F5 - - F5 - | G5 - - - A#5 - D6 - | G5 . D5 . C5 A#4 C5 D5 | A4 - - - F#5 - A5 - | C6 . A5 . G5 F5 G5 A5 | G5 - - - E5 - C5 - | G5 . A#5 . C6 A#5 G5 D#5 | D5 - - - G5 - A#5 - | A5 . G5 . F5 . A5 C6 | D6 - - - - - C6 A5", "chords": ["G2 A#2 D3", "G2 A#2 D3", "G2 A#2 D3", "D3 F#3 A3", "G2 A#2 D3", "D3 F#3 A3", "F2 A2 C3", "C3 E3 G3", "D#3 G3 A#3", "G2 A#2 D3", "F2 A2 C3", "D3 F#3 A3", "G2 A#2 D3", "D3 F#3 A3", "F2 A2 C3", "C3 E3 G3", "D#3 G3 A#3", "G2 A#2 D3", "F2 A2 C3", "D3 F#3 A3", "D#3 G3 A#3", "F2 A2 C3", "G2 A#2 D3", "A#2 D3 F3", "F2 A2 C3", "D3 F#3 A3", "D#3 G3 A#3", "D3 F#3 A3", "D3 F#3 A3", "G2 A#2 D3", "F#2 A#2 C#3", "F2 G#2 C3", "E2 G#2 B2", "D#3 G3 A#3", "F2 A2 C3", "D3 F#3 A3", "G2 A#2 D3", "D3 F#3 A3", "F2 A2 C3", "C3 E3 G3", "D#3 G3 A#3", "G2 A#2 D3", "F2 A2 C3", "D3 F#3 A3"], "bass": ["G2", "G2", "G2", "D3", "G2", "D3", "F2", "C3", "D#3", "G2", "F2", "D3", "G2", "D3", "F2", "C3", "D#3", "G2", "F2", "D3", "D#3", "F2", "G2", "A#2", "F2", "D3", "D#3", "D3", "D3", "G2", "F#2", "F2", "E2", "D#3", "F2", "D3", "G2", "D3", "F2", "C3", "D#3", "G2", "F2", "D3"], "bassl": "G1 G1 G1 G1 G1 G1 G1 G1 | G1 G1 G1 G1 G1 G1 G1 G1 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | C2 C2,C2 C3 C2,C2 C2 C2,C2 C3 C2,C2 | D#2 D#2,D#2 D#3 D#2,D#2 D#2 D#2,D#2 D#3 D#2,D#2 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | C2 C2,C2 C3 C2,C2 C2 C2,C2 C3 C2,C2 | D#2 D#2,D#2 D#3 D#2,D#2 D#2 D#2,D#2 D#3 D#2,D#2 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | D#2 D#2,D#2 D#3 D#2,D#2 D#2 D#2,D#2 D#3 D#2,D#2 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | A#1 A#1,A#1 A#2 A#1,A#1 A#1 A#1,A#1 A#2 A#1,A#1 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | D#2 D#2,D#2 D#3 D#2,D#2 D#2 D#2,D#2 D#3 D#2,D#2 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | D2 - - D2 - - D3 - | G1 - - G1 - - G2 - | F#1 - - F#1 - - F#2 - | F1 - - F1 - - F2 - | E2 - - E2 - - E3 - | D#2 - - D#2 - - D#3 - | F1 - - F1 - - F2 - | D2 - - D2 - - D3 - | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | C2 C2,C2 C3 C2,C2 C2 C2,C2 C3 C2,C2 | D#2 D#2,D#2 D#3 D#2,D#2 D#2 D#2,D#2 D#3 D#2,D#2 | G1 G1,G1 G2 G1,G1 G1 G1,G1 G2 G1,G1 | F1 F1,F1 F2 F1,F1 F1 F1,F1 F2 F1,F1 | D2 D2,D2 D3 D2,D2 D2 D2,D2 D3 D2,D2", "dyn": "TT2FC222222FX333333FC333333FHHHHHH2FC333333F"}};
-  let mus = null, cur = null, pend = null;
+  let cur = null, pend = null;
   // 1.20.0.0 직접 작곡한 배경음악 파일(bgm 폴더). 파일이 없으면 코드로 만든 곡으로 대신 연주
   const FILES = {title:'bgm/title.mp3', battle:'bgm/dungeon.mp3', boss:'bgm/boss.mp3', defeat:'bgm/defeat.mp3'};
   const ONCE = {defeat:true};          // 한 번만 재생(반복 없음)
@@ -2044,127 +2036,28 @@ const SND = (() => {
         el._f = setInterval(()=>{ k++; el.volume = Math.min(v, v*k/n); if (k>=n) clearInterval(el._f); }, 50); }, delay*1000);
     });
   }
-  function parseLine(s){ return s.split('|').flatMap(b=>b.trim().split(/\s+/)); }
-  const up = (n, k=1) => n.replace(/(\d)$/, d=>String(+d+k));
-  // 1.18.0.0: 북 세트(탐험 groove, 보스 rock). dyn 글자: 0 없음, 1 약하게, 2 보통, 3 세게, T 탐 북 쌓기, H 하프타임, C 심벌+세게, X 심벌+보통, F 보통+마지막 박 필인
-  function drumBar(S, bar, pos, t, step){
-    const B = drmIn, h = step/2, d = (S.dyn||'')[bar] || '2';
-    const kick = (v=0.62, x=0) => { tone({f:130, to:42, d:0.16, w:'sine', v, at:t+x, bus:B}); noise({d:0.012, v:v*0.25, bp:2500, q:0.8, at:t+x, bus:B}); };
-    const snare = (v=0.3, x=0) => { noise({d:0.14, v:v*1.15, bp:2100, q:0.5, at:t+x, bus:B}); tone({f:200, to:150, d:0.07, w:'triangle', v:v*0.7, at:t+x, bus:B}); };
-    const hat = (v=0.05, x=0, open=false) => noise({d:open?0.16:0.03, v:v*1.7, hp:6500, at:t+x, bus:B});
-    const tom = (f, v=0.42, x=0) => tone({f, to:f*0.62, d:0.2, w:'triangle', v, at:t+x, bus:B});
-    const crash = () => noise({d:1.3, v:0.12, hp:5200, at:t, bus:B});
-    if (d==='0') return;
-    if ((d==='C' || d==='X') && pos===0) crash();
-    const lvl = d==='1' ? 1 : (d==='3' || d==='C') ? 3 : 2;
-    const fill = d==='F' && pos>=6;
-    if (S.drum==='groove'){
-      if (fill){ snare(0.22); snare(0.26, h); if (pos===7) tom(140, 0.4, h*0.5); return; }
-      if (pos===0 || pos===4) kick(); if (lvl>=2 && pos===3) kick(0.5, h); if (lvl>=3 && pos===6) kick(0.45, h);
-      if (lvl>=2 && (pos===2 || pos===6)) snare(); if (lvl>=2 && pos===7) snare(0.06, h);   // 고스트 노트
-      if (lvl===1 && (pos===2 || pos===6)) noise({d:0.05, v:0.12, bp:1200, q:1.5, at:t, bus:B});   // 손뼉처럼 가볍게
-      hat(pos%2 ? 0.035 : 0.06); if (lvl>=2) hat(0.025, h, pos===7);
-    } else {   // rock (보스)
-      if (d==='T'){ if (pos%2===0) kick(0.5); if (pos>=4) tom(pos>=6 ? 110 : 150, 0.4); hat(0.03); return; }
-      if (d==='S'){ if (pos===0 || pos===3 || pos===6){ kick(0.65); if (pos) snare(0.3); } if (pos===0 && bar%2===0) crash(); hat(pos%2 ? 0.04 : 0.06); return; }
-      if (d==='H'){ if (pos===0) kick(0.7); if (pos===4) snare(0.34); if (pos===6) tom(120, 0.4); if (pos===7) tom(95, 0.4, h); hat(pos%2 ? 0.03 : 0.05); return; }
-      if (fill){ const f0 = pos===6 ? 190 : 120; tom(f0, 0.45); tom(f0*0.85, 0.42, h); if (pos===7) snare(0.25, h); return; }
-      kick(0.62); if (lvl>=3) kick(0.4, h); else if (pos===3 || pos===7) kick(0.45, h);   // 세게: 16분음표 투베이스
-      if (pos===2 || pos===6) snare(0.34);
-      hat(pos%2 ? 0.04 : 0.065, 0, lvl>=3 && pos%2===1);
-    }
-  }
-  function startMusic(name, fadeIn=2.5, delay=0){
-    if (!init()) return; stopMusic(true);
-    const S = SONGS[name]; if (!S) return;
-    const step = 60/S.bpm/2, lead = parseLine(S.lead), N = lead.length, t0 = ctx.currentTime + 0.1 + delay;
-    // 무음에서 시작해 기본 음량까지 서서히 키운다
-    musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(0.0001, ctx.currentTime);
-    musBus.gain.setValueAtTime(0.0001, t0); musBus.gain.linearRampToValueAtTime(st.mus, t0 + fadeIn);
-    mus = {S, step, lead, N, i:0, t:t0, timer:null, bl: S.bassl ? parseLine(S.bassl) : null}; cur = name;
-    const sched = () => {
-      while (mus && mus.t < ctx.currentTime + 0.25){
-        const i = mus.i % N, bar = Math.floor(i/8), pos = i%8, t = mus.t;
-        const n = lead[i];
-        if (n!=='.' && n!=='-'){ let len = 1; while (lead[(i+len)%N]==='-' && len<8) len++;
-          const sub = n.split(','), sl = sub.length>1 ? 0.5 : len;   // 「A5,B5」 = 16분음표 2개
-          sub.forEach((m,k)=>{ if (m==='.') return; const tt = t + k*step*0.5;
-            if (S.bright) tone({f:m, d:step*sl*0.9, w:'p25', v:0.15, at:tt, bus:brtIn, a:0.008, r:Math.min(0.2, step*sl*0.35)});
-            else tone({f:m, d:step*sl*0.92, w:'soft', v:0.3, at:tt, bus:melIn, a:0.012, r:Math.min(0.25, step*sl*0.4)});
-            if (S.pad) tone({f:up(m,-1), d:step*sl*0.92, w:'triangle', v:0.12, at:tt, bus:melIn, a:0.02, r:0.12}); }); }   // 보스전: 한 옥타브 아래로 겹쳐 두껍게
-        const ch = S.chords[bar].split(' ');
-        if (S.chmode==='none'){}
-        else if (S.pad){ if (pos===0 || pos===4) ch.forEach(c=>tone({f:up(c), d:step*3.9, w:'soft', v:0.07, at:t, bus:melIn, a:0.15, r:0.4})); }   // 길게 깔리는 화음
-        else { tone({f:up(ch[(pos*2)%3]), d:step*0.45, w:'triangle', v:0.09, at:t, bus:melIn, r:0.04}); tone({f:up(ch[(pos*2+1)%3]), d:step*0.45, w:'triangle', v:0.07, at:t+step/2, bus:melIn, r:0.04}); }
-        if (S.harm){   // 보조 선율(원곡의 금관 길게 깔리는 음)
-          if (!mus.hm) mus.hm = parseLine(S.harm);
-          const hn = mus.hm[i];
-          if (hn!=='.' && hn!=='-'){ let len = 1; while (mus.hm[(i+len)%N]==='-' && len<8) len++;
-            tone({f:hn, d:step*len*0.95, w:'sawtooth', v:0.06, at:t, bus:melIn, a:0.08, r:0.15}); tone({f:hn, d:step*len*0.95, w:'triangle', v:0.08, at:t, bus:melIn, a:0.08, r:0.15}); }
-        }
-        if (S.gtr){   // 디스토션 기타 흉내: 근음+5도+옥타브 파워코드, 3-3-2 강세는 길게, 나머지는 짧게 끊어 치기
-          const dd = (S.dyn||'')[bar] || '2', acc = pos===0 || pos===3 || pos===6;
-          if (dd!=='0' && !(dd==='S' && !acc) && !(dd==='H' && pos%2)){
-            const pc = [ch[0], ch[2], up(ch[0])], len = dd==='S' ? (pos===6 ? 2 : 3) : (acc ? 1.4 : 0.5);
-            pc.forEach(f=>tone({f, d:step*len*0.95, w:'sawtooth', v:acc ? 0.05 : 0.032, at:t, bus:brtIn, a:0.004, r:0.04})); }
-        }
-        const b = S.bass[bar];
-        if (S.bassl){   // 1.18.0.0: 베이스 선율(8분음표 칸, 「D2,D2」 = 16분음표 2개, '-' 이어짐)
-          const bt = mus.bl[i];
-          if (bt!=='.' && bt!=='-'){ let len = 1; while (mus.bl[(i+len)%N]==='-' && len<8) len++;
-            const sub = bt.split(','), sl = sub.length>1 ? 0.5 : len;
-            sub.forEach((m,k)=>{ if (m==='.') return; const tt = t + k*step*0.5;
-              tone({f:m, d:step*sl*0.85, w:'triangle', v:0.36, at:tt, bus:melIn, r:0.05});
-              tone({f:m, d:step*sl*0.7, w:'p25', v:0.045, at:tt, bus:melIn, r:0.04}); }); }   // 펄스파를 살짝 겹쳐 작은 스피커에서도 들리게
-        } else {
-          const bn = S.bm==='drive' ? (pos%4===3 ? up(b) : b) : (pos%2 ? up(b) : b);
-          tone({f:bn, d:step*0.8, w:'triangle', v:0.34, at:t, bus:melIn});
-        }
-        const kick = (v=0.5) => tone({f:110, to:40, d:0.12, w:'sine', v, at:t, bus:melIn});
-        const snare = (v=0.16, x=0) => noise({d:0.09, v:v*0.8, bp:1800, q:0.7, at:t+x, bus:melIn});
-        if (S.drum==='basic'){
-          if (pos===0 || pos===4) kick(); if (pos===2 || pos===6) snare();
-          noise({d:0.022, v:pos%2?0.035:0.02, bp:5000, q:1, at:t, bus:melIn}); noise({d:0.02, v:0.018, bp:5500, q:1, at:t+step/2, bus:melIn});
-          if (pos===7 && bar%2===1) snare(0.12, step/2);
-        } else if (S.drum==='drive'){   // 전투: 밀어붙이는 킥, 2·4박 스네어, 16분 하이햇, 4마디마다 연타
-          if (pos===0 || pos===3 || pos===4) kick(0.55); if (pos===2 || pos===6) snare(0.2);
-          noise({d:0.02, v:0.03, bp:5000, q:1, at:t, bus:melIn}); noise({d:0.02, v:0.02, bp:5500, q:1, at:t+step/2, bus:melIn});
-          if (bar%4===3 && pos>=6){ snare(0.13, step/2); }
-        } else if (S.drum==='groove' || S.drum==='rock'){ drumBar(S, bar, pos, t, step); }
-        else if (S.drum==='boss'){    // 보스: 팀파니 같은 낮은 북, 4마디마다 큰 북 연타
-          if (pos===0 || pos===4){ tone({f:95, to:55, d:0.3, w:'triangle', v:0.6, at:t, bus:melIn}); tone({f:60, to:35, d:0.25, w:'sine', v:0.5, at:t, bus:melIn}); }
-          if (pos===2 || pos===6) snare(0.14);
-          if (pos%2===1) noise({d:0.03, v:0.02, bp:4500, q:1, at:t, bus:melIn});
-          if (bar%4===3 && pos>=4){ tone({f:150-(pos-4)*20, to:80, d:0.15, w:'triangle', v:0.45, at:t, bus:melIn}); tone({f:140-(pos-4)*20, to:75, d:0.15, w:'triangle', v:0.4, at:t+step/2, bus:melIn}); }
-        }
-        mus.i++; mus.t += step;
-      }
-    };
-    sched(); mus.timer = setInterval(sched, 40);
-  }
-  function stopMusic(now){ if (pend){ clearTimeout(pend); pend = null; } if (mus){ clearInterval(mus.timer); mus = null; } stopFile(); if (!now) cur = null; }
+  function stopMusic(now){ if (pend){ clearTimeout(pend); pend = null; } stopFile(); if (!now) cur = null; }
   // 원하는 곡으로 전환: 이전 곡은 잠깐 줄여 끄고, 새 곡은 무음에서 서서히 키운다(보스전은 정적 뒤 더 천천히)
   function want(name){
     if (window.__noFx) return;
     if (!st.bgm){ stopMusic(); cur = null; return; }
     if (name===cur) return;
-    if (!name){ if (fm && fm.el){ const el = fm.el; clearInterval(el._f); el._f = setInterval(()=>{ el.volume = Math.max(0, el.volume-0.03); }, 50); } if ((mus||fm) && ctx){ musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(musBus.gain.value, ctx.currentTime); musBus.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+1.2); pend = setTimeout(()=>stopMusic(), 1300); } cur = null; return; }
+    if (!name){ if (fm && fm.el){ const el = fm.el; clearInterval(el._f); el._f = setInterval(()=>{ el.volume = Math.max(0, el.volume-0.03); }, 50); } if (fm && ctx){ musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(musBus.gain.value, ctx.currentTime); musBus.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+1.2); pend = setTimeout(()=>stopMusic(), 1300); } cur = null; return; }
     if (!init()) return;
-    const boss = name==='boss', had = !!mus || !!fm;
+    const boss = name==='boss', had = !!fm;
     if (fm && fm.el){ const el = fm.el; clearInterval(el._f); el._f = setInterval(()=>{ el.volume = Math.max(0, el.volume-0.05); }, 50); }
     if (had){ musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(musBus.gain.value, ctx.currentTime); musBus.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+0.6); }
     cur = name; if (pend) clearTimeout(pend);
     pend = setTimeout(()=>{ pend = null; if (cur!==name) return;
       const fi = boss ? 2.5 : (!had && name==='title' ? 0.6 : (name==='defeat' ? 0.3 : 2.5)), dl = boss ? 0.5 : (!had && name==='title' ? 0.4 : (name==='defeat' ? 1.0 : 0));
-      const synth = ()=>{ if (cur===name && SONGS[name]){ stopFile(); startMusic(name, fi, dl); } };
-      if (FILES[name] && !fbad[name]){ if (mus){ clearInterval(mus.timer); mus = null; } playFile(name, fi, dl, synth); } else synth(); }, had ? 650 : 0);   // 첫 시작 화면: 0.5초 뒤 바로 들리게
+      if (FILES[name] && !fbad[name]) playFile(name, fi, dl, ()=>{}); }, had ? 650 : 0);   // 파일이 없으면 배경음악 없음   // 첫 시작 화면: 0.5초 뒤 바로 들리게
   }
-  function setVol(k, v){ st[k] = v; try { localStorage.setItem('pmd_vol_'+k, String(v)); } catch(e){} if (!ctx) return; if (k==='sfx') sfxBus.gain.value = v; if (k==='mus' && fm && fm.el){ clearInterval(fm.el._f); fm.el.volume = elVol(); } if (k==='mus' && (mus || (fm && fm.src))){ musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(Math.max(0.0001, v), ctx.currentTime); } }
+  function setVol(k, v){ st[k] = v; try { localStorage.setItem('pmd_vol_'+k, String(v)); } catch(e){} if (!ctx) return; if (k==='sfx') sfxBus.gain.value = v; if (k==='mus' && fm && fm.el){ clearInterval(fm.el._f); fm.el.volume = elVol(); } if (k==='mus' && fm && fm.src){ musBus.gain.cancelScheduledValues(ctx.currentTime); musBus.gain.setValueAtTime(Math.max(0.0001, v), ctx.currentTime); } }
   function save(){ try { localStorage.setItem('pmd_bgm', st.bgm?'1':'0'); localStorage.setItem('pmd_fx', st.fx?'1':'0'); } catch(e){} }
   function toggle(){ const on = !(st.bgm || st.fx); st.bgm = st.fx = on; save(); if (!on) stopMusic(); return on; }   // M: 둘 다 켜기·끄기
   function setBgm(v){ st.bgm = v; save(); if (!v){ stopMusic(); cur = null; } }
   function setFx(v){ st.fx = v; save(); }
-  return {play, want, startMusic:(n)=>{ if (st.bgm) startMusic(n); }, stopMusic, setVol, st, init, toggle, setBgm, setFx, list:Object.keys(SFX), playing:()=>!!mus || !!fm, current:()=>cur, songs:Object.keys(SONGS)};
+  return {play, want, stopMusic, setVol, st, init, toggle, setBgm, setFx, list:Object.keys(SFX), playing:()=>!!fm, current:()=>cur};
 })();
 
 // 게임에서 부르는 짧은 이름 (시뮬레이션 중에는 소리 없음)
@@ -2183,7 +2076,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.20.15.0';
+const GAME_VER = '1.20.17.0';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -2312,7 +2205,6 @@ function ownerPid(i){ return S && S.net ? S.net.owner[i] : null; }
 function nickOf(pid){ const p = (S && S.net ? S.net.players : NET.players).find(x=>x.pid===pid); return p ? p.nick : '?'; }
 function whoPre(i){ return netOn() ? `<b class="nwho">${esc(nickOf(ownerPid(i)))}</b> · ` : ''; }
 function myTurn(){ return !netOn() || ownerPid(S.cur)===NET.pid; }
-function mySeekers(){ return netOn() ? S.net.owner.map((p,i)=>p===NET.pid?i:-1).filter(i=>i>=0) : []; }
 
 /* ---------- 로비 ---------- */
 function lobbyBroadcast(){
@@ -2479,7 +2371,6 @@ async function netHostResume(h){
   }
   hostClear(); NET.status = ''; NET.err = '이전 게임 방을 다시 열지 못했습니다.'; render();
 }
-function netClientStart(){ startGame(()=>{ if (NET.snap) netApply(NET.snap, true); }); }
 
 /* ---------- 상태 보내기 · 받기 ---------- */
 function netSendState(now){
@@ -3043,29 +2934,26 @@ const TYPECOL = {'전투':'#9b3b3b','장애물':'#6b5a3a','퍼즐':'#3b5a9b','�
 
 /* ---------------- 효과 코드 ---------------- */
 const OPK = {progress:'progress','진행':'progress',progressany:'progressAny','진행추가':'progressAny',progressall:'progressAll','전체진행':'progressAll',
-  progresstop:'progressTop',progressperboost:'progressPerBoost',pull:'pull','끌어오기':'pull',move:'move','진행이동':'move',
-  draw:'draw','뽑기':'draw','드로우':'draw',discard:'discard','버리기':'discard',give:'give','넘기기':'give',teamdraw:'teamDraw',otherdraw:'otherDraw','팀뽑기':'teamDraw',
+  progresstop:'progressTop',progressperboost:'progressPerBoost',
+  draw:'draw','뽑기':'draw','드로우':'draw',discard:'discard','버리기':'discard',teamdraw:'teamDraw',otherdraw:'otherDraw','팀뽑기':'teamDraw',
   heal:'heal','회복':'heal',damage:'damage','피해':'damage',dig:'dig','깊이파기':'dig','파기':'dig',retreat:'retreat','후퇴':'retreat',
   refillhand:'refillHand',discardfor:'discardFor',fetchcolor:'fetchColor',counter:'counter','반격':'counter',parry:'parry','받아넘기기':'parry',endure:'endure','버티기':'endure',recharge:'recharge','충전':'recharge',rechargeany:'rechargeAny',exhaustrecover:'exhaustRecover','배고픔회복':'exhaustRecover',
   exhaust:'exhaust','배고픔':'exhaust',scrap:'scrap','도전버리기':'scrap',recycle:'recycle','회수':'recycle',
-  reroll:'reroll','다시굴리기':'reroll',extradie:'extraDie','주사위추가':'extraDie',dicealso:'diceAlso',dicebonus:'diceBonus',darkok:'darkOk',darkaslight:'darkAsLight',echostack:'echoStack',
-  boostmax:'boostMax','향상한도':'boostMax',boostplus:'boostPlus','향상강화':'boostPlus',shield:'shield','실패피해감소':'shield',
-  guard:'guard','피해막기':'guard',fragile:'fragile',nopenalty:'nopenalty','불이익무시':'nopenalty',wildaction:'wildAction',special:'special','특별':'special',attach:'attach','부착':'attach',stealitem:'stealItem',returnself:'returnSelf',noroll:'noRoll',reshuffleboard:'reshuffleBoard',overflow:'overflow','넘기기진행':'overflow',alldraw:'allDraw',leafstorm:'leafStorm',scout:'scout',discardrandom:'discardRandom',selftop:'selfTop',topdeck:'topDeck',drawcopy:'drawCopy',millcopy:'millCopy',mill:'mill',boostwild:'boostWild',bossheal:'bossHeal',guess:'guess','예지':'guess',peek:'peek','공개':'peek',delvescout:'delveScout',teleswap:'teleSwap',shufflediscard:'shuffleDiscard',escape:'escape','순간이동':'escape'};
+  reroll:'reroll','다시굴리기':'reroll',extradie:'extraDie','주사위추가':'extraDie',dicealso:'diceAlso',dicebonus:'diceBonus',darkok:'darkOk',darkaslight:'darkAsLight',
+  boostmax:'boostMax','향상한도':'boostMax',shield:'shield','실패피해감소':'shield',
+  guard:'guard','피해막기':'guard',fragile:'fragile',nopenalty:'nopenalty','불이익무시':'nopenalty',attach:'attach','부착':'attach',stealitem:'stealItem',noroll:'noRoll',reshuffleboard:'reshuffleBoard',overflow:'overflow','넘기기진행':'overflow',alldraw:'allDraw',leafstorm:'leafStorm',scout:'scout',discardrandom:'discardRandom',millcopy:'millCopy',mill:'mill',bossheal:'bossHeal',guess:'guess','예지':'guess',peek:'peek','공개':'peek',delvescout:'delveScout',shufflediscard:'shuffleDiscard',escape:'escape','순간이동':'escape'};
 const OPI = {
-  progress:['✚','이 기술의 수치 +{n}'], returnSelf:['↩','이 기술을 패로 되돌림'], noRoll:['🎲','이번 시도는 주사위를 굴리지 않음'], progressAny:['✚','시도 중이지 않은 다른 도전 1장에 진행도 {n} 추가'], progressAll:['✚','시도 중이지 않은 다른 모든 도전에 진행도 {n} 추가'],
+  progress:['✚','이 기술의 수치 +{n}'], noRoll:['🎲','이번 시도는 주사위를 굴리지 않음'], progressAny:['✚','시도 중이지 않은 다른 도전 1장에 진행도 {n} 추가'], progressAll:['✚','시도 중이지 않은 다른 모든 도전에 진행도 {n} 추가'],
   progressTop:['✚','이 기술의 수치에 버린 더미 맨 위 카드의 행동 수치를 더함'], progressPerBoost:['✚','향상 카드 1장마다 이 기술의 수치 +1'],
-  pull:['⇐','다른 도전의 진행도를 최대 {n} 가져오기'], move:['⇄','진행도 최대 {n} 옮기기'],
-  draw:['🃏','카드 {n}장 뽑기'], discard:['🃏','패의 카드 {n}장 버리기'], give:['⇢','패의 카드 {n}장을 다른 탐험대원에게 주기'],
-  teamDraw:['🃏','탐험대원 1명을 골라 카드 {n}장 뽑기'], otherDraw:['🃏','다른 탐험대원 1명을 골라 카드 {n}장 뽑기'], allDraw:['🃏','모든 탐험대원이 카드 {n}장씩 뽑기'], heal:['💚','HP {n} 회복'], damage:['💔','피해 {n}'],
+    draw:['🃏','카드 {n}장 뽑기'], discard:['🃏','패의 카드 {n}장 버리기'],   teamDraw:['🃏','탐험대원 1명을 골라 카드 {n}장 뽑기'], otherDraw:['🃏','다른 탐험대원 1명을 골라 카드 {n}장 뽑기'], allDraw:['🃏','모든 탐험대원이 카드 {n}장씩 뽑기'], heal:['💚','HP {n} 회복'], damage:['💔','피해 {n}'],
   dig:['⤓','아래로 깊이 파기 {n}'], retreat:['⤒','위로 후퇴 {n}'], refillHand:['🃏','배고픔 카드를 받지 않고 패를 새로 뽑기'], counter:['✚','이번에 시도한 도전이 남아 있으면 그 도전에 진행도 {n} 추가'], fetchColor:['🃏','버린 더미에서 {s} 카드 1장을 패로'], discardFor:['🌀','패의 기술 1장을 버리면 수치 +{n}'], parry:['🛡','받아넘기기 {n}: 실패 피해를 {n}까지 받지 않고 막은 만큼 이 도전에 진행도'], endure:['🛡','이번 차례 HP가 0이 되는 피해를 받아도 HP 1로 버티기'], recharge:['⟳','부적 충전'], rechargeAny:['⟳','탐험대원 1명을 골라 부적 충전'],
   exhaustRecover:['🍎','배고픔 {n}장 제거'], exhaust:['🍽','배고픔 {n}장 획득'], scrap:['✂','시도 중이지 않은 다른 도전 또는 이벤트 1장 버리기(완료 아님)'],
   recycle:['↺','버린 더미 맨 위 카드를 패로 가져오기'], reroll:['🎲','주사위 다시 굴리기 +{n}회'], extraDie:['🎲','기술 주사위 +{n}개'],
-  diceAlso:['🎲','{s} 주사위도 일치'], diceBonus:['🎲','일치한 {s} 주사위마다 이번 시도 수치 +1 추가'], darkOk:['☠','☠ 주사위도 일치'], darkAsLight:['☀','운명 주사위의 ☠를 ☀로 취급'], echoStack:['✚','메아리: 쓸 때마다 다음 사용 수치 +1 (최대 +3)'],
-  boostMax:['⬆','이번 시도는 향상을 +{n}장 더 할 수 있음'], boostPlus:['⬆','향상 카드마다 +{n}'], boostWild:['⬆','모든 향상 카드가 향상 색 조건 무시'], shield:['🛡','이번 시도 실패 피해 -{n}'], fragile:['💔','이번 시도 실패 피해 +{n}'], guard:['🛡','이번 차례에 받는 피해 -{n}'], topDeck:['🌸','패의 카드 {n}장을 덱 맨 위에 놓기'], discardRandom:['🌀','패의 카드 {n}장을 무작위로 버리기'], selfTop:['🌸','이 기술은 사용 후 덱 맨 위에 놓임'], scout:['🌿','덱 맨 위 {n}장을 보고 1장을 패로, 나머지는 원하는 순서로 덱 맨 위에'], millCopy:['🍃','덱 맨 위 카드 1장 버리기, 이 기술의 수치는 버린 카드의 기본 수치와 같음'], drawCopy:['🃏','카드 1장 뽑기, 이 기술의 수치는 뽑은 카드의 기본 수치와 같음'], mill:['🌱','덱 맨 위 {n}장 버리기, 그중 풀 기술 1장마다 수치 +1'], leafStorm:['🍃','버린 더미의 풀 기술 2장마다 수치 +1 (최대 +{n}), 그 뒤 버린 더미를 덱에 섞기'],
-  nopenalty:['🛡','불이익 무시'], attach:['☗','보스가 소지품 1개 획득'], stealItem:['☗','보스의 소지품 1개 제거(없으면 탐험대원 1명을 골라 부적 충전)'], bossHeal:['☗','보스의 진행도 -{n}'], reshuffleBoard:['↻','이 카드 이외의 펼쳐진 던전 카드를 모두 섞고 다시 펼치기'], overflow:['✚','넘친 진행도가 있으면 다른 도전 1장에 진행도 {n} 추가'], wildAction:['✦','행동 카드 색 조건 무시'], special:['★','특별(문구 참조)'], guess:['◈','예지: 덱 맨 위 카드의 색을 맞히면 그 카드를 패로 · 수치 +{n}'], peek:['◉','자신의 덱 맨 위 카드 공개'], delveScout:['◉','던전 덱 맨 위 {n}장을 보고 1장을 골라 진행도 1을 올려 맨 위에(나머지는 맨 아래로)'], teleSwap:['◉','던전 덱 맨 위 {n}장 중 1장을 골라 펼쳐진 던전 카드 1장과 교체(진행도 1). 보스전에서는 카드 1장 뽑기'], escape:['◉','시도 중인 던전 카드를 던전 덱 맨 위 카드와 바꾸고 차례 종료. 보스전에서는 카드 1장 뽑기'], shuffleDiscard:['↻','버린 더미의 카드를 모두 덱에 넣고 섞기']};
-const OPS = {progress:'✚수치{n}',progressAny:'✚진행{n}',progressAll:'✚전체{n}',move:'⇄이동{n}',pull:'⇐끌기{n}',draw:'🃏뽑기{n}',discard:'🃏버림{n}',
+  diceAlso:['🎲','{s} 주사위도 일치'], diceBonus:['🎲','일치한 {s} 주사위마다 이번 시도 수치 +1 추가'], darkOk:['☠','☠ 주사위도 일치'], darkAsLight:['☀','운명 주사위의 ☠를 ☀로 취급'],   boostMax:['⬆','이번 시도는 향상을 +{n}장 더 할 수 있음'], shield:['🛡','이번 시도 실패 피해 -{n}'], fragile:['💔','이번 시도 실패 피해 +{n}'], guard:['🛡','이번 차례에 받는 피해 -{n}'], discardRandom:['🌀','패의 카드 {n}장을 무작위로 버리기'], scout:['🌿','덱 맨 위 {n}장을 보고 1장을 패로, 나머지는 원하는 순서로 덱 맨 위에'], millCopy:['🍃','덱 맨 위 카드 1장 버리기, 이 기술의 수치는 버린 카드의 기본 수치와 같음'], mill:['🌱','덱 맨 위 {n}장 버리기, 그중 풀 기술 1장마다 수치 +1'], leafStorm:['🍃','버린 더미의 풀 기술 2장마다 수치 +1 (최대 +{n}), 그 뒤 버린 더미를 덱에 섞기'],
+  nopenalty:['🛡','불이익 무시'], attach:['☗','보스가 소지품 1개 획득'], stealItem:['☗','보스의 소지품 1개 제거(없으면 탐험대원 1명을 골라 부적 충전)'], bossHeal:['☗','보스의 진행도 -{n}'], reshuffleBoard:['↻','이 카드 이외의 펼쳐진 던전 카드를 모두 섞고 다시 펼치기'], overflow:['✚','넘친 진행도가 있으면 다른 도전 1장에 진행도 {n} 추가'], guess:['◈','예지: 덱 맨 위 카드의 색을 맞히면 그 카드를 패로 · 수치 +{n}'], peek:['◉','자신의 덱 맨 위 카드 공개'], delveScout:['◉','던전 덱 맨 위 {n}장을 보고 1장을 골라 진행도 1을 올려 맨 위에(나머지는 맨 아래로)'], escape:['◉','시도 중인 던전 카드를 던전 덱 맨 위 카드와 바꾸고 차례 종료. 보스전에서는 카드 1장 뽑기'], shuffleDiscard:['↻','버린 더미의 카드를 모두 덱에 넣고 섞기']};
+const OPS = {progress:'✚수치{n}',progressAny:'✚진행{n}',progressAll:'✚전체{n}',draw:'🃏뽑기{n}',discard:'🃏버림{n}',
   heal:'💚회복{n}',damage:'💔피해{n}',dig:'⤓파기{n}',retreat:'⤒후퇴{n}',refillHand:'🃏패 새로 뽑기',counter:'✚반격{n}',parry:'🛡받아넘기기{n}',endure:'🛡버티기',recharge:'⟳충전',rechargeAny:'⟳충전',exhaustRecover:'🍎배고픔-{n}',
-  exhaust:'🍽배고픔+{n}',attach:'☗소지품 획득',stealItem:'☗소지품 제거',bossHeal:'☗보스회복{n}',reshuffleBoard:'↻판 섞기',overflow:'✚넘김{n}',allDraw:'🃏모두뽑기{n}',teamDraw:'🃏팀뽑기{n}',otherDraw:'🃏동료뽑기{n}',scrap:'✂버리기',recycle:'↺회수',special:'★특별',guess:'◈예지{n}',peek:'◉공개',delveScout:'◉던전{n}',teleSwap:'◉교체{n}',escape:'◉순간이동'};
+  exhaust:'🍽배고픔+{n}',attach:'☗소지품 획득',stealItem:'☗소지품 제거',bossHeal:'☗보스회복{n}',reshuffleBoard:'↻판 섞기',overflow:'✚넘김{n}',allDraw:'🃏모두뽑기{n}',teamDraw:'🃏팀뽑기{n}',otherDraw:'🃏동료뽑기{n}',scrap:'✂버리기',recycle:'↺회수',guess:'◈예지{n}',peek:'◉공개',delveScout:'◉던전{n}',escape:'◉순간이동'};
 
 let S = null;
 const SETUP = {sel:[], hard:false, quick:false, rampage:false, boss:'random', autoEnd:true};
@@ -3150,9 +3038,7 @@ function condLabel(c){
   const colsT = x => x.split('|').map(p=>COL[p]?COL[p].n:p).join('/');
   switch (c.k){
     case 'type': return `${v.split('|').join('/')}${neg?'이(가) 아니면':'이라면'}`;
-    case 'col': return `시도 색이 ${colsT(v)}${neg?'이 아니면':'이면'}`;
     case 'prog': return `현재 진행도 ${c.op==='='?'':c.op}${v}${c.op==='='?'이면':''}`.replace('>=',' ≥ ').replace('<=',' ≤ ');
-    case 'half': return '진행도가 난이도의 절반 이상이면';
     case 'top': return `버린 더미 맨 위가 ${colsT(v)}${neg?'이 아니면':'이면'}`;
     case 'topv': return `버린 더미 맨 위 수치 ${c.op}${v}`;
     case 'topname': return `버린 더미 맨 위가 「${v}」${neg?'이(가) 아니면':'이면'}`;
@@ -3161,7 +3047,6 @@ function condLabel(c){
     case 'hand': return (c.op==='<=' && +v===0) ? '패의 마지막 카드였다면' : `패 ${c.op}${v}장`;
     case 'deckcol': return '덱 맨 위 카드의 색이 이번 시도 색과 같다면';
     case 'boosted': return '향상을 받았다면';
-    case 'wild': return '보스가 아닌 전투라면';
     case 'boss': return '보스에게 쓰면';
     case 'notboss': return '보스가 아니라면';
     case 'topcol': return '버린 더미 맨 위 카드가 도전과 같은 색이라면';
@@ -3170,9 +3055,7 @@ function condLabel(c){
     case 'blue': return `청■ 주사위가 ${v}개 이상이면`;
     case 'tri': return '적·녹·청이 모두 나오면';
     case 'dice': return c.op==='<=' ? `일치 주사위 ${v}개 이하` : `일치 주사위 ${v}개 이상`;
-    case 'team': return '탐험대원이 2명 이상이면';
     case 'solo': return '혼자라면';
-    case 'final': return '보스전이라면';
     case 'acttype': return `${v.split('|').join('/')} 기술을 행동으로 썼다면`;
   }
   return `${c.k}${c.op}${v}`;
@@ -3272,10 +3155,6 @@ function actionEligible(c){
   if (parseEffect(c.effect).anyColor) return true;
   return A.color==='W' || cs.includes(A.color) || (cs.includes('W') && !hasRule('noWhite') && !selfRules(A,'selfNoWhite').length);
 }
-function boostNatural(c){
-  const A = S.A; let bc = String(c.boostColor||''); if (hasRule('noWhiteBoost')) bc = bc.replace('W','');
-  return !!A && (A.boostWild || bc.includes('W') || bc.includes(A.color) || A.color==='W');
-}
 function boostEligible(c){
   const A = S.A; if (!A || c.boostColor==='K') return false;
   let bc = String(c.boostColor||'');
@@ -3351,9 +3230,7 @@ function condOK(c, s){
   const neg = c.op==='!=';
   switch (c.k){
     case 'type': { const t = card ? (card.ctype || (A && A.tg.type==='master' ? '전투' : '')) : ''; const r = list.includes(t); return neg ? !r : r; }
-    case 'col': { const r = A && list.includes(A.color); return neg ? !r : r; }
     case 'prog': return A ? cmp(A.startProg, c.op, c.v) : false;
-    case 'half': return A ? A.startProg*2 >= A.diffAtStart : false;
     case 'top': {
       if (list.includes('none')) return neg ? !!top : !top;
       const tc = top ? cols(top.colors) : [];
@@ -3370,13 +3247,10 @@ function condOK(c, s){
     case 'tri': { if (!A || !A.dice) return false; const sk = A.dice.slice(0,-1); return ['R','G','B'].every(x=>sk.includes(x)); }
     case 'dice': return A && A.dice ? cmp(diceHits(A), c.op, c.v) : false;
     case 'blue': return A && A.dice ? cmp(A.dice.slice(0,-1).filter(x=>x==='B').length, c.op, c.v) : false;
-    case 'wild': { const r = !!(card && card.ctype==='전투' && A && A.tg.type!=='master'); return neg ? !r : r; }
     case 'boss': return !!(A && A.tg.type==='master');
     case 'notboss': return !!(A && A.tg.type!=='master');
     case 'topcol': { const r = !!(A && top && cols(top.colors).includes(A.color)); return neg ? !r : r; }   // 보스가 아닌 전투 (잠재우기: 보스는 내성)
-    case 'team': return S.seekers.length>1;
     case 'solo': return S.seekers.length===1;
-    case 'final': return S.phase==='final';
     case 'acttype': { const r = !!(A && A.action && list.includes(A.action.tag)); return neg ? !r : r; }
     case 'known': return !!deckTopKnown(s);
     case 'deckcol': { const t = s.deck[0]; const r = !!(A && t && (cols(t.colors).includes('W') || cols(t.colors).includes(A.color))); return (neg || c.v==='0') ? !r : r; }
@@ -3524,7 +3398,7 @@ async function revealHunger(n){
     }
     const c = S.exhaustDeck.shift(); c.fails = 0; S.exhaustActive.push(c);
     log(`배고픔 카드 공개: 「${c.name}」 ${c.text||''}`, 'bad'); render();
-    await modal({title:'배고픔 카드 공개', html:`<div class="center-cards">${hungerHTML(c,{w:'220px', noZb:true})}</div>`, buttons:[{label:'확인',primary:true}]});
+    await modal({title:'배고픔 카드 공개', html:`<div class="center-cards">${hungerHTML(c,{w:'220px', noZb:true})}</div>`, buttons:[{label:'확인',primary:true}], pop:true});
     await applyOps(parseOps(c.effect), c.name);
     checkHungerSets();
   }
@@ -3585,8 +3459,6 @@ async function applyOps(ops, src, who){
       case 'progressTop': { if (!needAttempt(src,'진행도')) break; const t = topCard(s); const v = t ? (+t.value||0) : 0;   // 1.20.8.0 최대 3 제한 해제
         A.bonus += v; A.notes.push(`${src} +${v}`); log(`${src}: 버린 더미 맨 위 「${t?t.name:'없음'}」 → 수치 +${v}`); break; }
       case 'progressPerBoost': { if (!needAttempt(src,'진행도')) break; const v = A.boosts.length; A.bonus += v; A.notes.push(`${src} +${v}`); log(`${src}: 향상 ${v}장 → 수치 +${v}`); break; }
-      case 'pull': await pullProgress(n, src, o.f); break;
-      case 'move': await moveProgress(n, src); break;
       case 'draw': drawCards(s, n); break;
       case 'counter': {   // 리오르 카운터: 이번 차례에 시도한 도전(아직 남아 있으면)에 진행도
         const c = S.T && S.T.tgCard; let tg = null;
@@ -3640,29 +3512,10 @@ async function applyOps(ops, src, who){
           if (!nk){ log(`${src}: 던전 덱이 비어 있어 바꿀 수 없습니다.`, 'sys'); break; }
           old._pre = 0; S.delveDeck.push(old); sl.card = nk; sl.progress = startProg(nk); A.escape = true;
           log(`${src}: 「${old.name}」에서 순간이동! 던전 덱 맨 아래로 보내고 「${nk.name}」을(를) 펼침 — 차례를 마칩니다`, 'good'); sfx('draw'); render(); break; }
-      case 'teleSwap': {   // 1.20.3.0 순간이동: 던전 덱 맨 위 n장 중 1장을 골라 펼쳐진 던전 카드(시도 중인 카드 제외) 1장과 교체
-          const ti = S.A && S.A.tg && S.A.tg.type==='slot' ? S.A.tg.i : -1;
-          if (S.phase==='final'){ log(`${src}: 보스전 — 대신 카드 1장 뽑기`, 'good'); drawCards(s, 1); break; }   // 1.20.4.0 보스전: 교체 대신 1장 뽑기
-          const cand = S.slots.map((sl,i)=>({sl,i})).filter(o=>o.i!==ti && o.sl.card && !o.sl.down && !o.sl.card._fin);
-          if (!cand.length){ await applyOps([{op:'delveScout', n, s:'', f:''}], src); break; }   // 교체할 카드가 없으면 맨 위에 두기만
-          const top = S.delveDeck.slice(0, n); if (!top.length){ log(`${src}: 던전 덱이 비어 있습니다.`,'sys'); break; }
-          const its = top.slice().sort((a,b)=>(+a.diff||0)-(+b.diff||0));
-          const r = top.length===1 ? [String(top[0].uid)] : await pickModal({title:`${src}: 불러올 던전 카드 1장`, desc:`던전 덱 맨 위 ${top.length}장입니다. 고른 카드는 진행도 1을 올린 채 펼쳐진 던전 카드 1장과 자리를 바꿉니다. 나머지는 던전 덱 맨 아래로 갑니다.`, n:1, items:its.map(x=>({v:String(x.uid), html:slotCardHTML({card:x, progress:startProg(x)+(x.kind==='challenge'?1:0)}, -1, {w:'150px', noact:true, noZb:true})}))});
-          const k = top.find(x=>String(x.uid)===String(r && r[0])) || its[0];
-          S.delveDeck.splice(0, top.length); S.delveDeck.push(...top.filter(x=>x!==k));
-          const r2 = await pickModal({title:`${src}: 「${k.name}」과(와) 바꿀 던전 카드`, desc:'시도 중인 카드는 바꿀 수 없습니다. 빠진 카드는 진행도를 잃고 던전 덱 맨 아래로 갑니다. 바꾸지 않으면 고른 카드는 던전 덱 맨 위에 둡니다.', n:1, skip:true,
-            items:cand.map(o=>({v:String(o.i), html:slotCardHTML(o.sl, o.i, {w:'150px', noact:true, noZb:true})}))});
-          const o = r2 && r2.length ? cand.find(x=>String(x.i)===String(r2[0])) : null;
-          if (k.kind==='challenge') k._pre = (k._pre||0) + 1;
-          if (!o){ S.delveDeck.unshift(k); log(`${src}: 교체하지 않음 — 「${k.name}」을(를) 던전 덱 맨 위에${k._pre?`(펼쳐지면 진행도 ${k._pre})`:''}, 나머지는 맨 아래로`, 'good'); break; }
-          const old = o.sl.card; old._pre = 0; S.delveDeck.push(old);
-          o.sl.card = k; o.sl.progress = startProg(k); k._pre = 0;
-          log(`${src}: 「${old.name}」을(를) 던전 덱 맨 아래로 보내고 「${k.name}」을(를) 펼침 (진행도 ${o.sl.progress})`, 'good'); render(); break; }
       case 'parry': if (needAttempt(src,'받아넘기기')){ A.parry = (A.parry||0) + n; log(`${src}: 받아넘기기 ${n} (실패 피해를 막고 그만큼 반격)`, 'good'); } break;
       case 'endure': if (S.T){ S.T.endure = true; log(`${src}: 이번 차례에는 쓰러지지 않고 HP 1로 버팀`, 'good'); } break;
       case 'refillHand': { const k = handSize() - s.hand.length; if (k>0){ log(`${src}: 배고픔 카드 없이 패를 새로 뽑습니다`, 'good'); drawCards(s, k); } else log(`${src}: 패가 이미 가득 찼습니다.`,'sys'); break; }
       case 'discard': await chooseDiscard(s, n, src); break;
-      case 'give': await giveCards(s, n, src); break;
       case 'otherDraw': { const t = await pickSeeker(s, `${src}: 카드 ${n}장을 뽑을 다른 탐험대원`, false); drawCards(t, n); break; }
       case 'teamDraw': { const t = await pickSeeker(s, `${src}: 카드 ${n}장을 뽑을 탐험대원`, true); drawCards(t, n); break; }
       case 'heal': heal(n, src); break;
@@ -3689,27 +3542,17 @@ async function applyOps(ops, src, who){
       case 'diceBonus': if (needAttempt(src,'주사위')) { o.s.split('').forEach(x=>{ if (!A.diceBonus.includes(x)) A.diceBonus.push(x); }); log(`${src}: 일치한 ${o.s} 주사위 +1`); } break;
       case 'darkOk': if (needAttempt(src,'주사위')) { A.darkOk = true; log(`${src}: ☠ 주사위도 일치`); } break;
       case 'darkAsLight': if (needAttempt(src,'주사위')) { A.darkAsLight = true; fixFate(A); log(`${src}: 운명 주사위의 ☠를 ☀로 취급`); } break;
-      case 'echoStack': if (needAttempt(src,'진행도')) { const v = S.echo||0; if (v){ A.bonus += v; A.notes.push(`${src} 메아리 +${v}`); } S.echo = Math.min(3, v+1); log(`${src}: 메아리 +${v} (다음 사용 +${S.echo})`, 'good'); } break;
       case 'boostMax': if (needAttempt(src,'향상 한도')) { A.boostMaxAdd += n; log(`${src}: 이번 시도는 향상을 ${boostCap(A)}장까지 받을 수 있습니다`); } break;
-      case 'boostPlus': if (needAttempt(src,'향상')) { A.boostPlus += n; log(`${src}: 향상 카드 수치 +${n}씩`); } break;
       case 'shield': if (needAttempt(src,'피해 감소')) { A.shield += n; log(`${src}: 실패 피해 -${n}`); } break;
       case 'fragile': if (needAttempt(src,'실패 피해 증가')) { A.fragile = (A.fragile||0) + n; log(`${src}: 이번 시도 실패 피해 +${n}`, 'bad'); } break;
       case 'guard': S.T.guard += n; log(`${src}: 이번 차례 피해 ${n>=9?'모두':n+'까지'} 막기`, 'good'); break;
       case 'nopenalty': if (A){ A.nopenalty = true; log(`${src}: 이번 실패의 불이익 무시`, 'good'); } break;
-      case 'wildAction': if (A && A.step===1){ A.wild = true; log(`${src}: 행동 카드 색상 조건 무시`, 'good'); } else log(`${src}: ① 행동 단계에서만 효과가 있습니다.`,'sys'); break;
       case 'reshuffleBoard': {
         if (S.phase==='final'){ log(`${src}: 보스전에는 효과가 없습니다.`,'sys'); break; }
         let k = 0; S.slots.forEach(sl=>{ if (sl.card && !sl.card._fin){ S.delveDeck.push(sl.card); sl.card = null; sl.progress = 0; k++; } });
         shuffle(S.delveDeck); refillNow(); log(`${src}: 펼쳐진 던전 카드 ${k}장을 던전 덱에 섞고 다시 펼쳤습니다.`, 'sys'); break; }
-      case 'topDeck': { if (!s.hand.length){ log(`${src}: 패에 카드가 없습니다.`,'sys'); break; }
-          const its = s.hand.slice().sort((a,b)=>(+b.value||0)-(+a.value||0));
-          const r = its.length===1 ? [String(its[0].uid)] : await pickModal({title:`${src}: 덱 맨 위에 놓을 카드`, desc:'고른 카드가 패에서 기술 덱 맨 위로 갑니다.', items:its.map(c=>({v:String(c.uid), html:skillHTML(c,{w:'150px', noZb:true})}))});
-          const k = s.hand.find(c=>String(c.uid)===String(r[0])) || its[0];
-          s.hand = s.hand.filter(c=>c!==k); s.deck.unshift(k); if (A && A.sel===k.uid) A.sel = null;
-          log(`${src}: 「${k.name}」을(를) 덱 맨 위에 놓음`, 'good'); break; }
       case 'discardRandom': for (let k=0;k<n && s.hand.length;k++){ const c = s.hand[Math.floor(Math.random()*s.hand.length)]; s.hand = s.hand.filter(x=>x!==c); s.discard.push(c); if (A && A.sel===c.uid) A.sel = null; log(`${src}: 「${c.name}」을(를) 무작위로 버림`, 'bad'); if (typeof showMilled==='function') showMilled([c], src, '패에서 무작위로 버림'); } break;
       case 'fetchName': { const c = s.discard.find(x=>x.name===o.s); if (c){ s.discard = s.discard.filter(x=>x!==c); s.hand.push(c); log(`${src}: 버린 더미의 「${c.name}」을(를) 패로 가져옴`, 'good'); } else log(`${src}: 버린 더미에 「${o.s}」이(가) 없습니다.`,'sys'); break; }
-      case 'selfTop': break;   // 차례 종료 시 처리
       case 'scout': { if (!s.deck.length && s.discard.length){ s.deck = shuffle(s.discard); s.discard = []; log(`${s.def.name}: 버린 더미를 섞어 새 기술 덱을 만들었습니다.`, 'sys'); }
           const top = s.deck.splice(0, n); if (!top.length){ log(`${src}: 덱이 비어 있습니다.`,'sys'); break; }
           const its = top.slice().sort((a,b)=>(+b.value||0)-(+a.value||0));
@@ -3722,15 +3565,12 @@ async function applyOps(ops, src, who){
           log(`${src}: 「${k.name}」을(를) 패로, 나머지 ${rest.length}장은 덱 맨 위로`, 'good'); break; }
       case 'millCopy': if (needAttempt(src,'수치')){ if (!s.deck.length && s.discard.length){ s.deck = shuffle(s.discard); s.discard = []; log(`${s.def.name}: 버린 더미를 섞어 새 기술 덱을 만들었습니다.`, 'sys'); }
           const d = s.deck.shift(); if (d){ s.discard.push(d); if (typeof showMilled==='function') showMilled([d], src); const v = +d.value||0; A.bonus += v; A.notes.push(`${src} +${v}`); log(`${src}: 「${d.name}」을(를) 버림 — 수치 +${v}`, 'good'); } else log(`${src}: 덱이 비어 있습니다.`,'sys'); } break;
-      case 'drawCopy': if (needAttempt(src,'수치')){ const h0 = s.hand.length; drawCards(s, 1); const d = s.hand.length>h0 ? s.hand[s.hand.length-1] : null;
-          if (d){ const v = +d.value||0; A.bonus += v; A.notes.push(`${src} +${v}`); log(`${src}: 「${d.name}」을(를) 뽑음 — 수치 +${v}`, 'good'); } else log(`${src}: 뽑을 카드가 없습니다.`,'sys'); } break;
       case 'mill': if (needAttempt(src,'수치')){ const top = s.deck.splice(0, n); top.forEach(c=>s.discard.push(c)); if (top.length && typeof showMilled==='function') showMilled(top, src); const b = top.filter(c=>c.tag==='풀').length;
           if (b>0){ A.bonus += b; A.notes.push(`${src} +${b}`); } log(`${src}: ${top.map(c=>'「'+c.name+'」').join(' ')||'(덱이 비어 있음)'} 버림 — 수치 +${b}`, 'good'); } break;
       case 'leafStorm': if (needAttempt(src,'수치')){ const k = s.discard.filter(x=>x.tag==='풀').length, b = Math.min(n, Math.floor(k/2));
           if (b>0){ A.bonus += b; A.notes.push(`${src} +${b}`); } log(`${src}: 버린 더미의 풀 기술 ${k}장 — 수치 +${b}`, 'good');
           if (s.discard.length){ s.deck = shuffle(s.deck.concat(s.discard)); s.discard = []; log(`${src}: 버린 더미를 모두 덱에 섞음`, 'sys'); } } break;
       case 'allDraw': S.seekers.forEach(x=>drawCards(x, n)); break;
-      case 'boostWild': if (needAttempt(src,'향상')) { A.boostWild = true; log(`${src}: 이번 시도 모든 향상 카드의 색 조건 무시`, 'good'); } break;
       case 'attach': {
         const it = itemDef(o.s); if (!it){ log(`알 수 없는 소지품: ${o.s}`,'sys'); break; }
         S.master.items.push({...it}); log(`☗ 보스가 「${it.name}」을(를) 손에 넣었다 — ${it.text}`, 'bad');
@@ -3741,9 +3581,7 @@ async function applyOps(ops, src, who){
         const r = its.length===1 ? ['0'] : await pickModal({title:`${src}: 제거할 보스의 소지품`, desc:'고른 소지품이 보스에게서 사라집니다.', items:its.map((it,k)=>({v:String(k), html:`<div class="pick txtpick"><b>${esc(it.glyph||'')} ${esc(it.name)}</b><br><span class="muted">${esc(it.text)}</span></div>`, raw:true}))});
         const it = its.splice(+(r[0]||0), 1)[0]; log(`${src}: 보스의 「${it.name}」을(를) 제거했다!`, 'good'); break; }
       case 'noRoll': if (A){ A.noRoll = true; log(`${src}: 이번 시도는 주사위를 굴리지 않습니다 (반동).`, 'sys'); } break;
-      case 'returnSelf': { const c = S._clauseCard; if (c && S.T.used.includes(c)){ S.T.used = S.T.used.filter(x=>x!==c); S.seekers[c.owner].hand.push(c); log(`${src}: 연기 속으로 숨어 이 카드를 패로 되돌렸습니다.`, 'good'); } break; }
       case 'bossHeal': if (S.master){ S.master.progress = Math.max(0, S.master.progress - n); log(`${src}: 보스가 회복했다 — 진행도 -${n} (${S.master.progress})`, 'bad'); } break;
-      case 'special': log(`★ ${src}: 특별 효과 — 카드 문구를 확인하고 수동으로 처리하세요`, 'sys'); break;
       default: log(`알 수 없는 효과 코드: ${o.op}`, 'sys');
     }
     render();
@@ -3772,16 +3610,6 @@ async function addProgressAny(n, src, f){
   const tg = keyTg(r[0]); tgRef(tg).progress += n;
   log(`${src}: 「${tgCard(tg).name}」에 진행도 ${n}`, 'good');
   await checkAuto(tg);
-}
-async function pullProgress(n, src, f){
-  if (!needAttempt(src,'끌어오기')) return;
-  const srcs = boardTargets(true).filter(tg => tg.type==='slot' && tgRef(tg).progress>0 && matchFilter(f, tgCard(tg)));
-  if (!srcs.length){ log(`${src}: 끌어올 진행도가 있는 ${f?fName(f)+' ':''}도전이 없습니다.`,'sys'); return; }
-  const a = await pickModal({title:`${src}: 진행도 끌어오기 (최대 ${n})`, desc:'진행도를 가져올 도전을 선택하세요. 가져온 진행도는 이번 시도에 더해집니다.', items:srcs.map(tg=>({v:tgKey(tg), html:tgPickHTML(tg)})), skip:true});
-  if (!a.length) return;
-  const from = keyTg(a[0]); const amt = Math.min(n, tgRef(from).progress);
-  tgRef(from).progress -= amt; S.A.bonus += amt; S.A.notes.push(`${src} +${amt}`);
-  log(`${src}: 「${tgCard(from).name}」에서 진행도 ${amt} 끌어옴`, 'good');
 }
 async function moveProgress(n, src){
   const srcs = [];
@@ -3817,17 +3645,6 @@ async function pickSeeker(s, title, any){
   if (others.length===1) return others[0];
   const r = await pickModal({title, desc:'탐험대원을 고르세요.', items:others.map(x=>({v:String(x.i), html:`<div class="pick txtpick"><span style="color:${x.def.color}">●</span> ${esc(x.def.name)} <span class="muted">(패 ${x.hand.length} · 부적 ${x.charged?'충전됨':'사용함'})</span></div>`, raw:true}))});
   return S.seekers[+r[0]] || s;
-}
-async function giveCards(s, n, src){
-  if (S.seekers.length===1){ log(`${src}: 혼자라서 대신 카드 ${n}장 뽑기`); drawCards(s, n); return; }
-  for (let k=0;k<n;k++){
-    if (!s.hand.length){ log(`${src}: 넘길 카드가 없습니다.`,'sys'); return; }
-    const a = await pickModal({title:`${src}: 넘길 카드`, desc:'다른 탐험대원에게 넘길 카드를 고르세요.', items:s.hand.map(c=>({v:String(c.uid), html:skillHTML(c,{w:'150px', noZb:true})})), skip:true});
-    if (!a.length) return;
-    const t = await pickSeeker(s, `${src}: 카드를 받을 탐험대원`, false);
-    const c = s.hand.find(x=>x.uid===+a[0]); s.hand = s.hand.filter(x=>x!==c); c.owner = t.i; t.hand.push(c);
-    log(`${src}: 「${c.name}」을(를) ${t.def.name}에게 넘김`, 'good');
-  }
 }
 // 배고픔 회복: 되돌릴 카드를 고름 (패배 조건이 있는 카드가 앞에 표시됨)
 async function recoverHunger(n, src){
@@ -3937,12 +3754,13 @@ async function resolveEvent(i){
   log(`${cur().def.name}: 이벤트 「${c.name}」 — ${c.story||c.text||''}`);
   render();
   const evOps = parseOps(c.effect), evDmg = evOps.some(o=>o.op==='damage');
+  sfx('event'); let evPop = true;   // 1.20.17.0 이벤트 이야기 창: 효과음 + 팝업 연출(처음 한 번)
   for (;;){
     // 피해를 주는 이벤트: 패에 있는 '버리고 막기' 카드를 효과 적용 전에 쓸 수 있다
     const rs = evDmg ? S.seekers.flatMap(s=>s.hand.filter(x=>x.react && /guard/.test(x.react))) : [];
     const g = S.T.guard>0 ? `<p class="muted">${pxi('shield')} 이번 차례 피해 막기: ${S.T.guard>=9?'모두':S.T.guard}</p>` : '';
     const v = await modal({title:`✧ ${esc(c.name)}`, html:`<p class="story">${esc(c.story||c.flavor||'')}</p><div class="selbox"><div class="l">효과</div>${esc(c.text||opsText(c.effect)||'없음')}</div>${g}`,
-      buttons:[...rs.map(x=>({label:`${pxi('shield')} 「${esc(x.name)}」 버리고 막기`, value:x.uid})), {label:'계속',value:'go',primary:true}]});
+      buttons:[...rs.map(x=>({label:`${pxi('shield')} 「${esc(x.name)}」 버리고 막기`, value:x.uid})), {label:'계속',value:'go',primary:true}], pop:evPop}); evPop = false;
     const rc = rs.find(x=>x.uid===v); if (!rc) break;
     const rsk = S.seekers[rc.owner];
     rsk.hand = rsk.hand.filter(x=>x!==rc); rsk.discard.push(rc);
@@ -4274,7 +4092,7 @@ async function fail(tg, fate){
 async function endTurn(){
   if (S.busy) return;
   if (S.A && S.A.step<4 && !(typeof NET!=='undefined' && NET.autoRun)) return;   // 도전 도중에는 차례를 끝내지 않음 (늦게 도착한 클릭 등)
-  S.T.used.forEach(c=>{ const o = S.seekers[c.owner]; if (/selftop/i.test(c.effect||'')){ o.deck.unshift(c); log(`「${c.name}」: 덱 맨 위로 돌아감`, 'sys'); } else o.discard.push(c); }); S.T.used = [];
+  S.T.used.forEach(c=>{ S.seekers[c.owner].discard.push(c); }); S.T.used = [];
   S.A = null; flushCharge();
   if (S.phase==='delve') refill();
   if (over()){ render(); return; }
@@ -4468,7 +4286,6 @@ const TIDX = Object.fromEntries(TYPE_ICONS.map((t,i)=>[t,i]));
 const CTIDX = Object.fromEntries(CTYPE_ICONS.map((t,i)=>[t,i]));
 const tcIcon = t => CTIDX[t]!=null ? `<i class="tci tt-${CTIDX[t]}"></i>` : (TYPEGLYPH[t]||'');   // 유형 칩 안의 도트 아이콘(크기 고정)
 const rcell = (cls, ic, ops, title) => `<div class="rc ${cls}" title="${title}"><em class="ri">${pxify(ic)}</em>${opsChips(ops)||'<span class="muted">없음</span>'}</div>`;
-const ctIcon = t => CTIDX[t]!=null ? `<i class="ticon tt-${CTIDX[t]}"></i>` : `<span>${TYPEGLYPH[t]||'?'}</span>`;   // 타입 도트 아이콘 (build.py가 주입)
 const TRX = new RegExp('(^|[\\s(「·/:,])(' + Object.keys(TCOL).sort((a,b)=>b.length-a.length).join('|') + ')(?=\\s?기술|\\s타입|·|의돌|\\)|$)', 'g');
 // 타입 단어에 색 입히기 (esc 처리된 문자열에 사용)
 const bk = h => String(h).replace(/\*\*(.+?)\*\*/g, '<b class="kw">$1</b>');   // **강조**
@@ -4968,16 +4785,6 @@ function fit(){
 }
 window.addEventListener('resize', ()=>{ if (typeof fitScreen==='function') fitScreen(); if (S) fit(); });
 
-function topHTML(){
-  return `<div class="topbar">
-    <div class="logo">${esc(CFG.title)}</div>
-    <div class="curwho" style="--sc:${cur().def.color}"><span class="dot"></span>${whoPre(S.cur)}${esc(cur().def.name)}의 차례 - ${S.turnNo}번째</div>
-    <div class="tophp ${S.hp<=3?'low':''}" title="팀 HP (모든 탐험대원 공유)"><span class="hl">${pxi('heal')} 팀 HP</span><b>${S.hp}</b><small>/${S.hpStart}</small>${hpBarHTML()}</div>
-    <div class="sp"></div>
-    <div class="topact">${topActHTML()}</div>
-    <div class="sysb">${fsOK()?`<button class="fsbtn" data-act="fullscreen" title="전체 화면">${document.fullscreenElement?"창 화면":"전체화면"}</button>`:""}<button data-act="keys" title="조작법">⌨</button><button data-act="rules" title="규칙서">📖</button><button data-act="newgame" title="새 게임">↺</button></div>
-  </div>`;
-}
 function leftHTML(){
   const hs = handSize(), rl = globalRules();
   const RL = {bossDiff:'보스 난이도', bossDiffPerItem:'소지품마다 보스 난이도', hand:'패 크기', slots:'던전 카드 칸', diff:'난이도', failDamage:'실패 피해', boostMax:'향상 한도', noWhite:'백색 카드 행동 불가', noItem:'부적 사용 불가', noLight:'☀ 불일치', dieBlock:'주사위 불일치', valueMod:'행동 수치', failLose:'실패 누적 패배', setLose:'같은 카드 누적 패배', failDrain:'실패하면 모든 시련 진행도 -', darkDrain:'☠ 나오면 모든 도전 진행도 -', diffOther:'다른 도전 난이도', bossReduce:'보스에게 올리는 진행도 -', noWhiteBoost:'백색 향상 불가'};
@@ -5031,15 +4838,6 @@ function boostPrev(A){ if (!A || A.step!==2) return 0; return A.selBoost.reduce(
 function rollPrev(A){ if (!A || A.step!==3 || A.rollDone || !A.dice || !A.dice.length || A.rolling || A.rrAnim!=null || !A.action) return 0;
   let n = 0; parseEffect(A.action.effect).clauses.forEach(cl=>{ if (cl.when!=='roll' || cl.cost || !cl.conds.every(c=>condOK(c))) return; cl.ops.forEach(o=>{ if (o.op==='progress') n += (+o.n||0); }); }); return n; }
 const tallyParts = A => { const b = A.boostVal + boostPrev(A), x = A.bonus + rollPrev(A); return `향상 <b>+${b}</b>${x?` · 추가 <b>${x>0?'+':''}${x}</b>`:''}`; };
-function tallyHTML(A){
-  const dv = A.dice && !A.rolling ? diceValue(A) : null;
-  return `<div class="tally">
-    <span>① 행동 카드</span><b>+${A.actionVal}</b>
-    <span>② 향상 (${A.boosts.length}장)</span><b>+${A.boostVal}</b>
-    <span>추가 효과${A.notes.length?` <span class="muted">(${esc(A.notes.join(', '))})</span>`:''}</span><b>${A.bonus>=0?'+':''}${A.bonus}</b>
-    <span>③ 주사위</span><b>${dv==null?'—':'+'+dv}</b>
-    <span class="tot">이번 시도 합계</span><b class="tot">+${pendingTotal(A)}</b></div>`;
-}
 function dicePopHTML(){   // ③ 주사위 단계: 화면 가운데 큰 창
   const A = S.A; if (!A || A.step!==3 || A.popOff || !A.dice || !A.dice.length || over()) return '';
   const canRR = !A.rolling && rerollsLeft(A)>0, tg = A.tg, diff = effDiff(tg), prog = tgRef(tg).progress, pend = pendingTotal(A);
@@ -5192,7 +4990,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.15.0</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.17.0</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -5211,7 +5009,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.15.0</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.17.0</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -5262,19 +5060,19 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.20.15.0</div>
+    <div class="credit">Rev. 1.20.17.0</div>
   </div>`;
 }
 
 /* =================== 모달 (Esc/우클릭 = 취소, Enter = 확정, 숫자 = 선택) =================== */
 function topModal(){ const r = $('#modal-root'); return r.lastElementChild; }
-function modal({title, html, buttons=[{label:'확인',primary:true}], wide, closeX}){
+function modal({title, html, buttons=[{label:'확인',primary:true}], wide, closeX, pop}){
   return new Promise(res=>{
     const el = document.createElement('div'); el.className = 'mback';
     const cancelIdx = buttons.findIndex(b=>b.cancel || b.value===false);
     const primIdx = buttons.findIndex(b=>b.primary);
     const head = closeX ? `<div class="mhead"><h3>${title}</h3><button class="mx" data-mb="0" title="닫기 (Esc)">✕</button></div>` : `<h3>${title}</h3>`;
-    el.innerHTML = pxui(`<div class="modal ${wide?'wide':''}">${head}<div class="mbody">${html}</div>
+    el.innerHTML = pxui(`<div class="modal ${wide?'wide':''} ${pop?'pop':''}">${head}<div class="mbody">${html}</div>
       <div class="mbtns"><span class="mkeys">${primIdx>=0?'<kbd>Enter</kbd> 확인':''}${cancelIdx>=0||buttons.length===1?' · <kbd>Esc</kbd> 닫기':''}</span>
       ${buttons.map((b,i)=>`<button data-mb="${i}" class="${b.primary?'primary':''}">${b.label}</button>`).join('')}</div></div>`);
     const done = i => { el.remove(); res(buttons[i].value); };
@@ -6246,8 +6044,7 @@ function tutCheck(){
 // 원래 화면(기본)은 그대로 두고, 고르면 body.th1~th4 클래스로 창틀·버튼·말풍선·배경을 도트 창 스타일로 바꾼다 (theme/gen_pkm.py)
 const THEMES = ['기본', '남색 돌', '몬스터볼', '초록 풀', '갈색 나무', '피카츄', '이상해씨', '꼬부기', '파이리', '이브이', '푸린', '하이퍼볼'];   // 번호(저장값)는 바꾸지 않음. 새 테마는 맨 뒤에
 const THEME_ORDER = [0, 2, 11, 1, 3, 4, 5, 6, 7, 8, 9, 10];   // 고르는 화면에 보이는 순서
-function themeIdx(){ let v = ''; try { v = localStorage.getItem('pmd_theme') || ''; } catch(e){} if (v==='pkm') v = '1'; const n = +v; return n>0 && n<THEMES.length ? n : 0; }
-function themeName(){ return THEMES[themeIdx()]; }
+function themeIdx(){ let v = ''; try { v = localStorage.getItem('pmd_theme') || ''; } catch(e){} const n = +v; return n>0 && n<THEMES.length ? n : 0; }
 function pkmApply(){ const n = themeIdx(); for (let k=1;k<THEMES.length;k++) document.body.classList.toggle('th'+k, k===n); }
 function pkmSet(n){ try { localStorage.setItem('pmd_theme', String(n)); } catch(e){} pkmApply(); sfx('select'); render(); }
 document.addEventListener('change', e=>{ const t = e.target; if (t.matches && t.matches('[data-theme-sel]')) pkmSet(+t.value); });
