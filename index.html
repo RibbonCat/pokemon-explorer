@@ -444,6 +444,7 @@ button:not(:disabled):active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0
 /* v1.2: 도트 감성 전체 적용 */
 html,body{-webkit-font-smoothing:none;font-smooth:never;letter-spacing:0 !important}
 #app,#app *{cursor:default;user-select:none;-webkit-user-select:none;caret-color:transparent}
+#app input,#app textarea,#modal-root input,#modal-root textarea{user-select:text;-webkit-user-select:text;caret-color:auto;cursor:text;-webkit-touch-callout:default}
 #app button,#app [data-act],#app .card.can,#app .tab,#app select,#app label,#app .lnk{cursor:pointer}
 /* 1.20.5.0 커서 정리: 버튼·탭은 안의 글자 위에서도 손가락, 탐험대원 1마리면 탭은 화살표, 쓸 수 없는 버튼은 화살표 */
 #app button *,#app .tab *{cursor:inherit}
@@ -2149,7 +2150,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.20.29.3';
+const GAME_VER = '1.20.29.4';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -5144,7 +5145,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.29.3</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.29.4</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -5163,7 +5164,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.29.3</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.29.4</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -5214,7 +5215,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.20.29.3</div>
+    <div class="credit">Rev. 1.20.29.4</div>
   </div>`;
 }
 
@@ -5850,6 +5851,7 @@ document.addEventListener('change', e=>{
 });
 // 우클릭 = 취소 / 이전 단계 (확대 기능 아님)
 document.addEventListener('contextmenu', e=>{
+  if (e.target && e.target.closest && e.target.closest('input, textarea')) return;   // 1.20.29.4 입력 칸: 길게 눌러 붙여넣기 메뉴 허용
   e.preventDefault();
   if (Date.now() - TOUCH.t < 1200) return;   // 터치의 길게 누르기는 취소가 아니라 크게 보기
   if (zoomOpen()){ hideZoom(); return; }
@@ -6396,7 +6398,7 @@ function recHTML(){
     <h4>탐험대 암호</h4>
     <p class="muted">기록(업적·해금 포함)을 글자로 바꾼 것입니다. 메모나 카카오톡 나와의 채팅에 저장해 두면, 기록이 지워지거나 다른 기기에서 할 때 그대로 불러올 수 있습니다.</p>
     <div class="rcode"><code>${profCode()}</code><button data-rec="copy">복사</button></div>
-    <div class="rin"><input id="recIn" placeholder="암호를 붙여 넣으세요" autocomplete="off" spellcheck="false"><button data-rec="load">불러오기</button></div>
+    <div class="rin"><input id="recIn" placeholder="암호를 붙여 넣으세요" autocomplete="off" spellcheck="false"><button data-rec="paste">붙여넣기</button><button data-rec="load">불러오기</button></div>
     <p class="rmsg"></p>
   </div>`;
 }
@@ -6405,6 +6407,11 @@ document.addEventListener('keydown', e=>{ if (e.key==='Enter' && e.target && e.t
 document.addEventListener('click', e=>{
   const b = e.target.closest('[data-rec]'); if (!b) return;
   const box = b.closest('.rec'), msg = t=>{ const m = box && box.querySelector('.rmsg'); if (m) m.textContent = t; };
+  if (b.dataset.rec==='paste'){   // 1.20.29.4 휴대폰: 클립보드 내용을 바로 입력 칸에
+    const inp = box.querySelector('#recIn');
+    if (navigator.clipboard && navigator.clipboard.readText) navigator.clipboard.readText().then(t=>{ inp.value = String(t||'').trim(); msg(inp.value ? '붙여 넣었습니다. 「불러오기」를 누르세요.' : '클립보드가 비어 있습니다.'); }).catch(()=>{ inp.focus(); msg('붙여넣기 권한이 없습니다. 입력 칸을 길게 눌러 붙여 넣으세요.'); });
+    else { inp.focus(); msg('입력 칸을 길게 눌러 붙여 넣으세요.'); }
+    return; }
   if (b.dataset.rec==='copy'){
     const t = box.querySelector('.rcode code').textContent;
     const fb = ()=>{ const r = document.createRange(); r.selectNodeContents(box.querySelector('.rcode code')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); msg('자동 복사가 안 되어 암호를 선택해 두었습니다. 직접 복사하세요.'); };
