@@ -2150,7 +2150,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.20.29.4';
+const GAME_VER = '1.20.29.6';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -5145,7 +5145,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.29.4</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.29.6</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -5164,7 +5164,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.29.4</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.29.6</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -5215,7 +5215,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.20.29.4</div>
+    <div class="credit">Rev. 1.20.29.6</div>
   </div>`;
 }
 
@@ -5401,7 +5401,7 @@ var FXPIN = false;
 function rulesHTML(){
   const sk = DATA.seekers.filter(d=>isUnlocked(d.id)).map(d=>`<tr><td><b style="color:${d.color}">${miniHTML(d)} ${esc(d.name)}</b><br><span class="muted">${tcol(esc(d.type))}</span></td><td>${esc(d.role||'')}</td><td><div class="rnm">「${esc(d.ability_name)}」</div>${tcol(esc(d.ability_text))}</td><td><div class="rnm">「${esc(d.item_name)}」</div>${tcol(esc(d.item_text))}</td></tr>`).join('');
   const hg = DATA.exhaust.map(c=>`<tr><td><b>${esc(c.name)}</b></td><td>${bk(esc(c.text))}</td></tr>`).join('');
-  const ms = DATA.trials.map(c=>`<tr><td><b>${esc(c.name)}</b> <span class="muted">${esc(c.ctype)}, 난이도 ${c.diff}</span></td><td>${bk(esc(c.text))}</td><td>${c.weakness?colChip(c.weakness):'없음 (특수 시련)'}</td></tr>`).join('');
+  const ms = DATA.trials.map(c=>`<tr><td><b>${esc(c.name)}</b> <span class="muted">${esc(c.ctype)}, 난이도 ${c.diff}</span></td><td>${bk(esc(c.text))}</td><td>${c.weakness?colIcon(c.weakness):'없음 (특수 시련)'}</td></tr>`).join('');
   const bs = DATA.masters.map(m=>`<tr><td><b>${esc(m.name)}</b></td><td>${m.diff}</td><td>${esc(m.text)}</td></tr>`).join('');
   const SYM = [['🏆','도전 성공 보상'],['✘','도전 실패 불이익'],['☀','성공했을 때 운명 주사위가 ☀면 받는 추가 보상'],['☠','실패했을 때 운명 주사위가 ☠면 받는 추가 불이익'],[pxi('draw')+' '+pxi('disc'),'카드 뽑기 / 버리기'],['💚 💔','HP 회복 / 피해'],['⤓ ⤒','아래로 깊이 파기 / 위로 후퇴'],
     ['⟳','부적 충전'],['🍎 🍽','배고픔 제거 / 배고픔 획득'],
@@ -5425,7 +5425,7 @@ function rulesHTML(){
 <h2 id="r-parts">3. 구성 요소</h2>
 <table><tr><th>구성 요소</th><th>설명</th></tr>
 <tr><td><b>탐험대원</b></td><td>플레이어가 맡는 포켓몬. 탐험대원마다 <b>특성</b> 1개, <b>탐험대 부적</b> 1장, <b>기술 카드 18장</b>을 가집니다.</td></tr>
-<tr><td><b>기술 카드</b></td><td>도전을 해결하는 카드. 위쪽 큰 숫자가 <b>행동 수치</b>, 아래쪽 막대가 <b>향상 수치와 향상 색</b>입니다.</td></tr>
+<tr><td><b>기술 카드</b></td><td>도전을 해결하는 카드. 위쪽 큰 숫자가 <b>행동 수치</b>, 아래쪽 칸이 <b>향상 수치와 향상 색</b>입니다.</td></tr>
 <tr><td><b>던전 카드</b> ${DATA.delve.length}장</td><td><b>도전</b>(전투, 장애물, 퍼즐, 함정)과 <b>이벤트</b> 두 종류. 섞어서 던전 덱을 만듭니다.</td></tr>
 <tr><td><b>던전 보스</b> 3장</td><td>한 판에 1장만 쓰며, 최심층에 도달할 때까지 정체가 숨겨져 있습니다.</td></tr>
 <tr><td><b>시련 카드</b> 12장</td><td>최심층에서 보스를 둘러싸는 카드. 보스전마다 4장이 나옵니다. 완료하면 보스의 약점이 드러납니다.</td></tr>
@@ -5433,14 +5433,14 @@ function rulesHTML(){
 <tr><td><b>주사위</b></td><td><b>기술 주사위</b> 3개(적▼, 녹◆, 청■)와 <b>운명 주사위</b> 1개(☀ 행운 / ☠ 불운).</td></tr></table>
 
 <h2 id="r-color">4. 카드 색상과 팀 HP</h2>
-<p>대부분의 카드는 ${colChip('R')} ${colChip('G')} ${colChip('B')} 세 가지 색입니다. 도전을 시도할 때는 <b>도전의 색과 같은 색의 기술 카드</b>만 행동으로 쓸 수 있습니다.</p>
+<p>대부분의 카드는 ${colIcon('R')} ${colIcon('G')} ${colIcon('B')} 세 가지 색입니다. 도전을 시도할 때는 <b>도전의 색과 같은 색의 기술 카드</b>만 행동으로 쓸 수 있습니다.</p>
 <ul><li><b>2색 카드</b>: 두 색 중 어느 쪽으로도 쓸 수 있습니다.</li>
-<li>${colChip('W')} <b>백색 카드</b>: 세 색 모두와 일치합니다.</li>
-<li>${colIcon('K')} <b>흑색 향상</b>: 향상 막대가 흑색인 카드는 향상에 쓸 수 없습니다.</li></ul>
+<li>${colIcon('W')} <b>백 카드</b>: 세 색 모두와 일치합니다.</li>
+<li>${colIcon('K')} <b>흑 향상</b>: 향상 색이 ●흑인 카드는 향상에 쓸 수 없습니다.</li></ul>
 <p><b>팀 HP</b> — 모든 탐험대원이 HP 하나를 함께 씁니다. 보통 ${CFG.hpNormal}, 어려움 ${CFG.hpHard}로 시작하고, 회복해도 시작 값을 넘을 수 없습니다. <b>0이 되면 즉시 패배</b>합니다. 회복 수단은 드물니 아껴 쓰세요.</p>
 
 <h2 id="r-setup">5. 준비</h2>
-<p class="muted">PC 게임에서는 아래 과정이 자동으로 진행됩니다. 흐름을 이해하는 용도로 읽어 주세요.</p>
+<p class="muted">게임에서는 아래 과정이 자동으로 진행됩니다. 흐름을 이해하는 용도로 읽어 주세요.</p>
 <ol><li>던전 보스 3장 중 1장을 무작위로 골라 <b>정체를 숨긴 채</b> 가운데에 놓습니다.</li>
 <li>각자 탐험대원을 고르고, 부적을 <b>충전된 상태</b>로 놓습니다.</li>
 <li>기술 카드 18장을 섞어 기술 덱을 만들고 패를 뽑습니다.
@@ -5453,21 +5453,21 @@ function rulesHTML(){
 <p>자기 차례에 <b>보스 주위의 던전 카드 4장 중 1장</b>을 골라 상호작용합니다.</p>
 <table><tr><th>고른 카드</th><th>하는 일</th></tr>
 <tr><td><b>✧ 이벤트</b></td><td>카드의 지시를 순서대로 실행하고 지나온 층에 버립니다. 이벤트는 <b>골랐을 때만</b> 발동합니다.</td></tr>
-<tr><td><b>⚔ 도전</b></td><td>그 도전을 <b>시도</b>합니다. → 6. 도전 시도하기</td></tr></table>
+<tr><td><b>⚔ 도전</b></td><td>그 도전을 <b>시도</b>합니다. → 7. 도전 시도하기</td></tr></table>
 <p><b>차례의 끝</b></p>
 <ol><li>보스 주위의 던전 카드가 4장보다 적으면, 던전 덱에서 뽑아 다시 4장으로 채웁니다.</li>
 <li>이번 차례에 쓴 기술 카드는 <b>각 주인의 버린 더미</b>로 갑니다. 다른 대원이 향상으로 준 카드는 그 대원의 버린 더미로 갑니다.</li>
 <li>이번 차례에 행동으로 쓴 카드의 「차례 종료 시」 효과가 적용됩니다(던전 카드를 다시 채운 뒤).</li>
 <li>다음 탐험대원의 차례가 됩니다.</li></ol>
-<div class="note warn">차례를 시작하거나 끝낼 때 <b>카드를 뽑지 않습니다.</b> 패를 새로 받는 방법은 <b>배고픔 선언</b>뿐입니다. → 8. 배고픔</div>
+<div class="note warn">차례를 시작하거나 끝낼 때 <b>카드를 뽑지 않습니다.</b> 패를 새로 받는 방법은 <b>배고픔 선언</b>뿐입니다. → 9. 배고픔</div>
 
 <h2 id="r-try">7. 도전 시도하기</h2>
 <p>도전 카드에는 <b>유형</b>(전투, 장애물, 퍼즐, 함정), <b>난이도</b>, <b>색</b>, <b>보상</b>(🏆), <b>불이익</b>(✘)이 적혀 있습니다. 도전에 올린 <b>진행도</b>가 난이도 이상이 되면 완료입니다.</p>
 <div class="steps">
 <div><b>1단계, 행동</b> <span class="muted">(선택)</span><br>도전과 같은 색의 기술 카드 1장을 냅니다. 그 카드의 <b>행동 수치</b>를 더하고, 카드에 적힌 효과가 적용됩니다.<br><span class="muted">행동을 내지 않으면 향상도 받을 수 없어 바로 3단계로 넘어갑니다.</span></div>
-<div><b>2단계, 향상</b> <span class="muted">(최대 2장)</span><br>다른 카드를 <b>향상</b>으로 더해 수치를 올립니다. 향상 막대의 색이 도전 색이거나 백색이어야 합니다. 향상으로 쓴 카드의 효과 문구는 <b>무시</b>합니다(<b>향상 시:</b> 효과 제외).<br>• 혼자 할 때: <b>자기 패</b>로 자신을 향상<br>• 2마리 이상: <b>다른 탐험대원만</b> 나를 향상할 수 있음</div>
+<div><b>2단계, 향상</b> <span class="muted">(최대 2장)</span><br>다른 카드를 <b>향상</b>으로 더해 수치를 올립니다. 향상 색이 도전 색이거나 백이어야 합니다. 향상으로 쓴 카드의 효과 문구는 <b>무시</b>합니다(<b>향상 시:</b> 효과 제외).<br>• 혼자 할 때: <b>자기 패</b>로 자신을 향상<br>• 2마리 이상: <b>다른 탐험대원만</b> 나를 향상할 수 있음</div>
 <div><b>3단계, 주사위</b><br>기술 주사위 3개와 운명 주사위 1개를 굴립니다. 굴리기 전에 <b>예지</b>를 먼저 합니다.<br>• 기술 주사위: <b>도전 색과 같은 색</b>이 나올 때마다 +1<br>• 운명 주사위: ☀ 행운이면 +1, ☠ 불운이면 0<br>다시 굴리기 효과가 있으면 원하는 주사위를 골라 다시 굴립니다(운명 주사위 포함). 그 뒤 「주사위를 굴린 뒤」 효과가 적용됩니다.</div>
-<div><b>4단계, 완료 또는 실패</b><br>행동 + 향상 + 주사위 + 보너스를 모두 더해 도전에 <b>진행도</b>로 올립니다. 이전에 올려 둔 진행도와 합쳐 난이도 이상이면 <b>완료</b>, 아니면 <b>실패</b>입니다. → 7. 완료와 실패</div>
+<div><b>4단계, 완료 또는 실패</b><br>행동 + 향상 + 주사위 + 보너스를 모두 더해 도전에 <b>진행도</b>로 올립니다. 이전에 올려 둔 진행도와 합쳐 난이도 이상이면 <b>완료</b>, 아니면 <b>실패</b>입니다. → 8. 완료와 실패</div>
 </div>
 <div class="ex"><b>예시</b> — 난이도 7의 적▼ 전투를 시도합니다. 수치 2인 적▼ 카드를 행동으로 내고(2), 향상 2장(+1, +2)을 받고(3), 주사위에서 적▼ 1개와 ☀가 나왔습니다(2). 합계 <b>7</b>로 난이도와 같으니 완료입니다.</div>
 <p class="note"><b>수치와 진행도</b> — 한 번의 시도에서 더하는 값을 <b>수치</b>, 그 결과 도전 카드에 쌓이는 값을 <b>진행도</b>라고 부릅니다. 카드의 「이 기술의 수치 +2」는 이번 시도에만, 「다른 도전에 진행도 1 추가」는 다른 도전 카드에 바로 쌓입니다.</p>
@@ -5527,7 +5527,7 @@ function rulesHTML(){
 <table><tr><th style="width:150px">키워드</th><th>설명</th></tr>${KEYWORDS.map(k=>`<tr><td><b>${esc(kwLabel(k))}</b></td><td>${esc(k[1])}</td></tr>`).join('')}</table>
 <table><tr><th style="width:150px">표시, 용어</th><th>설명</th></tr>
 <tr><td><b>향상 전용</b> (수치 —)</td><td>기 모으기, 날씨, 회복, 지원 기술. 향상으로만 쓸 수 있고, <b>어느 색 도전에든</b> 향상할 수 있습니다.</td></tr>
-<tr><td><b>유형 특화 향상</b></td><td>향상 막대의 노란 표시(예: 장애물 +4)는 그 유형의 도전일 때의 향상 수치입니다. 보통 기본 향상 수치보다 2 높습니다.</td></tr>
+<tr><td><b>유형 특화 향상</b></td><td>향상 칸의 노란 표시(예: 장애물 +4)는 그 유형의 도전일 때의 향상 수치입니다. 보통 기본 향상 수치보다 2 높습니다.</td></tr>
 <tr><td><b>📌 버린 더미 맨 위</b></td><td>이 카드가 자기 버린 더미 맨 위에 있는 동안 효과가 이어집니다(날씨, 필드, 기 모으기). 무엇을 마지막에 버릴지가 전략입니다. 차례가 끝나면 행동 카드, 향상 카드 순으로 쌓입니다.</td></tr>
 <tr><td><b>연계</b></td><td>「버린 더미 맨 위가 ○○라면」 조건으로 이어지는 기술: 노래하기 → 잠깨움뺨치기, 웅크리기 → 구르기, 비축하기 → 토해내기, 최면술 → 꿈먹기, 사이코필드 → 와이드포스.</td></tr>
 <tr><td><b>🛡 버리고 막기</b></td><td>피해를 받게 되는 순간 사용할지 묻습니다. 패에서 버리면 그 효과가 바로 적용됩니다. 피해 막기는 <b>보호 X</b>(껍질에숨기, 웅크리기), 그 밖에 반격(카운터)과 버티기가 있습니다.</td></tr>
@@ -5571,7 +5571,7 @@ function rulesHTML(){
 <h2 id="r-word">16. 용어</h2>
 <table><tr><th style="width:130px">용어</th><th>뜻</th></tr>
 <tr><td>행동</td><td>도전을 시도할 때 내는 기술 카드 1장. 카드 효과가 적용됩니다.</td></tr>
-<tr><td>향상</td><td>행동에 더하는 기술 카드(최대 2장). 향상 막대의 수치만 쓰고 효과 문구는 무시합니다.</td></tr>
+<tr><td>향상</td><td>행동에 더하는 기술 카드(최대 2장). 향상 수치만 쓰고 효과 문구는 무시합니다.</td></tr>
 <tr><td>수치</td><td>한 번의 시도에서 더하는 값(행동 + 향상 + 주사위 + 보너스).</td></tr>
 <tr><td>진행도</td><td>도전 카드에 쌓인 값. 난이도 이상이면 완료됩니다.</td></tr>
 <tr><td>덱 / 버린 더미</td><td>카드를 뽑는 곳 / 쓴 카드를 쌓는 곳. 던전의 버린 더미는 「지나온 층」입니다.</td></tr>
@@ -5609,7 +5609,7 @@ function keysTable(){
   ];
   return `<table><tr><th style="width:170px">조작</th><th>기능</th></tr>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>
   <p class="note warn">되돌리기 규칙: 선택만 한 상태(카드 선택, 시도 시작 직후)는 우클릭/Esc로 취소할 수 있습니다. 행동 카드 사용·향상 확정·주사위·효과 적용처럼 게임 상태가 바뀐 뒤에는 되돌릴 수 없습니다.</p>
-  <p class="muted">카드 색은 색상과 함께 기호·글자로도 표시됩니다: ${['R','G','B','W','K'].map(colChip).join(' ')}</p>`;
+  <p class="muted">카드 색은 색상과 함께 기호와 글자로도 표시됩니다: ${['R','G','B','W','K'].map(colIcon).join(' ')}</p>`;
 }
 function showKeys(){ sfx('select'); (window.MODAL0||modal)({title:'⌨ 조작법', html:`<div class="rules">${keysTable()}</div>`, wide:true, closeX:true, buttons:[{label:'✕',primary:true}]}); const m = topModal(); if (m) m._kind = 'keys'; }
 
@@ -6200,7 +6200,7 @@ function soloResume(){
 const TUT_TIPS = [
   {id:'goal', tg:'.status .sg.who', c:s=>tutStart(s), t:'<b>게임 목표</b><br>• 던전 카드를 해결하며 내려가 <b>최심층</b>의 <b>보스</b>를 쓰러뜨리면 승리합니다.<br>• 여기 표시된 <b>팀 HP</b>가 0이 되면 패배합니다. 모든 탐험대원이 함께 씁니다.'},
   {id:'deck', tg:'.status .sg.dng', c:s=>tutStart(s), t:'<b>남은 던전 카드</b><br>• 도전을 완료하거나 이벤트를 실행하면, 빈자리를 여기서 채우므로 줄어듭니다.<br>• 「아래로 깊이 파기」 효과는 줄이고, 「위로 후퇴」 효과는 늘립니다.<br>• 모두 떨어지면 <b>최심층</b>에 도착해 보스전이 시작됩니다.'},
-  {id:'hand', tg:'.hand', c:s=>tutStart(s), t:'아래는 내 <b>기술 카드(패)</b>입니다.<br>• 왼쪽 위 큰 숫자: <b>행동 수치</b><br>• 숫자 아래 표시: <b>카드 색</b>(적▼·녹◆·청■, 백색은 모든 색과 일치)<br>• 맨 아래 막대: <b>향상 수치</b>와 <b>향상 색</b><br>패는 차례마다 새로 뽑지 않으니 아껴 쓰세요.'},
+  {id:'hand', tg:'.hand', c:s=>tutStart(s), t:'아래는 내 <b>기술 카드(패)</b>입니다.<br>• 왼쪽 위 큰 숫자: <b>행동 수치</b><br>• 숫자 아래 표시: <b>카드 색</b>(적▼·녹◆·청■, 백색은 모든 색과 일치)<br>• 맨 아래 칸: <b>향상 수치</b>와 <b>향상 색</b><br>패는 차례마다 새로 뽑지 않으니 아껴 쓰세요.'},
   {id:'slots', tg:'.cross', c:s=>tutStart(s), t:'보스 주위의 <b>던전 카드</b> 4장 중 1장을 골라 해결합니다.<br>• <b>도전</b>: 왼쪽 위에 <b>난이도</b>가 있는 카드. 기술 카드로 시도합니다.<br>• <b>이벤트</b>: ✧ 이벤트 표시. 고르면 효과가 바로 실행됩니다.<br>「확인」을 누른 뒤 카드를 골라 보세요.'},
   {id:'pick', tg:'.guide', c:s=>!s.A && s.selSlot!=null, t:'고른 카드를 <b>한 번 더 누르거나</b>, 오른쪽 위 <b>도전 시작</b>(이벤트는 <b>이벤트 실행</b>)을 누르면 시작합니다.<br>다른 카드를 누르면 바뀌고, <b>취소</b>로 되돌릴 수 있습니다.'},
   {id:'flow', tg:'.guide', c:s=>s.A && s.A.step===1, t:'<b>도전 시도</b>는 4단계입니다.<br>① <b>행동</b>: 기술 카드 1장의 행동 수치를 더함<br>② <b>향상</b>: 다른 기술 카드의 향상 수치를 더함<br>③ <b>주사위</b>: 기술 주사위 3개와 운명 주사위 1개를 굴려 더함<br>④ <b>판정</b>: 합계를 <b>진행도</b>로 올려, 난이도 이상이면 <b>완료</b>, 모자라면 <b>실패</b>'},
