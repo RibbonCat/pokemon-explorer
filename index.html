@@ -2150,7 +2150,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.20.37.0';
+const GAME_VER = '1.20.38.0';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -5174,7 +5174,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.37.0</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.38.0</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -5193,7 +5193,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.37.0</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.38.0</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -5244,7 +5244,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.20.37.0</div>
+    <div class="credit">Rev. 1.20.38.0</div>
   </div>`;
 }
 
@@ -6027,24 +6027,34 @@ document.addEventListener('mouseover', e=>{
 document.addEventListener('mousedown', hovCardHide, true);
 // 1.20.20.0 카드 문구의 키워드(굵은 글씨)에 마우스를 올리면 바로 설명을 띄운다
 function kwTipHide(){ const h = document.getElementById('kwtip'); if (h) h.remove(); }
-document.addEventListener('mouseover', e=>{
-  const dt = e.target.closest && !e.target.closest('b.kw') && e.target.closest('[data-tip]');   // 1.20.26.0 data-tip: 바로 뜨는 짧은 안내
-  if (dt){ let h = document.getElementById('kwtip'); if (h && h.dataset.k==='tip:'+dt.dataset.tip) return; kwTipHide();
+function kwTipAt(tg){   // 키워드, data-tip 안내 띄우기. 띄웠으면 true
+  const dt = tg.closest && !tg.closest('b.kw') && tg.closest('[data-tip]');   // 1.20.26.0 data-tip: 바로 뜨는 짧은 안내
+  if (dt){ let h = document.getElementById('kwtip'); if (h && h.dataset.k==='tip:'+dt.dataset.tip) return true; kwTipHide();
     h = document.createElement('div'); h.id = 'kwtip'; h.className = 'dtip'; h.dataset.k = 'tip:'+dt.dataset.tip; h.textContent = dt.dataset.tip; document.body.appendChild(h);
     const r = dt.getBoundingClientRect(), hr = h.getBoundingClientRect();
     h.style.left = Math.max(8, Math.min(window.innerWidth - hr.width - 8, r.left + r.width/2 - hr.width/2)) + 'px';
-    h.style.top = (r.top - hr.height - 8 >= 8 ? r.top - hr.height - 8 : r.bottom + 8) + 'px'; return; }
-  const b = e.target.closest && e.target.closest('b.kw');
-  if (!b){ kwTipHide(); return; }
+    h.style.top = (r.top - hr.height - 8 >= 8 ? r.top - hr.height - 8 : r.bottom + 8) + 'px'; return true; }
+  const b = tg.closest && tg.closest('b.kw');
+  if (!b){ kwTipHide(); return false; }
   const n = b.textContent.replace(/[\s:.]*\d*[\s:.]*$/, '').trim(), k = KEYWORDS.find(x=>x[0]===n);
-  if (!k){ kwTipHide(); return; }
-  let h = document.getElementById('kwtip'); if (h && h.dataset.k===b.textContent) return; kwTipHide();
+  if (!k){ kwTipHide(); return false; }
+  let h = document.getElementById('kwtip'); if (h && h.dataset.k===b.textContent) return true; kwTipHide();
   h = document.createElement('div'); h.id = 'kwtip'; h.dataset.k = b.textContent;
   h.innerHTML = `<b>${esc(b.textContent.replace(/[\s:.]+$/, ''))}</b> ${esc(kwDesc(k, kwNum(b.textContent)))}`; document.body.appendChild(h);
   const r = b.getBoundingClientRect(), hr = h.getBoundingClientRect();
   h.style.left = Math.max(8, Math.min(window.innerWidth - hr.width - 8, r.left + r.width/2 - hr.width/2)) + 'px';
   h.style.top = (r.top - hr.height - 8 >= 8 ? r.top - hr.height - 8 : r.bottom + 8) + 'px';
-});
+  return true;
+}
+document.addEventListener('mouseover', e=>{ const t = document.getElementById('kwtip'); if (t && t.dataset.touch) return; kwTipAt(e.target); });   // 터치로 띄운 안내는 저절로 닫힐 때까지 유지
+// 1.20.38.0 휴대폰: 키워드나 안내가 있는 곳을 터치하면 설명을 띄움(그 터치로는 카드를 고르지 않음). 3.5초 뒤 또는 다른 곳을 터치하면 닫힘
+var KWTT = 0;
+document.addEventListener('click', e=>{
+  if (!(typeof TOUCH!=='undefined' && Date.now() - TOUCH.t < 900)) return;
+  const tg = e.target.closest && e.target.closest('b.kwk, [data-tip]'); if (!tg) return;
+  kwTipHide(); if (!kwTipAt(e.target)) return; { const t = document.getElementById('kwtip'); if (t) t.dataset.touch = '1'; }
+  e.preventDefault(); e.stopPropagation(); clearTimeout(KWTT); KWTT = setTimeout(kwTipHide, 3500);
+}, true);
 document.addEventListener('mousedown', kwTipHide, true);
 // 1.20.22.0 적용 중인 효과 칸에 마우스를 올리면 전체 목록(출처 카드 포함)을 바로 아래에 띄운다
 function fxTipHide(){ const h = document.getElementById('fxtip'); if (h) h.remove(); }
