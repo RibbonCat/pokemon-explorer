@@ -1696,9 +1696,7 @@ body.dragging .cross .slot.dtok.dthov .card{box-shadow:0 0 0 4px #ffd76a,0 0 34p
 @keyframes dring{0%{transform:scale(.2);opacity:1}100%{transform:scale(2.2);opacity:0}}
 @keyframes dspark{0%{transform:translate(0,0) scale(1.2);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}
 .cutsc .cbub{border-radius:0}
-/* 1.20.52.2 카드의 설명 문구(이탤릭)는 크게 보기에서만 */
-.card .txt .fl{display:none !important}
-#zoom .card .txt .fl{display:block !important}
+/* 1.20.52.3 패에서 끄는 카드는 패와 같이 설명 문구(이탤릭) 숨김 */
 .dragwrap .dragghost .txt .fl{display:none !important}
 .card .art .tt-0,.tci.tt-0{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAl0lEQVR4nMWTMQ6FIAyGy4uLV3B4ZyjXcHbgiA7exY7ODhyhjnWqAaLVaKL/REv/j9IAgCFEFEQUq8Y0y9SKTK0J+d2iXz2dmYWZzS6q1HQFrGsicgAATjfGvsmKl/+QxfXcZbEPEYjIudRcmo6kMB/i8yE+v4ImyiGOfbNB6rkDH2IG0CFWZWIPtldzqm9fYtrF7c/0mlZd41u6TdGskwAAAABJRU5ErkJggg==)}
 .card .art .tt-1,.tci.tt-1{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAoklEQVR4nMVTOQ6EMAx0Ih5k8RpKyi15SkpKyrxjq4gicrm/YauNwBmHSBQ7XcaeGeciegiHSGY+NCcisPdC/oRxC1XjNC/QqCyY+dDClFJlFNZ4MXFIjISWidfFljhnqTh/Tu8R5yy0vKZyXmWCu7EtVFtAqURE48iQ91Y62i/CYBXOiS1DLyIurLHZqLn3/inXOKCm3vGJ1EvsFVn/4j/4AoHgV4K94GI6AAAAAElFTkSuQmCC)}
@@ -2255,7 +2253,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.20.52.2';
+const GAME_VER = '1.20.52.3';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -5366,7 +5364,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.52.2</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.52.3</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -5385,7 +5383,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.52.2</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.52.3</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -5436,7 +5434,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.20.52.2</div>
+    <div class="credit">Rev. 1.20.52.3</div>
   </div>`;
 }
 
@@ -5828,14 +5826,26 @@ document.addEventListener('keydown', e => { if (DRAG && DRAG.started && e.key===
 function dragBegin(){
   const c = findSkill(DRAG.u); if (!c || !DRAG.el.isConnected) return false;
   const r = DRAG.el.getBoundingClientRect(); DRAG.r = r; DRAG.started = true;
-  const g = DRAG.el.cloneNode(true); g.classList.add('dragghost'); g.classList.remove('dragsrc');
-  g.style.cssText += `;left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;font-size:${getComputedStyle(DRAG.el).fontSize};margin:0`;
-  const wrap = document.createElement('div'); wrap.className = 'dragwrap'; wrap.appendChild(g); document.body.appendChild(wrap); DRAG.g = g; DRAG.wrap = wrap;
+  const {wrap, g} = dragGhost(DRAG.el); DRAG.g = g; DRAG.wrap = wrap;
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.id = 'dragarrow'; document.body.appendChild(svg); DRAG.svg = svg;
   const ret = document.createElement('div'); ret.id = 'dragret'; ret.innerHTML = '<i></i><i></i><i></i><i></i>'; document.body.appendChild(ret); DRAG.ret = ret;
   document.body.classList.add('dragging'); dragMark(); DRAG.vx = 0; DRAG.lx = DRAG.x0;
   if (!window.__noFx) SND.play('draw');
   return true;
+}
+// 끄는 카드 복제: 패 안의 카드와 같은 모양이 되도록 조상 요소의 class를 빈 상자로 그대로 감싼다(패 전용 크기·글자 규칙 유지)
+function dragGhost(el){
+  const r = el.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight;   // 크기는 변형(뽑기 연출 등) 전 실제 크기
+  const g = el.cloneNode(true); g.classList.add('dragghost'); g.classList.remove('dragsrc', 'drawn');
+  g.style.cssText += `;left:${r.left + r.width/2 - w/2}px;top:${r.top + r.height/2 - h/2}px;width:${w}px;height:${h}px;font-size:${getComputedStyle(el).fontSize};margin:0;animation:none`;
+  const wrap = document.createElement('div'); wrap.className = 'dragwrap';
+  let inner = g;
+  for (let a = el.parentElement; a && a !== document.body && a.id !== 'app'; a = a.parentElement){
+    const box = document.createElement('div'); box.className = a.className; box.setAttribute('style', 'position:static;display:block;width:0;height:0;min-width:0;min-height:0;padding:0;margin:0;border:0;background:none;box-shadow:none;transform:none;filter:none;overflow:visible;contain:none');
+    box.appendChild(inner); inner = box;
+  }
+  wrap.appendChild(inner); document.body.appendChild(wrap);
+  return {wrap, g};
 }
 function dragHit(x, y){
   for (const t of dragTargets()){ const r = t.el.getBoundingClientRect(); if (x>=r.left && x<=r.right && y>=r.top && y<=r.bottom) return t; }
