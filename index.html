@@ -1667,11 +1667,11 @@ body{position:relative;z-index:0}
 .mbody .story{white-space:normal}
 @media (min-width:900px){.modal.wide .mbody .story .sl{white-space:nowrap}}
 /* 1.20.52.0 카드 끌어 놓기 */
-.hand .card[data-u]{touch-action:pan-x}
+.hand .card[data-u]{touch-action:none}   /* 1.20.52.4 터치로 바로 끌기(브라우저가 스크롤로 가로채지 않게) */
 body.dragging,body.dragging *{cursor:grabbing !important;user-select:none}
 .hand .card.dragsrc{opacity:.22;filter:grayscale(.6)}
 .dragwrap{position:fixed;inset:0;z-index:9200;pointer-events:none}
-.dragwrap .dragghost{position:fixed;transform-origin:50% 60%;filter:drop-shadow(0 18px 18px rgba(0,0,0,.6)) brightness(1.06);transition:transform .07s linear}
+.dragwrap .dragghost{position:fixed;transform-origin:50% 50%;filter:drop-shadow(0 18px 18px rgba(0,0,0,.6)) brightness(1.06);transition:transform .07s linear}
 .dragwrap .dragghost.aim{transition:transform .16s cubic-bezier(.3,1.5,.5,1);filter:drop-shadow(0 0 14px rgba(255,215,106,.75)) drop-shadow(0 16px 14px rgba(0,0,0,.6)) brightness(1.1)}
 .dragwrap .dragghost .kb,.dragwrap .dragghost .zb{display:none}
 #dragarrow{position:fixed;inset:0;width:calc(100*var(--vw));height:calc(100*var(--vh));z-index:9210;pointer-events:none;overflow:visible}
@@ -2253,7 +2253,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.20.52.3';
+const GAME_VER = '1.20.52.4';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -5364,7 +5364,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.52.3</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.52.4</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -5383,7 +5383,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.52.3</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.20.52.4</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -5434,7 +5434,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.20.52.3</div>
+    <div class="credit">Rev. 1.20.52.4</div>
   </div>`;
 }
 
@@ -5789,7 +5789,11 @@ function storyBr(t){
 /* =================== 1.20.52.0 카드 끌어 놓기 (슬레이 더 스파이어식) =================== */
 // 패의 카드를 끌어 던전 카드(도전) 위에 놓으면 도전을 시작하고 그 카드를 행동으로 쓴다. 향상 단계에서는 시도 중인 카드에 놓으면 향상으로 고른다.
 // 패 영역을 벗어나면 카드는 패 위에 떠 있고 조준 화살표가 손가락·마우스를 따라간다.
+// 1.20.52.4: 휴대폰은 화면 축소(#app scale)·세로 회전(body rotate) 좌표를 맞춰 끄는 카드가 원래 카드와 같은 크기·위치로 보이게 함
 var DRAG = null, DRAG_EAT = 0;
+function dLocal(x, y){ return document.body.classList.contains('rot') ? [y, innerWidth - x] : [x, y]; }   // 화면 좌표 → body 안 좌표
+function dRect(r){ const [ax, ay] = dLocal(r.left, r.top), [bx, by] = dLocal(r.right, r.bottom); const l = Math.min(ax, bx), t = Math.min(ay, by); return {left:l, top:t, width:Math.abs(bx - ax), height:Math.abs(by - ay)}; }
+function dScale(){ const a = document.getElementById('app'); const m = a && /scale\(([\d.]+)\)/.exec(a.style.transform || ''); return m ? +m[1] : 1; }
 function dragTargets(){
   const out = [];
   document.querySelectorAll('.cross .slot:not(.m)').forEach((el, i) => out.push({k:i, el}));
@@ -5813,8 +5817,9 @@ document.addEventListener('pointermove', e => {
   if (!DRAG || e.pointerId!==DRAG.id) return;
   const dx = e.clientX - DRAG.x0, dy = e.clientY - DRAG.y0;
   if (!DRAG.started){
-    if (DRAG.touch){ if (Math.abs(dx) > 14 && Math.abs(dx) > Math.abs(dy)){ DRAG = null; return; } if (!(dy < -12 && Math.abs(dy) > Math.abs(dx)*1.1)) return; }
-    else if (Math.hypot(dx, dy) < 8) return;
+    if (typeof zoomOpen==='function' && zoomOpen()){ DRAG = null; return; }   // 길게 눌러 크게 보기가 열렸으면 끌지 않음
+    if (Math.hypot(dx, dy) < (DRAG.touch ? 10 : 6)) return;
+    if (DRAG.touch && typeof TOUCH!=='undefined') clearTimeout(TOUCH.timer);   // 끌기 시작하면 길게 누르기(크게 보기) 취소
     if (!dragBegin()) { DRAG = null; return; }
   }
   e.preventDefault(); dragMove(e.clientX, e.clientY);
@@ -5824,20 +5829,22 @@ document.addEventListener('pointercancel', e => { if (DRAG && e.pointerId===DRAG
 document.addEventListener('click', e => { if (Date.now() - DRAG_EAT < 350){ e.stopPropagation(); e.preventDefault(); } }, true);
 document.addEventListener('keydown', e => { if (DRAG && DRAG.started && e.key==='Escape'){ e.stopPropagation(); dragAbort(); } }, true);
 function dragBegin(){
+  if (!DRAG.el.isConnected){ const n = document.querySelector(`.hand .card[data-u="${DRAG.u}"]`); if (n) DRAG.el = n; }   // 다시 그려졌으면 새 요소로
   const c = findSkill(DRAG.u); if (!c || !DRAG.el.isConnected) return false;
-  const r = DRAG.el.getBoundingClientRect(); DRAG.r = r; DRAG.started = true;
-  const {wrap, g} = dragGhost(DRAG.el); DRAG.g = g; DRAG.wrap = wrap;
+  DRAG.r = dRect(DRAG.el.getBoundingClientRect()); DRAG.started = true;
+  [DRAG.lx0, DRAG.ly0] = dLocal(DRAG.x0, DRAG.y0);
+  const {wrap, g, gs} = dragGhost(DRAG.el); DRAG.g = g; DRAG.wrap = wrap; DRAG.gs = gs;
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.id = 'dragarrow'; document.body.appendChild(svg); DRAG.svg = svg;
   const ret = document.createElement('div'); ret.id = 'dragret'; ret.innerHTML = '<i></i><i></i><i></i><i></i>'; document.body.appendChild(ret); DRAG.ret = ret;
-  document.body.classList.add('dragging'); dragMark(); DRAG.vx = 0; DRAG.lx = DRAG.x0;
+  document.body.classList.add('dragging'); dragMark(); DRAG.vx = 0; DRAG.lastx = DRAG.lx0;
   if (!window.__noFx) SND.play('draw');
   return true;
 }
 // 끄는 카드 복제: 패 안의 카드와 같은 모양이 되도록 조상 요소의 class를 빈 상자로 그대로 감싼다(패 전용 크기·글자 규칙 유지)
 function dragGhost(el){
-  const r = el.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight;   // 크기는 변형(뽑기 연출 등) 전 실제 크기
-  const g = el.cloneNode(true); g.classList.add('dragghost'); g.classList.remove('dragsrc', 'drawn');
-  g.style.cssText += `;left:${r.left + r.width/2 - w/2}px;top:${r.top + r.height/2 - h/2}px;width:${w}px;height:${h}px;font-size:${getComputedStyle(el).fontSize};margin:0;animation:none`;
+  const r = dRect(el.getBoundingClientRect()), w = el.offsetWidth, h = el.offsetHeight, gs = dScale();   // 크기는 변형 전 실제 크기, 화면 축소 비율은 transform으로
+  const g = el.cloneNode(true); g.classList.add('dragghost'); g.classList.remove('dragsrc', 'drawn', 'introhand');
+  g.style.cssText += `;left:${r.left + r.width/2 - w/2}px;top:${r.top + r.height/2 - h/2}px;width:${w}px;height:${h}px;font-size:${getComputedStyle(el).fontSize};margin:0;animation:none;transform:scale(${gs})`;
   const wrap = document.createElement('div'); wrap.className = 'dragwrap';
   let inner = g;
   for (let a = el.parentElement; a && a !== document.body && a.id !== 'app'; a = a.parentElement){
@@ -5845,64 +5852,65 @@ function dragGhost(el){
     box.appendChild(inner); inner = box;
   }
   wrap.appendChild(inner); document.body.appendChild(wrap);
-  return {wrap, g};
+  return {wrap, g, gs};
 }
-function dragHit(x, y){
+function dragHit(x, y){   // 화면 좌표로 판정
   for (const t of dragTargets()){ const r = t.el.getBoundingClientRect(); if (x>=r.left && x<=r.right && y>=r.top && y<=r.bottom) return t; }
   return null;
 }
-function dragMove(x, y){
-  const D = DRAG, g = D.g, r = D.r; if (!g) return;
-  const bot = document.querySelector('.bottom'), bt = bot ? bot.getBoundingClientRect().top : innerHeight*0.6;
-  D.vx = D.vx*0.7 + (x - D.lx)*0.3; D.lx = x;
+function dragMove(vx, vy){
+  const D = DRAG, g = D.g, r = D.r, gs = D.gs; if (!g) return;
+  const [x, y] = dLocal(vx, vy);
+  const bot = document.querySelector('.bottom'), bt = bot ? dRect(bot.getBoundingClientRect()).top : innerHeight*0.6;
+  D.vx = D.vx*0.7 + (x - D.lastx)*0.3; D.lastx = x;
   const aim = y < bt - 6;
   if (!aim){   // 패 위에서는 카드가 손을 따라 움직임 (기울기 = 움직이는 속도)
     const tilt = Math.max(-14, Math.min(14, D.vx*1.6));
-    g.style.transform = `translate(${x - D.x0}px, ${y - D.y0}px) rotate(${tilt}deg) scale(1.06)`; g.classList.remove('aim');
+    g.style.transform = `translate(${x - D.lx0}px, ${y - D.ly0}px) rotate(${tilt.toFixed(1)}deg) scale(${(1.06*gs).toFixed(3)})`; g.classList.remove('aim');
     D.svg.innerHTML = ''; D.ret.className = ''; D.hov = null; document.querySelectorAll('.dthov').forEach(e=>e.classList.remove('dthov'));
     return;
   }
   // 조준: 카드는 원래 자리 위로 떠오르고, 화살표가 포인터를 따라감
-  g.classList.add('aim'); g.style.transform = `translate(0px, ${-Math.min(70, r.height*0.42)}px) scale(1.12)`;
-  const t = dragHit(x, y), ok = t && dragCheck(findSkill(D.u), t.k)==='ok';
+  const lift = Math.min(70*gs, r.height*0.42);
+  g.classList.add('aim'); g.style.transform = `translate(0px, ${(-lift).toFixed(1)}px) scale(${(1.12*gs).toFixed(3)})`;
+  const t = dragHit(vx, vy), ok = t && dragCheck(findSkill(D.u), t.k)==='ok';
   if ((t && t.k) !== (D.hov && D.hov.k) || (t && !D.hov)){ document.querySelectorAll('.dthov').forEach(e=>e.classList.remove('dthov')); if (t){ t.el.classList.add('dthov'); if (!window.__noFx) SND.play(ok ? 'pip4' : 'pip0'); } }
   D.hov = t; D.ok = ok;
-  if (t){ const tr = t.el.getBoundingClientRect(); Object.assign(D.ret.style, {left:(tr.left-6)+'px', top:(tr.top-6)+'px', width:(tr.width+12)+'px', height:(tr.height+12)+'px'}); D.ret.className = 'on ' + (ok ? 'ok' : 'no'); }
+  if (t){ const tr = dRect(t.el.getBoundingClientRect()); Object.assign(D.ret.style, {left:(tr.left-6)+'px', top:(tr.top-6)+'px', width:(tr.width+12)+'px', height:(tr.height+12)+'px'}); D.ret.className = 'on ' + (ok ? 'ok' : 'no'); }
   else D.ret.className = '';
   // 화살표: 카드 윗변 가운데에서 포인터까지 2차 곡선, 점이 점점 커지고 끝에 화살촉
-  const sx = r.left + r.width/2, sy = r.top - Math.min(70, r.height*0.42) - r.height*0.06;
-  const cx = sx + (x - sx)*0.15, cy = Math.min(sy, y) - Math.abs(x - sx)*0.25 - 60;
+  const sx = r.left + r.width/2, sy = r.top - lift - r.height*0.06;
+  const cx = sx + (x - sx)*0.15, cy = Math.min(sy, y) - Math.abs(x - sx)*0.25 - 60*gs;
   const N = 18, col = t ? (ok ? '#ffd76a' : '#ff6a6a') : '#e8f0f4'; let h = '';
   const P = s => [(1-s)*(1-s)*sx + 2*(1-s)*s*cx + s*s*x, (1-s)*(1-s)*sy + 2*(1-s)*s*cy + s*s*y];
-  for (let i=1;i<N;i++){ const s = i/N, [px, py] = P(s); const rr = 4 + s*8; h += `<rect x="${(px-rr).toFixed(1)}" y="${(py-rr).toFixed(1)}" width="${(rr*2).toFixed(1)}" height="${(rr*2).toFixed(1)}" fill="${col}" stroke="#0a1014" stroke-width="2" transform="rotate(45 ${px.toFixed(1)} ${py.toFixed(1)})" style="animation-delay:${(-i*0.05).toFixed(2)}s"/>`; }
+  const k = Math.max(.6, gs);
+  for (let i=1;i<N;i++){ const s = i/N, [px, py] = P(s); const rr = (4 + s*8)*k; h += `<rect x="${(px-rr).toFixed(1)}" y="${(py-rr).toFixed(1)}" width="${(rr*2).toFixed(1)}" height="${(rr*2).toFixed(1)}" fill="${col}" stroke="#0a1014" stroke-width="2" transform="rotate(45 ${px.toFixed(1)} ${py.toFixed(1)})" style="animation-delay:${(-i*0.05).toFixed(2)}s"/>`; }
   const [ax, ay] = P(0.94), ang = Math.atan2(y - ay, x - ax) * 180 / Math.PI;
-  h += `<polygon points="10,0 -12,-13 -6,0 -12,13" fill="${col}" stroke="#0a1014" stroke-width="2.5" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${ang.toFixed(1)}) scale(1.9)"/>`;
+  h += `<polygon points="10,0 -12,-13 -6,0 -12,13" fill="${col}" stroke="#0a1014" stroke-width="2.5" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${ang.toFixed(1)}) scale(${(1.9*k).toFixed(2)})"/>`;
   D.svg.innerHTML = h; D.svg.setAttribute('class', t ? (ok ? 'ok' : 'no') : '');
 }
-function dragCleanup(){ if (!DRAG) return; ['wrap','svg','ret'].forEach(k => DRAG[k] && DRAG[k].remove()); document.body.classList.remove('dragging'); dragUnmark(); DRAG = null; }
 function dragAbort(){
   const D = DRAG; if (!D) return; DRAG_EAT = Date.now();
-  if (D.g){ D.g.classList.remove('aim'); D.g.style.transition = 'transform .2s cubic-bezier(.3,1.4,.5,1)'; D.g.style.transform = 'none'; }
-  if (D.svg) D.svg.innerHTML = ''; if (D.ret) D.ret.className = '';
+  if (D.g){ D.g.classList.remove('aim'); D.g.style.transition = 'transform .2s cubic-bezier(.3,1.4,.5,1)'; D.g.style.transform = `scale(${D.gs})`; }
   const w = D.wrap; document.body.classList.remove('dragging'); dragUnmark(); ['svg','ret'].forEach(k => D[k] && D[k].remove()); DRAG = null;
   setTimeout(() => w && w.remove(), 210);
 }
 function dragImpact(tel, ok){
-  const r = tel.getBoundingClientRect(), cx = r.left + r.width/2, cy = r.top + r.height/2;
+  const r = dRect(tel.getBoundingClientRect()), cx = r.left + r.width/2, cy = r.top + r.height/2;
   const box = document.createElement('div'); box.className = 'dimpact' + (ok ? '' : ' no'); box.style.left = cx + 'px'; box.style.top = cy + 'px';
   let h = '<b class="ring"></b><b class="ring r2"></b>';
   for (let k=0;k<10;k++){ const a = k/10*Math.PI*2, dd = 50 + (k%3)*18; h += `<i style="--dx:${(Math.cos(a)*dd).toFixed(0)}px;--dy:${(Math.sin(a)*dd).toFixed(0)}px"></i>`; }
   box.innerHTML = h; document.body.appendChild(box); setTimeout(() => box.remove(), 650);
   tel.classList.remove('dtland'); void tel.offsetWidth; tel.classList.add('dtland'); setTimeout(() => tel.classList.remove('dtland'), 450);
 }
-function dragEnd(x, y){
+function dragEnd(vx, vy){
   const D = DRAG; DRAG_EAT = Date.now();
-  const t = D.hov && dragHit(x, y);
+  const t = D.hov && dragHit(vx, vy);
   if (!t || !D.ok){ if (t && !window.__noFx){ SND.play('pip0'); toast('이 도전에는 이 카드를 쓸 수 없습니다.'); } dragAbort(); return; }
-  const g = D.g, tr = t.el.getBoundingClientRect(), gr = g.getBoundingClientRect();
+  const g = D.g, tr = dRect(t.el.getBoundingClientRect());
   g.classList.remove('aim'); g.classList.add('fly');
   g.style.transition = 'transform .22s cubic-bezier(.55,0,.8,.3), opacity .22s';
-  g.style.transform = `translate(${tr.left + tr.width/2 - (D.r.left + D.r.width/2)}px, ${tr.top + tr.height/2 - (D.r.top + D.r.height/2)}px) scale(.45) rotate(8deg)`; g.style.opacity = '.2';
+  g.style.transform = `translate(${tr.left + tr.width/2 - (D.r.left + D.r.width/2)}px, ${tr.top + tr.height/2 - (D.r.top + D.r.height/2)}px) scale(${(.45*D.gs).toFixed(3)}) rotate(8deg)`; g.style.opacity = '.2';
   const k = t.k, u = D.u, w = D.wrap; ['svg','ret'].forEach(q => D[q] && D[q].remove()); document.body.classList.remove('dragging'); dragUnmark(); DRAG = null;
   setTimeout(() => { w.remove(); const tel = dragTargets().find(z => String(z.k)===String(k)); if (tel) dragImpact(tel.el, true); if (!window.__noFx) SND.play('pip7'); dragPlay(k, u); }, 210);
 }
