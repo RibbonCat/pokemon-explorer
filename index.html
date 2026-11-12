@@ -144,11 +144,12 @@ button.primary kbd{background:rgba(0,0,0,.2);border-color:rgba(0,0,0,.5)}
 .setup .tback{margin-top:8px;font-size:var(--fs-sm);opacity:.85}
 .setup .pickp .pport{flex:none;width:clamp(40px,calc(6*var(--vh)),56px);aspect-ratio:1;background:center/contain no-repeat;image-rendering:pixelated;display:block}
 /* v1.3: 선택 화면 — 한 마리씩 보기 */
-.setup.pick{grid-template-columns:1fr minmax(230px,calc(19*var(--vw)));gap:20px;padding:18px 22px 30px}
+.setup.pick{grid-template-columns:minmax(0,1fr) minmax(230px,calc(19*var(--vw)));gap:20px;padding:18px 22px 30px}
 .setup.pick.enter{animation:pkEnter .55s cubic-bezier(.2,.8,.2,1)}
 @keyframes pkEnter{from{transform:translateY(calc(70*var(--vh)));opacity:0}to{transform:none;opacity:1}}
 .setup.pick .sl{align-items:center}
 .setup .pstrip{display:flex;gap:10px;justify-content:center;flex-wrap:nowrap;margin:4px 0 14px}
+.setup .pstrip{max-width:100%;row-gap:12px;flex-wrap:wrap} .setup .pstrip .pbr{display:block;flex-basis:100%;height:0}   /* 1.22.11.1 탐험대원 고르기: 기본 6마리 + 해금 4마리 두 줄 */
 .setup .pchip{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:92px;padding:8px 10px;background:#10262e;border:2px solid #2a5462;border-bottom:5px solid var(--sc);border-radius:12px;opacity:.75}
 .setup .pchip .pg{font-size:24px;line-height:1}
 .setup .pchip .pcn{font-size:15px;font-weight:800}
@@ -322,7 +323,7 @@ body.touch .dicepop .dpart{width:clamp(110px,calc(30*var(--vh)),170px);height:cl
 .guide .aeb{display:flex;gap:8px;margin-left:auto}
 .guide .aeb button{padding:5px 14px;font-size:15px;font-weight:800;white-space:nowrap}
 .guide .gt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.setup.pick{grid-template-columns:1fr minmax(210px,calc(15*var(--vw)))}
+.setup.pick{grid-template-columns:minmax(0,1fr) minmax(210px,calc(15*var(--vw)))}
 .setup.pick .sr .opts label.ck{align-items:flex-start;gap:8px}
 .setup.pick .sr .opts label.ck small{display:block;color:var(--muted);font-size:12.5px;line-height:1.35;margin-top:2px}
 button.kb{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;padding:8px 10px;font-size:15px}
@@ -364,7 +365,7 @@ button:not(:disabled):active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0
 .layout.onebar .status .att .chal-sum.cmp{line-height:1.2}
 @media (max-width:1500px){ .layout.onebar .status .att.s4 .dice{display:none} .sinfo .sib{font-size:13.5px} }
 .setup .pchip .pport{display:block;aspect-ratio:1;background:center/contain no-repeat;flex:none}
-.setup.pick{grid-template-columns:1fr minmax(236px,calc(15*var(--vw)))}
+.setup.pick{grid-template-columns:minmax(0,1fr) minmax(236px,calc(15*var(--vw)))}
 .setup.pick .sr .opts select{max-width:72%}
 .status .die.fate::after{display:none}
 .status .att .die.hit::before,.status .att .die.hit2::after{top:-7px;font-size:10px}
@@ -1853,7 +1854,7 @@ body.rot #typefx{width:calc(100*var(--vh));height:calc(100*var(--vw))}
 @keyframes cispark{0%{opacity:1;transform:translate(0,0) scale(1.4)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.4)}}
 .itemfx.cutin .citx{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;color:#fff;text-shadow:2px 2px 0 #05070f;min-width:0;max-width:min(calc(62*var(--vw)),900px);position:relative}
 .itemfx.cutin .citx>small{font-size:clamp(13px,calc(1.9*var(--vh)),18px);color:#ffe28a;font-weight:800;letter-spacing:1px;animation:citx .16s .12s ease-out both}
-.itemfx.cutin .citx>b{font-size:clamp(34px,calc(7*var(--vh)),66px);font-weight:900;color:#fff6d8;line-height:1.1;white-space:nowrap;animation:cistamp .22s .16s cubic-bezier(.2,1.8,.4,1) both;text-shadow:3px 3px 0 #05070f,0 0 18px color-mix(in srgb,var(--sc) 70%,#fff)}
+.itemfx.cutin .citx>b{font-size:clamp(34px,calc(7*var(--vh)),66px);font-weight:900;color:#fff6d8;line-height:1.1;white-space:nowrap;animation:cistamp .22s .16s cubic-bezier(.2,1.8,.4,1) both;text-shadow:2px 0 0 #fff6d8,0 2px 0 #fff6d8,2px 2px 0 #fff6d8,-2px 0 0 #05070f,0 -2px 0 #05070f,4px 0 0 #05070f,0 4px 0 #05070f,5px 5px 0 #05070f,0 0 20px color-mix(in srgb,var(--sc) 70%,#fff)}   /* 1.22.11.1 부적 이름 굵게: 같은 색 그림자로 획을 2px 두껍게 + 검은 테두리 */
 .itemfx.cutin .citx>span{font-size:clamp(17px,calc(2.9*var(--vh)),27px);font-weight:700;animation:citx .18s .24s ease-out both}
 .itemfx.cutin .citx>p{margin:4px 0 0;font-size:clamp(15px,calc(2.3*var(--vh)),21px);opacity:.92;white-space:pre-line;animation:citx .18s .3s ease-out both}
 @keyframes citx{from{opacity:0;transform:translateX(70px)}to{opacity:1;transform:none}}
@@ -2553,7 +2554,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.22.10.1';
+const GAME_VER = '1.22.11.1';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -5696,7 +5697,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="achv"><span>업적</span></button><button class="big kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.22.10.1</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.22.11.1</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -5717,7 +5718,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.22.10.1</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.22.11.1</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -5732,9 +5733,9 @@ function setupHTML(){
   return `<div class="setup pick ${enter} ${SETUP.rampage?'rampage':''}">
     <div class="sl">
       <div class="lead">탐험대원을 1~4마리 고르세요 <span class="muted" style="font-weight:500">— 고른 순서가 차례 순서</span></div>
-      <div class="pstrip">${L.map((x,i)=>{ const o = SETUP.sel.indexOf(x.id);
-        if (!isUnlocked(x.id)) return `<button class="pchip locked ${i===SETUP.cur?'cur':''}" style="--sc:#6a7a88" data-act="pickFocus" data-i="${i}" title="잠김"><span class="pport pg">?</span><span class="pcn">???</span></button>`;
-        return `<button class="pchip ${i===SETUP.cur?'cur':''} ${o>=0?'on':''}" style="--sc:${x.color}" data-act="pickFocus" data-i="${i}" title="${escT(x.name)}">${o>=0?`<b class="ord">${o+1}</b>`:''}${portraitHTML(x)}<span class="pcn">${esc(x.name)}</span></button>`; }).join('')}</div>
+      <div class="pstrip">${L.map((x,i)=>{ const o = SETUP.sel.indexOf(x.id), br = i===6 ? '<i class="pbr"></i>' : '';   // 1.22.11.1 기본 6마리 / 해금 4마리 줄바꿈
+        if (!isUnlocked(x.id)) return br + `<button class="pchip locked ${i===SETUP.cur?'cur':''}" style="--sc:#6a7a88" data-act="pickFocus" data-i="${i}" title="잠김"><span class="pport pg">?</span><span class="pcn">???</span></button>`;
+        return br + `<button class="pchip ${i===SETUP.cur?'cur':''} ${o>=0?'on':''}" style="--sc:${x.color}" data-act="pickFocus" data-i="${i}" title="${escT(x.name)}">${o>=0?`<b class="ord">${o+1}</b>`:''}${portraitHTML(x)}<span class="pcn">${esc(x.name)}</span></button>`; }).join('')}</div>
       <div class="pstage">
         <button class="parr" data-act="pickPrev" title="이전 탐험대원 (←)">◀</button>
         <div class="pstk">${L.map((x,i)=>{ const kk = SETUP.sel.indexOf(x.id), me = i===SETUP.cur;   // 모든 탐험대원 창을 겹쳐 두고 현재만 보임: 창 크기·버튼 위치 고정
@@ -5768,7 +5769,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.22.10.1</div>
+    <div class="credit">Rev. 1.22.11.1</div>
   </div>`;
 }
 
@@ -7422,7 +7423,7 @@ pkmApply();
    기록은 이 기기의 브라우저에 저장(pmd_prof). 탐험대 암호 = 요약 기록(횟수·보스·탐험대원·업적·해금)을 짧은 글자로 바꾼 것.
    판별 상세 기록(recent)은 암호에 넣지 않음. 보스·탐험대원·업적·해금은 DATA 순서대로 넣으므로 새 항목은 맨 뒤에만 추가. */
 const PROF_KEY = 'pmd_prof', UNLOCKS = ['riolu','ralts','snorunt','pidgey'];   // UNLOCKS: 해금 항목 (암호의 비트 순서. 맨 뒤에만 추가)
-const UNLOCK_RULES = {riolu:{cond:'wins>=1', text:'던전 보스를 1번 쓰러뜨리면 해금'}, ralts:{cond:'boss_kinds>=2', text:'던전 보스를 2종류 쓰러뜨리면 해금'}, snorunt:{cond:'hard_wins>=1', text:'업적 「험난한 길」(어려움 난이도로 승리)을 달성하면 해금'}, pidgey:{cond:'req_wins>=1', text:'업적 「첫 의뢰」(의뢰 1번 성공)를 달성하면 해금'}};   // 해금 조건 (조건 코드는 업적과 같음)
+const UNLOCK_RULES = {riolu:{cond:'wins>=1', text:'던전 보스를 1번 쓰러뜨리면 해금'}, ralts:{cond:'boss_kinds>=2', text:'던전 보스를 2종류 쓰러뜨리면 해금'}, snorunt:{cond:'rage_wins>=1', text:'폭주 모드로 던전 보스를 1번 쓰러뜨리면 해금'}, pidgey:{cond:'req_wins>=3', text:'의뢰를 3번 성공하면 해금'}};   // 해금 조건 (조건 코드는 업적과 같음)
 function isUnlocked(id){ const d = DATA.seekers.find(x=>x.id===id); return !!d && (!d.hidden || !!PROF.unlock[id]); }
 function unlockCheck(){ const got = []; UNLOCKS.forEach(k=>{ const r = UNLOCK_RULES[k]; if (r && !PROF.unlock[k] && achEval(r.cond, null)){ PROF.unlock[k] = Date.now(); got.push(k); } }); return got; }
 // 업적·해금 알림: 오른쪽 아래에서 올라왔다가 잠시 뒤 내려감 (여러 개면 차례로 쌓임)
