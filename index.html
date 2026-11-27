@@ -2047,6 +2047,15 @@ body.touch #chat.sz0 .chlist{height:80px} body.touch #chat.sz2 .chlist{height:17
 .over .nextgoal .ngd{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .over .nextgoal .ngb{height:8px;background:#34454b;outline:2px solid #0a141a}.over .nextgoal .ngb i{display:block;height:100%;background:#e8b840}
 .over .nextgoal .ngn{font-weight:800;min-width:3.5em;text-align:right}
+.status .who .tophp .hearts{display:inline-flex;gap:2px;align-items:center;margin-left:2px}   /* 1.30.1.0 하트 */
+.status .who .tophp .hearts .ht{width:22px;height:20px;image-rendering:pixelated}
+.status .who .tophp .hearts .ht.brk{animation:htbrk .5s steps(5)}
+@keyframes htbrk{0%{transform:translate(0,0)}20%{transform:translate(-2px,1px)}40%{transform:translate(2px,-1px);filter:brightness(2)}60%{transform:translate(-1px,0)}100%{transform:none}}
+.layout.onebar .status .who .tophp .hearts{display:inline-flex}
+.setp .spl{white-space:nowrap}   /* 1.30.1.0 휴대폰 메뉴 잘림 */
+body.touch .setp{top:16px;max-height:calc(100% - 32px);overflow-y:auto;gap:6px}
+body.touch .setp .spr{min-height:42px}
+body.touch .setp .spl{flex-basis:150px}
 .card .art .tt-0,.tci.tt-0{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAl0lEQVR4nMWTMQ6FIAyGy4uLV3B4ZyjXcHbgiA7exY7ODhyhjnWqAaLVaKL/REv/j9IAgCFEFEQUq8Y0y9SKTK0J+d2iXz2dmYWZzS6q1HQFrGsicgAATjfGvsmKl/+QxfXcZbEPEYjIudRcmo6kMB/i8yE+v4ImyiGOfbNB6rkDH2IG0CFWZWIPtldzqm9fYtrF7c/0mlZd41u6TdGskwAAAABJRU5ErkJggg==)}
 .card .art .tt-1,.tci.tt-1{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAoklEQVR4nMVTOQ6EMAx0Ih5k8RpKyi15SkpKyrxjq4gicrm/YauNwBmHSBQ7XcaeGeciegiHSGY+NCcisPdC/oRxC1XjNC/QqCyY+dDClFJlFNZ4MXFIjISWidfFljhnqTh/Tu8R5yy0vKZyXmWCu7EtVFtAqURE48iQ91Y62i/CYBXOiS1DLyIurLHZqLn3/inXOKCm3vGJ1EvsFVn/4j/4AoHgV4K94GI6AAAAAElFTkSuQmCC)}
 .card .art .tt-2,.tci.tt-2{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAZElEQVR4nGNgIBEYGBj8NzAw+E+qPrjmb9++/V+15QDphowEzegKSNb8YocDXCFZzkY2ZNWWA+T7+cUOBxTXEAJMyJqjtH4xeFR8IMlSuOauKC2UMCDaFeiakcWJtp3szDEoAADDZYHQZl6TNAAAAABJRU5ErkJggg==)}
@@ -2661,7 +2670,7 @@ const NET = {on:false, role:null, pid:null, code:null, nick:'', players:[], pick
   ui:false, seq:0, wait:{}, snap:null, sendT:null, decider:null, replyTo:null, view:null, status:'', err:'', chat:[], chatOpen:false, unread:0, beat:null};
 const NET_PREFIX = 'pmdx-pe-';
 const NET_MAX = 4;
-const GAME_VER = '1.30.0.1';
+const GAME_VER = '1.30.1.0';
 function netNickLoad(){ try { return localStorage.getItem('pmd_nick') || ''; } catch(e){ return ''; } }
 function netNickSave(n){ try { localStorage.setItem('pmd_nick', n); } catch(e){} }
 NET.nick = netNickLoad();
@@ -5557,6 +5566,24 @@ function showMilled(cards, src, label){
   setTimeout(()=>{ el.classList.add('out'); setTimeout(()=>el.remove(), 400); }, 2600);
 }
 var HPG = null, HPGT = 0;   // 팀 HP 잔상 막대: 피해를 받으면 앞 막대가 바로 줄고, 뒤 막대가 잠시 뒤 천천히 따라 줄어든다
+/* 1.30.1.0 팀 HP 하트: 하트 1개 = HP 2, 반씩 깎임. 방금 잃은 하트 조각은 깨지며 떨어짐 */
+const HEARTIMG = {};
+function heartImg(kind){ if (HEARTIMG[kind]) return HEARTIMG[kind];
+  const c = document.createElement('canvas'); c.width = 11; c.height = 10; const x = c.getContext('2d');
+  const H = ["..ooo.ooo..",".oRRRoRRRo.","oRWWRRRRRRo","oRWRRRRRRRo","oRRRRRRRRRo",".oRRRRRRRo.","..oRRRRRo..","...oRRRo...","....oRo....",".....o....."];
+  const F = {o:'#2a0a0e',R:'#e8344a',W:'#ffd0d6'}, E = {o:'#14181c',R:'#3a2a30',W:'#3a2a30'};
+  H.forEach((row,y)=>[...row].forEach((ch,xx)=>{ if (ch==='.') return; const col = kind==='full' ? F : kind==='empty' ? E : (xx<=5 ? F : E); x.fillStyle = col[ch]; x.fillRect(xx,y,1,1); }));
+  return HEARTIMG[kind] = c.toDataURL(); }
+var HPPREV = null;
+function heartsHTML(){
+  const n = Math.ceil(S.hpStart/2), hp = Math.max(0, S.hp), prev = HPPREV;
+  HPPREV = (window.__noFx || HPPREV==null || hp >= HPPREV) ? hp : HPPREV;
+  if (HPPREV !== hp) setTimeout(()=>{ HPPREV = S ? Math.max(0,S.hp) : null; }, 700);
+  let s = ''; for (let i=0;i<n;i++){ const v = hp - i*2, pv = (prev==null?hp:prev) - i*2; const k = v>=2 ? 'full' : v===1 ? 'half' : 'empty';
+    const brk = !window.__noFx && prev!=null && prev>hp && pv>v && pv>0;
+    s += `<img class="ht ${brk?'brk':''}" src="${heartImg(k)}" alt="">`; }
+  return `<span class="hearts" aria-label="팀 HP ${hp}/${S.hpStart}">${s}</span>`;
+}
 function hpBarHTML(){
   if (HPG==null || HPG < S.hp || window.__noFx) HPG = S.hp;
   const w = x => Math.max(0, Math.min(100, x/S.hpStart*100)).toFixed(1)+'%';
@@ -5725,7 +5752,7 @@ function leftHTML(){
   const m = S.master;
   return `<div class="status ${S.A?'attempting':''}">
     <div class="sg who" style="--sc:${cur().def.color}"><div class="curwho">${miniHTML(cur().def)}<span class="cwt"><span>${whoPre(S.cur)}${esc(cur().def.name)}의 차례 <small>${S.turnNo}번째</small></span><span class="gh" aria-hidden="true">${netOn()?`<b class="nwho">${esc(NET.players.reduce((a,p)=>p.nick.length>a.length?p.nick:a,''))}</b> · `:''}${esc(LONGNAME())}의 차례 <small>888번째</small></span></span></div>${netOn()?tmNumHTML():''}
-      <div class="tophp ${S.hp<=3?'low':''}" title="팀 HP (모든 탐험대원 공유)"><span class="hl">♥ 팀 HP</span><b>${S.hp}</b><small>/${S.hpStart}</small>${hpBarHTML()}</div></div>
+      <div class="tophp ${S.hp<=3?'low':''}" title="팀 HP (모든 탐험대원 공유)"><span class="hl">팀 HP</span><b>${S.hp}</b><small>/${S.hpStart}</small>${heartsHTML()}</div></div>
     <div class="sg dng ${S.phase==='final'?'fin':''}">${S.phase==='final' ? `<div class="dgfin">최심층 보스전</div><div class="dgsub">완료 ${S.completed.length}${rsvN()?` · <span class="dgrsv2" data-tip="${escT('정찰로 예약한 카드(다음 빈자리에 먼저 펼쳐짐): '+S.delveDeck.slice(0, rsvN()).map(c=>c.name).join(', '))}">예약 ${rsvN()}</span>`:''} <button class="lnk" data-act="viewCompleted">보기</button></div>` :
       `<div class="dgrow">${dgStackHTML(S.delveDeck.length)}<div class="dgl"><div class="sl">남은 던전 카드</div><span class="dgn ${S.delveDeck.length<=CFG.backDeck?'warn':''}">${S.delveDeck.length}</span>${rsvN()?`<div class="dgrsv" data-tip="${escT('정찰로 예약한 카드(다음 빈자리에 먼저 펼쳐짐): '+S.delveDeck.slice(0, rsvN()).map(c=>c.name).join(', '))}">예약 ${rsvN()}</div>`:''}</div><div class="dgr"><div class="dgbar" title="최심층까지 남은 양"><div style="width:${Math.round(S.delveDeck.length/Math.max(1,S.delveDeck.length+S.delveDiscard.length)*100)}%"></div></div>
       <div class="dgsub">지나온 층 ${S.delveDiscard.length} · 완료 ${S.completed.length}${rsvN()?` · <span class="dgrsv2" data-tip="${escT('정찰로 예약한 카드(다음 빈자리에 먼저 펼쳐짐): '+S.delveDeck.slice(0, rsvN()).map(c=>c.name).join(', '))}">예약 ${rsvN()}</span>`:''} <button class="lnk" data-act="viewCompleted">보기</button></div></div></div>`}</div>
@@ -5998,7 +6025,7 @@ function titleHTML(){
       ${(()=>{ const sv = soloLoad(); return sv ? `<button class="big tres" data-act="resume">이어하기 <small>${sv.turn}번째 차례 · ${esc(sv.names)}</small></button>` : ''; })()}<button class="big tnet" data-act="toLobby">함께하기 (온라인)</button><button class="big tnet" data-act="daily">오늘의 던전</button>
       <div class="b2">${fsOK()?`<button class="big kb" data-act="fullscreen"><span>${document.fullscreenElement?"창 화면":"전체화면"}</span><kbd>F11</kbd></button>`:`<button class="fsdis big kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="big kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="big kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="big kb" data-act="records"><span>기록</span></button><button class="big kb" data-act="achv"><span>업적</span></button><button class="big kb" data-act="dex"><span>도감</span></button><button class="big kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button>${homeAddShow()?`<button class="big kb hadd" data-act="homeAdd"><span>${homeAddLabel()}</span></button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.30.0.1</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.30.1.0</span></div>
   </div>`;
 }
 // 표지 그림: index.html 안에 넣어 둠(1.15.3.0, pwa/cover.webp → build.py). 따로 불러오지 않아 처음부터 바로 표시
@@ -6021,7 +6048,7 @@ function coverTitleHTML(){   // 표지 그림 + 오른쪽 반투명 메뉴 (시�
       </div>
       <div class="cvsub">${fsOK()?`<button class="cvs" data-act="fullscreen">${document.fullscreenElement?'창 화면':'전체화면'}</button>`:''}<button class="cvs" data-act="keys">조작법</button><button class="cvs" data-act="rules">규칙서</button>${homeAddShow()?`<button class="cvs hadd" data-act="homeAdd">${homeAddLabel()}</button>`:''}</div>
     </div>
-    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.30.0.1</span></div>
+    <div class="credit">본 게임은 보드게임 「킨파이어 델브」의 규칙 구조를 참고한 비공식 개인 제작물입니다. · <span class="nowrap">Rev. 1.30.1.0</span></div>
   </div>`;
 }
 function miniHTML(d){ return PORTRAITS.includes(d.id) ? `<i class="pmini ps-${d.id}"></i>` : `<span class="dot" style="--sc:${d.color}"></span>`; }   // 게임 화면용 작은 그림
@@ -6072,7 +6099,7 @@ function setupHTML(){
       <div class="btns"><button class="primary big kb" style="font-size:18px" data-act="start" ${n?'':'disabled'}><span>탐험 시작</span><kbd>Enter</kbd></button>
         ${fsOK()?`<button class="kb" data-act="fullscreen"><span>${document.fullscreenElement?'창 화면':'전체화면'}</span><kbd>F11</kbd></button>`:`<button class="fsdis kb" data-act="fsNo" title="이 화면에서는 전체화면을 쓸 수 없습니다"><span>전체화면</span><kbd>F11</kbd></button>`}<button class="kb" data-act="keys"><span>조작법</span><kbd>F9</kbd></button><button class="kb" data-act="rules"><span>규칙서</span><kbd>F10</kbd></button><button class="kb" data-act="menu"><span>설정</span><kbd>Q</kbd></button><button class="kb" data-act="toTitle"><span>처음으로</span><kbd>Esc</kbd></button></div>
     </div>
-    <div class="credit">Rev. 1.30.0.1</div>
+    <div class="credit">Rev. 1.30.1.0</div>
   </div>`;
 }
 
